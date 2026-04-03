@@ -1,0 +1,37 @@
+{
+  "productName": "Easy Plot",
+  "generatedAt": "2026-04-03T13:42:14.070Z",
+  "entrypoint": "index.html",
+  "supportsOffline": true,
+  "supportsLocalFilesystem": true,
+  "window": {
+    "windowId": "desktop_window_1775223734069",
+    "title": "Easy Plot",
+    "state": "running",
+    "openedAt": "2026-04-03T13:42:14.069Z",
+    "closedAt": null,
+    "renderRevision": 0
+  },
+  "layout": [
+    {
+      "id": "object_tree",
+      "title": "Object Tree",
+      "dock": "left"
+    },
+    {
+      "id": "canvas",
+      "title": "Canvas",
+      "dock": "center"
+    },
+    {
+      "id": "properties",
+      "title": "Properties",
+      "dock": "right"
+    },
+    {
+      "id": "import_report",
+      "title": "Import Report",
+      "dock": "bottom"
+    }
+  ]
+}

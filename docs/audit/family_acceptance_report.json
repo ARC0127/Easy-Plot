@@ -1,0 +1,107 @@
+{
+  "summaries": [
+    {
+      "family": "matplotlib",
+      "metrics": {
+        "panel_detection_recall": 1,
+        "legend_detection_success_rate": 1,
+        "true_text_editable_rate": 1,
+        "editable_or_honestly_labeled_rate": 1,
+        "raster_block_correct_label_rate": 1,
+        "import_visual_equivalence_pass_rate": 1,
+        "single_edit_roundtrip_pass_rate": 1,
+        "reimport_interaction_retention_rate": 1
+      },
+      "pass": true,
+      "failingMetrics": [],
+      "familyPass": true,
+      "fixtureCount": 10
+    },
+    {
+      "family": "chart_family",
+      "metrics": {
+        "panel_detection_recall": 1,
+        "legend_detection_success_rate": 1,
+        "true_text_editable_rate": 1,
+        "editable_or_honestly_labeled_rate": 1,
+        "raster_block_correct_label_rate": 1,
+        "import_visual_equivalence_pass_rate": 1,
+        "single_edit_roundtrip_pass_rate": 1,
+        "reimport_interaction_retention_rate": 1
+      },
+      "pass": true,
+      "failingMetrics": [],
+      "familyPass": true,
+      "fixtureCount": 8
+    },
+    {
+      "family": "illustration_like",
+      "metrics": {
+        "panel_detection_recall": 1,
+        "legend_detection_success_rate": 1,
+        "true_text_editable_rate": 1,
+        "editable_or_honestly_labeled_rate": 1,
+        "raster_block_correct_label_rate": 1,
+        "import_visual_equivalence_pass_rate": 1,
+        "single_edit_roundtrip_pass_rate": 1,
+        "reimport_interaction_retention_rate": 1
+      },
+      "pass": true,
+      "failingMetrics": [],
+      "familyPass": true,
+      "fixtureCount": 8
+    },
+    {
+      "family": "llm_svg",
+      "metrics": {
+        "panel_detection_recall": 1,
+        "legend_detection_success_rate": 1,
+        "true_text_editable_rate": 1,
+        "editable_or_honestly_labeled_rate": 1,
+        "raster_block_correct_label_rate": 1,
+        "import_visual_equivalence_pass_rate": 1,
+        "single_edit_roundtrip_pass_rate": 1,
+        "reimport_interaction_retention_rate": 1
+      },
+      "pass": true,
+      "failingMetrics": [],
+      "familyPass": true,
+      "fixtureCount": 10
+    },
+    {
+      "family": "static_html_inline_svg",
+      "metrics": {
+        "panel_detection_recall": 1,
+        "legend_detection_success_rate": 1,
+        "true_text_editable_rate": 1,
+        "editable_or_honestly_labeled_rate": 1,
+        "raster_block_correct_label_rate": 1,
+        "import_visual_equivalence_pass_rate": 1,
+        "single_edit_roundtrip_pass_rate": 1,
+        "reimport_interaction_retention_rate": 1
+      },
+      "pass": true,
+      "failingMetrics": [],
+      "familyPass": true,
+      "fixtureCount": 8
+    },
+    {
+      "family": "degraded_svg",
+      "metrics": {
+        "panel_detection_recall": 1,
+        "legend_detection_success_rate": 1,
+        "true_text_editable_rate": 1,
+        "editable_or_honestly_labeled_rate": 1,
+        "raster_block_correct_label_rate": 1,
+        "import_visual_equivalence_pass_rate": 1,
+        "single_edit_roundtrip_pass_rate": 1,
+        "reimport_interaction_retention_rate": 1
+      },
+      "pass": true,
+      "failingMetrics": [],
+      "familyPass": true,
+      "fixtureCount": 8
+    }
+  ],
+  "overallPass": true
+}

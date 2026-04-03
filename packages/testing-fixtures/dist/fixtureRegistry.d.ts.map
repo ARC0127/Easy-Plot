@@ -1,0 +1,1 @@
+{"version":3,"file":"fixtureRegistry.d.ts","sourceRoot":"","sources":["../src/fixtureRegistry.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAqB,MAAM,4BAA4B,CAAC;AAE5E,OAAO,EAAE,aAAa,EAAE,MAAM,SAAS,CAAC;AAExC,wBAAgB,mBAAmB,IAAI,aAAa,EAAE,CAErD;AAED,wBAAgB,mBAAmB,CAAC,MAAM,EAAE,WAAW,GAAG,aAAa,EAAE,CAExE;AAED,wBAAgB,gBAAgB,CAAC,SAAS,EAAE,MAAM,GAAG,aAAa,CAIjE"}

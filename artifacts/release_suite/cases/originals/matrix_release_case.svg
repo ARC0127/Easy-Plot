@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560">
+  <rect x="0" y="0" width="960" height="560" fill="#f8fafc" />
+  <g id="matrix_panel" data-fe-object-id="matrix_panel">
+    <rect x="36" y="36" width="888" height="488" rx="22" fill="#ffffff" stroke="#d6deea" stroke-width="2" />
+    <text x="72" y="86" font-size="34" font-weight="700" font-family="Georgia, Cambria, Times New Roman, Noto Serif, serif" fill="#0f172a" data-fe-object-id="matrix_title">Matrix Release Validation</text>
+    <text x="72" y="118" font-size="16" font-family="Georgia, Cambria, Times New Roman, Noto Serif, serif" fill="#64748b">Grid objects, text labels, project reload, PNG export</text>
+
+    <text x="180" y="162" font-size="18" fill="#334155">C1</text>
+    <text x="300" y="162" font-size="18" fill="#334155">C2</text>
+    <text x="420" y="162" font-size="18" fill="#334155">C3</text>
+    <text x="540" y="162" font-size="18" fill="#334155">C4</text>
+    <text x="90" y="232" font-size="18" fill="#334155">R1</text>
+    <text x="90" y="322" font-size="18" fill="#334155">R2</text>
+    <text x="90" y="412" font-size="18" fill="#334155">R3</text>
+    <text x="90" y="502" font-size="18" fill="#334155">R4</text>
+
+    <rect x="150" y="180" width="100" height="80" fill="#e2e8f0" stroke="#ffffff" stroke-width="2" />
+    <rect x="270" y="180" width="100" height="80" fill="#dbeafe" stroke="#ffffff" stroke-width="2" />
+    <rect x="390" y="180" width="100" height="80" fill="#bfdbfe" stroke="#ffffff" stroke-width="2" />
+    <rect x="510" y="180" width="100" height="80" fill="#93c5fd" stroke="#ffffff" stroke-width="2" />
+    <rect x="150" y="270" width="100" height="80" fill="#e0f2fe" stroke="#ffffff" stroke-width="2" />
+    <rect x="270" y="270" width="100" height="80" fill="#bae6fd" stroke="#ffffff" stroke-width="2" />
+    <g id="matrix_hotspot_group" data-fe-object-id="matrix_hotspot_group">
+      <rect x="390" y="270" width="100" height="80" fill="#60a5fa" stroke="#1d4ed8" stroke-width="3" />
+      <text x="425" y="318" font-size="24" font-weight="700" font-family="Georgia, Cambria, Times New Roman, Noto Serif, serif" fill="#0f172a">0.91</text>
+    </g>
+    <rect x="510" y="270" width="100" height="80" fill="#3b82f6" stroke="#ffffff" stroke-width="2" />
+    <rect x="150" y="360" width="100" height="80" fill="#fef3c7" stroke="#ffffff" stroke-width="2" />
+    <rect x="270" y="360" width="100" height="80" fill="#fde68a" stroke="#ffffff" stroke-width="2" />
+    <rect x="390" y="360" width="100" height="80" fill="#f59e0b" stroke="#ffffff" stroke-width="2" />
+    <rect x="510" y="360" width="100" height="80" fill="#dc2626" stroke="#ffffff" stroke-width="2" />
+    <rect x="150" y="450" width="100" height="40" fill="#f8fafc" stroke="#d6deea" stroke-width="2" />
+    <rect x="270" y="450" width="100" height="40" fill="#f8fafc" stroke="#d6deea" stroke-width="2" />
+    <rect x="390" y="450" width="100" height="40" fill="#f8fafc" stroke="#d6deea" stroke-width="2" />
+    <rect x="510" y="450" width="100" height="40" fill="#f8fafc" stroke="#d6deea" stroke-width="2" />
+
+    <g id="matrix_colorbar_group" data-fe-object-id="matrix_colorbar_group">
+      <rect x="700" y="194" width="44" height="238" rx="14" fill="#f8fafc" stroke="#d6deea" stroke-width="2" />
+      <rect x="714" y="212" width="16" height="188" fill="url(#matrixGradient)" />
+      <text x="756" y="220" font-size="18" font-family="Georgia, Cambria, Times New Roman, Noto Serif, serif" fill="#334155">high</text>
+      <text x="756" y="406" font-size="18" font-family="Georgia, Cambria, Times New Roman, Noto Serif, serif" fill="#334155">low</text>
+    </g>
+    <text x="700" y="490" font-size="18" font-family="Georgia, Cambria, Times New Roman, Noto Serif, serif" fill="#64748b" data-fe-object-id="matrix_note_delete">Legacy footer: delete during cleanup</text>
+  </g>
+
+  <defs>
+    <linearGradient id="matrixGradient" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#dbeafe" />
+      <stop offset="50%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#dc2626" />
+    </linearGradient>
+  </defs>
+</svg>

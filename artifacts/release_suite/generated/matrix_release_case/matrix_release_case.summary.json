@@ -1,0 +1,26 @@
+{
+  "caseId": "matrix_release_case",
+  "familyHint": "chart_family",
+  "originalPath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\matrix_release_case.svg",
+  "outputs": {
+    "project": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.project.json",
+    "svg": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.adjusted.svg",
+    "html": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.adjusted.html",
+    "png": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.adjusted.png",
+    "summary": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.summary.json"
+  },
+  "operations": [
+    "import",
+    "select_by_id + edit_text",
+    "move_group + undo + redo",
+    "add_text",
+    "delete",
+    "save_project",
+    "load_project",
+    "export_svg",
+    "export_html",
+    "export_png"
+  ],
+  "selectedIdsAfterBuild": [],
+  "adjustedSvgLength": 12417
+}

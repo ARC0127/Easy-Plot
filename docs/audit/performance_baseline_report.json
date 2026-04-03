@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-04-03T13:10:49.767Z",
+  "iterations": 3,
+  "overallPass": true,
+  "measurements": [
+    {
+      "id": "import_pipeline_latency",
+      "description": "Import pipeline smoke latency",
+      "threshold": {
+        "metric": "medianMs",
+        "maxAllowed": 2500
+      },
+      "stats": {
+        "count": 3,
+        "minMs": 72.2107,
+        "maxMs": 75.8083,
+        "avgMs": 74.41293333333333,
+        "medianMs": 75.2198,
+        "samplesMs": [
+          72.2107,
+          75.2198,
+          75.8083
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "editor_pipeline_latency",
+      "description": "Editor pipeline smoke latency",
+      "threshold": {
+        "metric": "medianMs",
+        "maxAllowed": 2500
+      },
+      "stats": {
+        "count": 3,
+        "minMs": 80.7373,
+        "maxMs": 83.6063,
+        "avgMs": 81.93396666666668,
+        "medianMs": 81.4583,
+        "samplesMs": [
+          80.7373,
+          81.4583,
+          83.6063
+        ]
+      },
+      "pass": true
+    },
+    {
+      "id": "roundtrip_pipeline_latency",
+      "description": "Roundtrip pipeline smoke latency",
+      "threshold": {
+        "metric": "medianMs",
+        "maxAllowed": 3500
+      },
+      "stats": {
+        "count": 3,
+        "minMs": 398.2543,
+        "maxMs": 453.0765,
+        "avgMs": 425.3580666666667,
+        "medianMs": 424.7434,
+        "samplesMs": [
+          398.2543,
+          424.7434,
+          453.0765
+        ]
+      },
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"setAnchor.d.ts","sourceRoot":"","sources":["../../src/anchors/setAnchor.ts"],"names":[],"mappings":"AACA,OAAO,EAAqB,OAAO,EAAE,MAAM,+BAA+B,CAAC;AAC3E,OAAO,EAAE,UAAU,EAAE,wBAAwB,EAAE,MAAM,UAAU,CAAC;AAGhE,wBAAgB,SAAS,CAAC,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,EAAE,MAAM,EAAE,UAAU,EAAE,MAAM,EAAE,CAAC,MAAM,EAAE,MAAM,CAAC,GAAG,wBAAwB,CAepI"}

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Figure Editor - Desktop Shell</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --line: #d8dfeb;
+      --text: #1a2533;
+      --muted: #667892;
+      --accent: #1762d6;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fff, #eef4ff);
+    }
+    .topbar h1 { margin: 0; font-size: 16px; font-weight: 600; }
+    .badge { font-size: 12px; color: #fff; background: var(--accent); padding: 2px 8px; border-radius: 999px; }
+    .workspace {
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      grid-template-rows: minmax(420px, 1fr) 240px;
+      gap: 10px;
+      padding: 10px;
+      min-height: calc(100vh - 56px);
+    }
+    .region { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: auto; }
+    .region h3 { margin: 0; padding: 10px 12px; font-size: 13px; border-bottom: 1px solid var(--line); background: #f9fbff; }
+    .region .body { padding: 10px 12px; font-size: 12px; line-height: 1.45; }
+    .region-left { grid-column: 1; grid-row: 1; }
+    .region-center { grid-column: 2; grid-row: 1; }
+    .region-right { grid-column: 3; grid-row: 1; }
+    .region-bottom { grid-column: 1 / span 3; grid-row: 2; }
+    .tree-list { list-style: none; margin: 0; padding: 0; }
+    .tree-node { padding: 6px 8px; border-bottom: 1px dashed #edf1f8; display: flex; flex-direction: column; gap: 2px; }
+    .tree-node[data-depth="1"] { padding-left: 18px; }
+    .tree-node[data-depth="2"] { padding-left: 28px; }
+    .tree-label { font-weight: 600; }
+    .tree-meta { color: var(--muted); font-size: 11px; }
+    pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace; }
+    .muted { color: var(--muted); }
+    .status { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Figure Editor - Desktop Window Shell</h1>
+    <span class="badge">RUNNING</span>
+  </div>
+  <div class="workspace">
+    <section class="region region-left">
+      <h3>Object Tree</h3>
+      <div class="body"><ul class="tree-list"><li class="tree-empty">No objects</li></ul></div>
+    </section>
+    <section class="region region-center">
+      <h3>Canvas</h3>
+      <div class="body">
+        <p class="muted">No active selection.</p>
+        <div class="status">
+          <pre>{
+  &quot;window&quot;: {
+    &quot;windowId&quot;: &quot;desktop_window_1775221847581&quot;,
+    &quot;title&quot;: &quot;Figure Editor&quot;,
+    &quot;state&quot;: &quot;running&quot;,
+    &quot;openedAt&quot;: &quot;2026-04-03T13:10:47.582Z&quot;,
+    &quot;closedAt&quot;: null,
+    &quot;renderRevision&quot;: 0
+  },
+  &quot;linkedStatus&quot;: {
+    &quot;regionCount&quot;: 4,
+    &quot;treeNodeCount&quot;: 0,
+    &quot;selectedCount&quot;: 0,
+    &quot;overlayCount&quot;: 0,
+    &quot;hasProperties&quot;: false,
+    &quot;hasImportReport&quot;: false,
+    &quot;hasLoadedProjectFile&quot;: false
+  },
+  &quot;warnings&quot;: [],
+  &quot;selectedIds&quot;: []
+}</pre>
+        </div>
+      </div>
+    </section>
+    <section class="region region-right">
+      <h3>Properties</h3>
+      <div class="body"><p class="muted">No object selected.</p></div>
+    </section>
+    <section class="region region-bottom">
+      <h3>Import Report</h3>
+      <div class="body">
+        <p class="muted">No import report available.</p>
+        <h4>Warnings</h4>
+        <pre>(none)</pre>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

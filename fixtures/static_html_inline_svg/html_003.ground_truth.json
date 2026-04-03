@@ -1,0 +1,1 @@
+{"family":"static_html_inline_svg","hasLegend":true,"panelIds":["panel_left","panel_right"],"editableRawTextIds":["caption_1"],"atomicRasterIds":[],"expectedCapabilities":{"caption_1":["text_edit"],"panel_left":["select","drag","resize","delete","reparent"]},"fixtureId":"html_003","provenanceRef":"html_003"}

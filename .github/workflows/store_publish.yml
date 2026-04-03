@@ -1,0 +1,83 @@
+name: store-publish
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'scripts/**'
+      - 'artifacts/**'
+      - 'docs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/store_publish.yml'
+  workflow_dispatch:
+    inputs:
+      credentialed_publish:
+        description: 'Run credentialed store publish (requires secrets)'
+        required: true
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  verify-distribution-dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:all
+
+      - name: Distribution smoke
+        run: npm run smoke:store-distribution
+
+      - name: Store publish CI dry-run smoke
+        run: npm run smoke:store-publish-ci
+
+  credentialed-store-publish:
+    runs-on: ubuntu-latest
+    needs: verify-distribution-dry-run
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.credentialed_publish == 'true' }}
+    env:
+      STORE_PUBLISH_ENDPOINT: ${{ secrets.STORE_PUBLISH_ENDPOINT }}
+      STORE_PUBLISH_TOKEN: ${{ secrets.STORE_PUBLISH_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:all
+
+      - name: Validate credentials
+        run: |
+          test -n "$STORE_PUBLISH_ENDPOINT"
+          test -n "$STORE_PUBLISH_TOKEN"
+
+      - name: Build distribution assets
+        run: npm run release:distribution
+
+      - name: Credentialed publish
+        run: npm run publish:store:ci

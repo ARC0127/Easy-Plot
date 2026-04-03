@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FixtureGroundTruth",
+  "type": "object",
+  "required": [
+    "fixtureId",
+    "family",
+    "provenanceRef",
+    "hasLegend",
+    "panelIds",
+    "editableRawTextIds",
+    "atomicRasterIds",
+    "expectedCapabilities"
+  ],
+  "properties": {
+    "fixtureId": {
+      "type": "string"
+    },
+    "family": {
+      "enum": [
+        "matplotlib",
+        "chart_family",
+        "illustration_like",
+        "llm_svg",
+        "static_html_inline_svg",
+        "degraded_svg"
+      ]
+    },
+    "provenanceRef": {
+      "type": "string"
+    },
+    "hasLegend": {
+      "type": "boolean"
+    },
+    "panelIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "editableRawTextIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "atomicRasterIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expectedCapabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

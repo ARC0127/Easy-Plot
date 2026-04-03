@@ -1,0 +1,832 @@
+{
+  "generatedAt": "2026-04-03T13:10:50.113Z",
+  "dataset": {
+    "fixtureCount": 19,
+    "tiers": [
+      "real",
+      "weak_real"
+    ],
+    "provenanceMatrix": "fixtures/fixture_provenance_matrix.csv"
+  },
+  "targets": {
+    "minVisualPassRate": 0.95,
+    "minRetentionPassRate": 0.95,
+    "maxP95NormalizedPixelDiff": 0.025,
+    "minP05RetentionRate": 0.9,
+    "maxP95RoundtripMs": 5000
+  },
+  "overallPass": true,
+  "overall": {
+    "family": "overall",
+    "fixtureCount": 19,
+    "visualPassRate": 1,
+    "retentionPassRate": 1,
+    "normalizedPixelDiff": {
+      "count": 19,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "median": 0,
+      "p95": 0,
+      "p05": 0
+    },
+    "retentionRate": {
+      "count": 19,
+      "min": 1,
+      "max": 1,
+      "avg": 1,
+      "median": 1,
+      "p95": 1,
+      "p05": 1
+    },
+    "importLatencyMs": {
+      "count": 19,
+      "min": 0.19489997625350952,
+      "max": 3.2518999874591827,
+      "avg": 0.5417578910526476,
+      "median": 0.35740000009536743,
+      "p95": 0.9055000245571136,
+      "p05": 0.19489997625350952
+    },
+    "roundtripLatencyMs": {
+      "count": 19,
+      "min": 270.58210000395775,
+      "max": 349.84579998254776,
+      "avg": 301.5367842049975,
+      "median": 296.53659999370575,
+      "p95": 327.6500999927521,
+      "p05": 270.58210000395775
+    },
+    "comparisonModeCounts": {
+      "rendered_svg_resvg": 19
+    },
+    "pass": true
+  },
+  "familySummaries": [
+    {
+      "family": "chart_family",
+      "fixtureCount": 3,
+      "visualPassRate": 1,
+      "retentionPassRate": 1,
+      "normalizedPixelDiff": {
+        "count": 3,
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "median": 0,
+        "p95": 0,
+        "p05": 0
+      },
+      "retentionRate": {
+        "count": 3,
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "median": 1,
+        "p95": 1,
+        "p05": 1
+      },
+      "importLatencyMs": {
+        "count": 3,
+        "min": 0.23960000276565552,
+        "max": 0.6574999988079071,
+        "avg": 0.4181666672229767,
+        "median": 0.35740000009536743,
+        "p95": 0.35740000009536743,
+        "p05": 0.23960000276565552
+      },
+      "roundtripLatencyMs": {
+        "count": 3,
+        "min": 282.5476000010967,
+        "max": 296.53659999370575,
+        "avg": 289.2492333352566,
+        "median": 288.66350001096725,
+        "p95": 288.66350001096725,
+        "p05": 282.5476000010967
+      },
+      "comparisonModeCounts": {
+        "rendered_svg_resvg": 3
+      },
+      "pass": true
+    },
+    {
+      "family": "degraded_svg",
+      "fixtureCount": 2,
+      "visualPassRate": 1,
+      "retentionPassRate": 1,
+      "normalizedPixelDiff": {
+        "count": 2,
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "median": 0,
+        "p95": 0,
+        "p05": 0
+      },
+      "retentionRate": {
+        "count": 2,
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "median": 1,
+        "p95": 1,
+        "p05": 1
+      },
+      "importLatencyMs": {
+        "count": 2,
+        "min": 0.21050000190734863,
+        "max": 0.5199999809265137,
+        "avg": 0.36524999141693115,
+        "median": 0.21050000190734863,
+        "p95": 0.21050000190734863,
+        "p05": 0.21050000190734863
+      },
+      "roundtripLatencyMs": {
+        "count": 2,
+        "min": 299.8915999829769,
+        "max": 326.66720002889633,
+        "avg": 313.2794000059366,
+        "median": 299.8915999829769,
+        "p95": 299.8915999829769,
+        "p05": 299.8915999829769
+      },
+      "comparisonModeCounts": {
+        "rendered_svg_resvg": 2
+      },
+      "pass": true
+    },
+    {
+      "family": "illustration_like",
+      "fixtureCount": 3,
+      "visualPassRate": 1,
+      "retentionPassRate": 1,
+      "normalizedPixelDiff": {
+        "count": 3,
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "median": 0,
+        "p95": 0,
+        "p05": 0
+      },
+      "retentionRate": {
+        "count": 3,
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "median": 1,
+        "p95": 1,
+        "p05": 1
+      },
+      "importLatencyMs": {
+        "count": 3,
+        "min": 0.19489997625350952,
+        "max": 0.3359000086784363,
+        "avg": 0.2521333297093709,
+        "median": 0.225600004196167,
+        "p95": 0.225600004196167,
+        "p05": 0.19489997625350952
+      },
+      "roundtripLatencyMs": {
+        "count": 3,
+        "min": 288.23339998722076,
+        "max": 291.94699999690056,
+        "avg": 289.7465999921163,
+        "median": 289.05939999222755,
+        "p95": 289.05939999222755,
+        "p05": 288.23339998722076
+      },
+      "comparisonModeCounts": {
+        "rendered_svg_resvg": 3
+      },
+      "pass": true
+    },
+    {
+      "family": "llm_svg",
+      "fixtureCount": 4,
+      "visualPassRate": 1,
+      "retentionPassRate": 1,
+      "normalizedPixelDiff": {
+        "count": 4,
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "median": 0,
+        "p95": 0,
+        "p05": 0
+      },
+      "retentionRate": {
+        "count": 4,
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "median": 1,
+        "p95": 1,
+        "p05": 1
+      },
+      "importLatencyMs": {
+        "count": 4,
+        "min": 0.2409999966621399,
+        "max": 0.6523999869823456,
+        "avg": 0.39777499437332153,
+        "median": 0.32819998264312744,
+        "p95": 0.3695000112056732,
+        "p05": 0.2409999966621399
+      },
+      "roundtripLatencyMs": {
+        "count": 4,
+        "min": 288.90779998898506,
+        "max": 319.4957999885082,
+        "avg": 301.9858499914408,
+        "median": 296.917199999094,
+        "p95": 302.6225999891758,
+        "p05": 288.90779998898506
+      },
+      "comparisonModeCounts": {
+        "rendered_svg_resvg": 4
+      },
+      "pass": true
+    },
+    {
+      "family": "matplotlib",
+      "fixtureCount": 4,
+      "visualPassRate": 1,
+      "retentionPassRate": 1,
+      "normalizedPixelDiff": {
+        "count": 4,
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "median": 0,
+        "p95": 0,
+        "p05": 0
+      },
+      "retentionRate": {
+        "count": 4,
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "median": 1,
+        "p95": 1,
+        "p05": 1
+      },
+      "importLatencyMs": {
+        "count": 4,
+        "min": 0.24699997901916504,
+        "max": 3.2518999874591827,
+        "avg": 1.0858749896287918,
+        "median": 0.41519999504089355,
+        "p95": 0.4293999969959259,
+        "p05": 0.24699997901916504
+      },
+      "roundtripLatencyMs": {
+        "count": 4,
+        "min": 270.58210000395775,
+        "max": 319.0698999762535,
+        "avg": 290.92174999415874,
+        "median": 285.3167999982834,
+        "p95": 288.71819999814034,
+        "p05": 270.58210000395775
+      },
+      "comparisonModeCounts": {
+        "rendered_svg_resvg": 4
+      },
+      "pass": true
+    },
+    {
+      "family": "static_html_inline_svg",
+      "fixtureCount": 3,
+      "visualPassRate": 1,
+      "retentionPassRate": 1,
+      "normalizedPixelDiff": {
+        "count": 3,
+        "min": 0,
+        "max": 0,
+        "avg": 0,
+        "median": 0,
+        "p95": 0,
+        "p05": 0
+      },
+      "retentionRate": {
+        "count": 3,
+        "min": 1,
+        "max": 1,
+        "avg": 1,
+        "median": 1,
+        "p95": 1,
+        "p05": 1
+      },
+      "importLatencyMs": {
+        "count": 3,
+        "min": 0.32199999690055847,
+        "max": 0.9055000245571136,
+        "avg": 0.5391333401203156,
+        "median": 0.38989999890327454,
+        "p95": 0.38989999890327454,
+        "p05": 0.32199999690055847
+      },
+      "roundtripLatencyMs": {
+        "count": 3,
+        "min": 316.526299983263,
+        "max": 349.84579998254776,
+        "avg": 331.34073331952095,
+        "median": 327.6500999927521,
+        "p95": 327.6500999927521,
+        "p05": 316.526299983263
+      },
+      "comparisonModeCounts": {
+        "rendered_svg_resvg": 3
+      },
+      "pass": true
+    }
+  ],
+  "topRiskByPixelDiff": [
+    {
+      "fixtureId": "mpl_001",
+      "family": "matplotlib",
+      "normalizedPixelDiff": 0,
+      "retentionRate": 1,
+      "comparisonMode": "rendered_svg_resvg"
+    },
+    {
+      "fixtureId": "mpl_002",
+      "family": "matplotlib",
+      "normalizedPixelDiff": 0,
+      "retentionRate": 1,
+      "comparisonMode": "rendered_svg_resvg"
+    },
+    {
+      "fixtureId": "mpl_003",
+      "family": "matplotlib",
+      "normalizedPixelDiff": 0,
+      "retentionRate": 1,
+      "comparisonMode": "rendered_svg_resvg"
+    },
+    {
+      "fixtureId": "mpl_004",
+      "family": "matplotlib",
+      "normalizedPixelDiff": 0,
+      "retentionRate": 1,
+      "comparisonMode": "rendered_svg_resvg"
+    },
+    {
+      "fixtureId": "chart_001",
+      "family": "chart_family",
+      "normalizedPixelDiff": 0,
+      "retentionRate": 1,
+      "comparisonMode": "rendered_svg_resvg"
+    }
+  ],
+  "fixtureReports": [
+    {
+      "fixtureId": "mpl_001",
+      "family": "matplotlib",
+      "kind": "svg",
+      "importMs": 3.2518999874591827,
+      "roundtripMs": 319.0698999762535,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 4,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_matplotlib"
+    },
+    {
+      "fixtureId": "mpl_002",
+      "family": "matplotlib",
+      "kind": "svg",
+      "importMs": 0.41519999504089355,
+      "roundtripMs": 270.58210000395775,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 4,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_matplotlib"
+    },
+    {
+      "fixtureId": "mpl_003",
+      "family": "matplotlib",
+      "kind": "svg",
+      "importMs": 0.4293999969959259,
+      "roundtripMs": 285.3167999982834,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 4,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_matplotlib"
+    },
+    {
+      "fixtureId": "mpl_004",
+      "family": "matplotlib",
+      "kind": "svg",
+      "importMs": 0.24699997901916504,
+      "roundtripMs": 288.71819999814034,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 4,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_matplotlib"
+    },
+    {
+      "fixtureId": "chart_001",
+      "family": "chart_family",
+      "kind": "svg",
+      "importMs": 0.6574999988079071,
+      "roundtripMs": 296.53659999370575,
+      "objectCount": 10,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 3,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_chart_family"
+    },
+    {
+      "fixtureId": "chart_002",
+      "family": "chart_family",
+      "kind": "svg",
+      "importMs": 0.23960000276565552,
+      "roundtripMs": 282.5476000010967,
+      "objectCount": 10,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 3,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_chart_family"
+    },
+    {
+      "fixtureId": "chart_003",
+      "family": "chart_family",
+      "kind": "svg",
+      "importMs": 0.35740000009536743,
+      "roundtripMs": 288.66350001096725,
+      "objectCount": 10,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 3,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_chart_family"
+    },
+    {
+      "fixtureId": "illus_001",
+      "family": "illustration_like",
+      "kind": "svg",
+      "importMs": 0.3359000086784363,
+      "roundtripMs": 291.94699999690056,
+      "objectCount": 5,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 2,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_illustration_like"
+    },
+    {
+      "fixtureId": "illus_002",
+      "family": "illustration_like",
+      "kind": "svg",
+      "importMs": 0.225600004196167,
+      "roundtripMs": 288.23339998722076,
+      "objectCount": 5,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 2,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_illustration_like"
+    },
+    {
+      "fixtureId": "illus_003",
+      "family": "illustration_like",
+      "kind": "svg",
+      "importMs": 0.19489997625350952,
+      "roundtripMs": 289.05939999222755,
+      "objectCount": 5,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 2,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_illustration_like"
+    },
+    {
+      "fixtureId": "llm_001",
+      "family": "llm_svg",
+      "kind": "svg",
+      "importMs": 0.6523999869823456,
+      "roundtripMs": 319.4957999885082,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 6,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n6: exportStabilityClass=fragile",
+        "obj_n6: reimportExpectation=atomic",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_llm_svg"
+    },
+    {
+      "fixtureId": "llm_002",
+      "family": "llm_svg",
+      "kind": "svg",
+      "importMs": 0.3695000112056732,
+      "roundtripMs": 302.6225999891758,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 6,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n6: exportStabilityClass=fragile",
+        "obj_n6: reimportExpectation=atomic",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_llm_svg"
+    },
+    {
+      "fixtureId": "llm_003",
+      "family": "llm_svg",
+      "kind": "svg",
+      "importMs": 0.32819998264312744,
+      "roundtripMs": 288.90779998898506,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 6,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n6: exportStabilityClass=fragile",
+        "obj_n6: reimportExpectation=atomic",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_llm_svg"
+    },
+    {
+      "fixtureId": "llm_004",
+      "family": "llm_svg",
+      "kind": "svg",
+      "importMs": 0.2409999966621399,
+      "roundtripMs": 296.917199999094,
+      "objectCount": 12,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 6,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n6: exportStabilityClass=fragile",
+        "obj_n6: reimportExpectation=atomic",
+        "obj_n7: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_llm_svg"
+    },
+    {
+      "fixtureId": "html_001",
+      "family": "static_html_inline_svg",
+      "kind": "html",
+      "importMs": 0.9055000245571136,
+      "roundtripMs": 316.526299983263,
+      "objectCount": 13,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 8,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n3: reimportExpectation=group_only",
+        "obj_n4: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only",
+        "obj_n8: reimportExpectation=group_only",
+        "obj_n10: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_static_html_inline_svg"
+    },
+    {
+      "fixtureId": "html_002",
+      "family": "static_html_inline_svg",
+      "kind": "html",
+      "importMs": 0.38989999890327454,
+      "roundtripMs": 349.84579998254776,
+      "objectCount": 13,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 8,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n3: reimportExpectation=group_only",
+        "obj_n4: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only",
+        "obj_n8: reimportExpectation=group_only",
+        "obj_n10: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_static_html_inline_svg"
+    },
+    {
+      "fixtureId": "html_003",
+      "family": "static_html_inline_svg",
+      "kind": "html",
+      "importMs": 0.32199999690055847,
+      "roundtripMs": 327.6500999927521,
+      "objectCount": 13,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 8,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: reimportExpectation=group_only",
+        "obj_n3: reimportExpectation=group_only",
+        "obj_n4: reimportExpectation=group_only",
+        "obj_n5: reimportExpectation=group_only",
+        "obj_n7: reimportExpectation=group_only",
+        "obj_n8: reimportExpectation=group_only",
+        "obj_n10: reimportExpectation=group_only"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_static_html_inline_svg"
+    },
+    {
+      "fixtureId": "deg_001",
+      "family": "degraded_svg",
+      "kind": "svg",
+      "importMs": 0.5199999809265137,
+      "roundtripMs": 326.66720002889633,
+      "objectCount": 4,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 5,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: exportStabilityClass=fragile",
+        "obj_n2: reimportExpectation=atomic",
+        "obj_n3: exportStabilityClass=fragile",
+        "obj_n3: reimportExpectation=atomic"
+      ],
+      "authenticityTier": "real",
+      "originClass": "real_world_collected",
+      "provenanceRef": "corpus:real_degraded_svg"
+    },
+    {
+      "fixtureId": "deg_002",
+      "family": "degraded_svg",
+      "kind": "svg",
+      "importMs": 0.21050000190734863,
+      "roundtripMs": 299.8915999829769,
+      "objectCount": 4,
+      "visualPass": true,
+      "retentionPass": true,
+      "normalizedPixelDiff": 0,
+      "comparisonMode": "rendered_svg_resvg",
+      "retentionRate": 1,
+      "warningCount": 5,
+      "warnings": [
+        "obj_n1: reimportExpectation=group_only",
+        "obj_n2: exportStabilityClass=fragile",
+        "obj_n2: reimportExpectation=atomic",
+        "obj_n3: exportStabilityClass=fragile",
+        "obj_n3: reimportExpectation=atomic"
+      ],
+      "authenticityTier": "weak_real",
+      "originClass": "mixed_source",
+      "provenanceRef": "corpus:weak_real_degraded_svg"
+    }
+  ]
+}

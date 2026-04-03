@@ -1,0 +1,1 @@
+{"family":"matplotlib","hasLegend":true,"panelIds":["axes_1","axes_2"],"editableRawTextIds":["text_title","text_legend"],"atomicRasterIds":[],"expectedCapabilities":{"axes_1":["select","drag","resize","delete","reparent"],"axes_2":["select","drag","resize","delete","reparent"],"text_title":["text_edit"]},"fixtureId":"mpl_006","provenanceRef":"mpl_006"}

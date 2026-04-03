@@ -1,0 +1,1 @@
+{"version":3,"file":"groupNode.d.ts","sourceRoot":"","sources":["../../src/objects/groupNode.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,SAAS,CAAC;AAE1C,MAAM,WAAW,SAAU,SAAQ,UAAU;IAC3C,UAAU,EAAE,YAAY,CAAC;IACzB,cAAc,EAAE,MAAM,EAAE,CAAC;IACzB,gBAAgB,EAAE,kBAAkB,GAAG,iBAAiB,GAAG,sBAAsB,GAAG,eAAe,GAAG,SAAS,CAAC;CACjH"}

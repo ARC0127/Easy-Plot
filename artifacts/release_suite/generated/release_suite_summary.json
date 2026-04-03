@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-04-03T13:42:13.728Z",
+  "cases": [
+    {
+      "caseId": "curve_release_case",
+      "familyHint": "chart_family",
+      "originalPath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\curve_release_case.svg",
+      "outputs": {
+        "project": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.project.json",
+        "svg": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.adjusted.svg",
+        "html": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.adjusted.html",
+        "png": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.adjusted.png",
+        "summary": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.summary.json"
+      },
+      "operations": [
+        "import",
+        "select_text_at + edit_text",
+        "adjust_curve_series_a",
+        "adjust_curve_series_b",
+        "select_by_id + move_group",
+        "add_text",
+        "delete + undo + redo",
+        "save_project",
+        "load_project",
+        "export_svg",
+        "export_html",
+        "export_png"
+      ],
+      "selectedIdsAfterBuild": [],
+      "adjustedSvgLength": 13502
+    },
+    {
+      "caseId": "matrix_release_case",
+      "familyHint": "chart_family",
+      "originalPath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\matrix_release_case.svg",
+      "outputs": {
+        "project": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.project.json",
+        "svg": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.adjusted.svg",
+        "html": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.adjusted.html",
+        "png": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.adjusted.png",
+        "summary": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\matrix_release_case\\matrix_release_case.summary.json"
+      },
+      "operations": [
+        "import",
+        "select_by_id + edit_text",
+        "move_group + undo + redo",
+        "add_text",
+        "delete",
+        "save_project",
+        "load_project",
+        "export_svg",
+        "export_html",
+        "export_png"
+      ],
+      "selectedIdsAfterBuild": [],
+      "adjustedSvgLength": 12417
+    },
+    {
+      "caseId": "flow_release_case",
+      "familyHint": "illustration_like",
+      "originalPath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
+      "outputs": {
+        "project": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.project.json",
+        "svg": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.adjusted.svg",
+        "html": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.adjusted.html",
+        "png": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.adjusted.png",
+        "summary": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.summary.json"
+      },
+      "operations": [
+        "import",
+        "multi_select",
+        "move_group",
+        "edit_text",
+        "add_text",
+        "delete",
+        "save_project",
+        "load_project",
+        "export_svg",
+        "export_html",
+        "export_png"
+      ],
+      "selectedIdsAfterBuild": [],
+      "adjustedSvgLength": 6301
+    }
+  ],
+  "montagePath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\release_suite_results.png",
+  "outputDir": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated"
+}

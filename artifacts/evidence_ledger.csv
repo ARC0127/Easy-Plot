@@ -1,0 +1,63 @@
+claim_id,verdict,source_kind,source_ref,notes
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,doc_mapping,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/index.md,文档映射已建立
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,verification_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/current-verification-report.md,compile/build/smoke/test/acceptance 闭环可执行
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,acceptance_report,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/family_acceptance_report.json,family-wise gate 当前为 overallPass=true
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,parser_depth_increment,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-parser/src/xmlLike.ts,已支持 namespace/localTag、CDATA、更稳健属性解析（含未加引号属性）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,normalizer_depth_increment,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-normalizer/src/normalizeDocument.ts,已支持 style block 规则、clip/mask/use、transform 继承矩阵与样式继承
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,parser_impl,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-parser/src/xmlLike.ts,D3 深度合同已满足（namespace/CDATA/entity/content-sniff/html 容错）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,normalizer_impl,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-normalizer/src/normalizeDocument.ts,D3 深度合同已满足（组合符/attr operators/pseudo/important/clip/mask/use/transform）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,mode_contract,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/editor-state/src/actions/importActions.ts,strict/limited/snapshot 三模式合同已闭环（session 只读策略 + html_mode 标签）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,project_api,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/editor-state/src/actions/projectActions.ts,create/load/save/archive/validate 已实现
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,reimport_api,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/testing-metrics/src/roundtrip/reimportExportedArtifact.ts,reimportExportedArtifact public API 已实现
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,roundtrip_renderer,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/testing-metrics/src/visual/rasterDiff.ts,视觉比较主路径已切到 rendered_svg_resvg
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,roundtrip_eq_l2,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/smoke_roundtrip_pipeline.cjs,normalizedPixelDiff=0 低于阈值 0.025（R5 复验）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_runtime,/mnt/f/Git/Figure-Editor/figure-editor-draft/apps/desktop/src/main/index.ts,DesktopAppShell 已提供生命周期、bridge 与 release bundle 发布壳能力
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_pilot_cli,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/desktop_pilot_cli.cjs,desktop 已提供初步可用 CLI 入口（打开/编辑/保存/导出）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_pilot_smoke,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/smoke_desktop_pilot.cjs,pilot 命令流 smoke 通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,fixtures_quality,/mnt/f/Git/Figure-Editor/figure-editor-draft/fixtures/fixture_family_matrix.csv,规模达标且结构闭环与真实性比例阈值均通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,doc_drift,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/evidence-ledger.md,关键审计文档已同步当前证据口径
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_iteration_log,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,已建立“每轮整理后强制 proof 验证”台账
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_unit_tests,/mnt/f/Git/Figure-Editor/figure-editor-draft/tests/unit/parser_normalizer_depth.test.cjs,D3 深度能力单测已补并通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_r4_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,初步可用完成态已完成全链路重验
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_r5_d10_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,D10 导出保真度与视觉阈值已完成闭环重验
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_css_combinators,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-normalizer/src/normalizeDocument.ts,已支持 CSS 组合符匹配（descendant/child/adjacent/sibling）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_inline_style_parser,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-normalizer/src/style/collectInlineStyles.ts,inline style 解析支持引号/括号内分号与复杂值
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_numeric_entity_decode,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-parser/src/xmlLike.ts,文本与属性均支持 numeric entity 解码
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_r6_d3_increment,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,D3 深度增量完成并通过全链路重验
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_content_sniffing,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-parser/src/parseDocument.ts,parseDocument 支持无扩展名输入的内容探测
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_html_tolerant_parse,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-parser/src/xmlLike.ts,HTML void tag 与隐式闭合容错已支持
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_css_attr_pseudo_important,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-normalizer/src/normalizeDocument.ts,已支持 attr operators/pseudo classes/!important 级联
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d3_completion_gate,/mnt/f/Git/Figure-Editor/figure-editor-draft/tests/unit/parser_normalizer_depth.test.cjs,D3 收口测试集通过（10/10 unit tests）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,snapshot_policy_enforcement,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/editor-state/src/actions/editActions.ts,runOperation 已接入会话级只读门禁并返回 typed error
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,snapshot_persistence_tags,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/editor-state/src/projectStore.ts,createEditorSession 可从 metadata tag 还原 snapshot 只读策略
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,snapshot_invariant_compat,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/ir-schema/src/validators/invariantValidator.ts,snapshot tag 下放宽 raw_text text_edit invariant 以支持只读保存
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,snapshot_e2e_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/tests/e2e/snapshot_independent_closure.test.cjs,import->save/load->export/reimport 的 snapshot 只读闭环测试通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,snapshot_smoke_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/smoke_snapshot_closure.cjs,smoke:snapshot-closure 已纳入 smoke:all 并通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_shell_document,/mnt/f/Git/Figure-Editor/figure-editor-draft/apps/desktop/src/renderer/shellDocument.ts,已提供四区 GUI 壳文档渲染模板
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_shell_bridge,/mnt/f/Git/Figure-Editor/figure-editor-draft/apps/desktop/src/preload/index.ts,bridge 已支持命令处理器注入与 invoke 调用
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_shell_smoke,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/smoke_desktop_shell.cjs,desktop shell 生命周期与 release bundle smoke 通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_shell_e2e,/mnt/f/Git/Figure-Editor/figure-editor-draft/tests/e2e/desktop_shell_lifecycle.test.cjs,desktop shell e2e 测试通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,desktop_release_bundle,/mnt/f/Git/Figure-Editor/figure-editor-draft/artifacts/desktop_release_bundle/shell-manifest.json,desktop:bundle 已输出 index.html + manifest 发布壳产物
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d8_gt_bootstrap,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/d8_bootstrap_fixtures.cjs,已为 52 个 ground truth 补齐 fixtureId family provenanceRef
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d8_provenance_matrix,/mnt/f/Git/Figure-Editor/figure-editor-draft/fixtures/fixture_provenance_matrix.csv,fixture provenance 台账已覆盖 52 个样本
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d8_auth_structural,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/fixture_authenticity_report.json,fixture authenticity 结构闭环通过 structuralPass=true
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d8_auth_ratio,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/fixture_authenticity_report.json,nonSyntheticRatio=0.36538461538461536 达到阈值 0.35
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d8_auth_integration_test,/mnt/f/Git/Figure-Editor/figure-editor-draft/tests/integration/fixture_authenticity_audit.test.cjs,真实性审计已接入 integration test 并验证 honest labeling
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,d8_gate_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,D8 已在 R11 收口并转绿
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,sec16_release_assets,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/operations/release-process.md,PDF Sec16 要求的 release notes/version manifest/可安装包已齐备
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,sec13_performance_evidence,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/performance-baseline.md,性能基线脚本与报告已可复现生成
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,import_capability_doc_asset,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/implementation/import-capability-report.md,已形成独立 import capability 报告交付资产
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,release_assets_pipeline,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/build_release_assets.cjs,发布资产自动生成脚本可输出 release notes/version manifest/installer/versioned schema
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,performance_baseline_pipeline,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/performance_baseline_report.cjs,性能基线脚本可输出导入/编辑/roundtrip 三项延迟报告
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_r13_sec13_sec16_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,R13 已完成 Sections 13/16 收口并恢复 verified_true
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,real_sample_stability_pipeline,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/real_sample_stability_report.cjs,真实样例稳定性脚本可输出 real/weak_real 子集阈值报告并用于 smoke 门禁
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,store_distribution_pipeline,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/build_store_distribution.cjs,store-grade staging 自动化可输出 distribution manifest/upload queue/三通道分发包
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,store_distribution_smoke,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/smoke_store_distribution.cjs,分发链路 smoke 校验通过并校验 payload hash 一致性
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_r14_stability_distribution_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,R14 已完成 real-sample stability 与 store distribution automation 收口
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,full_smoke_regression,/mnt/f/Git/Figure-Editor/figure-editor-draft/package.json,smoke:all 已覆盖 ir/import/editor/constraints/roundtrip/fixture/desktop/release/store/performance/real-sample/snapshot 全链路
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,long_tail_css_semantics,/mnt/f/Git/Figure-Editor/figure-editor-draft/packages/core-normalizer/src/normalizeDocument.ts,新增 var() 自定义属性与 advanced pseudo 语义（lang/is/where/not-list/nth-last-child/*-of-type）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,long_tail_css_unit_tests,/mnt/f/Git/Figure-Editor/figure-editor-draft/tests/unit/parser_normalizer_depth.test.cjs,新增长尾 CSS 语义单测并通过
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,store_publish_ci_script,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/publish_store_distribution.cjs,新增凭据发布 CI 脚本并支持 dry-run/credentialed 两种模式
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,store_publish_ci_smoke,/mnt/f/Git/Figure-Editor/figure-editor-draft/scripts/smoke_store_publish_ci.cjs,新增 store publish ci smoke 并生成审计报告
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,store_publish_ci_workflow,/mnt/f/Git/Figure-Editor/figure-editor-draft/.github/workflows/store_publish.yml,新增 workflow_dispatch 凭据发布工作流（secrets 驱动）
+SPEC_DIFF_AUDIT_2026_04_02,verified_true,proof_r15_enhancement_closure,/mnt/f/Git/Figure-Editor/figure-editor-draft/docs/audit/proof-verification-loop.md,R15 已完成长尾 CSS 与凭据发布 CI 增强项闭环

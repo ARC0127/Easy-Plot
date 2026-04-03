@@ -1,0 +1,1 @@
+{"family":"degraded_svg","hasLegend":false,"panelIds":["panel_degraded"],"editableRawTextIds":[],"atomicRasterIds":["raster_panel_1","raster_label_1"],"expectedCapabilities":{"raster_panel_1":["crop_only","replace_image"],"raster_label_1":["group_only"]},"fixtureId":"deg_002","provenanceRef":"deg_002"}

@@ -1,0 +1,1 @@
+{"family":"llm_svg","hasLegend":true,"panelIds":["panel_a","panel_b"],"editableRawTextIds":["llm_title"],"atomicRasterIds":["embedded_plot_1"],"expectedCapabilities":{"embedded_plot_1":["crop_only","replace_image"],"llm_title":["text_edit"]},"fixtureId":"llm_009","provenanceRef":"llm_009"}

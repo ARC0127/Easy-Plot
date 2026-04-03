@@ -1,0 +1,46 @@
+{
+  "manifestVersion": "1.0.0",
+  "generatedAt": "2026-04-03T13:42:14.069Z",
+  "channelId": "stable_linux_x64",
+  "label": "Stable Linux x64",
+  "releaseRing": "stable",
+  "sourceVersionManifest": "artifacts/version-manifest.json",
+  "releaseVersion": "0.01",
+  "schemaVersion": "1.0.0-mvp",
+  "packageFiles": [
+    {
+      "originalPath": "artifacts/installers/easy-plot-desktop-linux-x64.tar.gz",
+      "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__installers__easy-plot-desktop-linux-x64.tar.gz",
+      "sha256": "595ef98d1a53e5ec7a6e7ed15a2619bf80c14e0335c76f7f5308f0469001f65a",
+      "bytes": 2422
+    },
+    {
+      "originalPath": "artifacts/release_notes.md",
+      "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__release_notes.md",
+      "sha256": "867330b1add1b406cab87dc9bde0e2f2388c444da17f6ac168a3403166580b00",
+      "bytes": 1060
+    },
+    {
+      "originalPath": "artifacts/versioned_schema/project.schema.1.0.0-mvp.json",
+      "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__versioned_schema__project.schema.1.0.0-mvp.json",
+      "sha256": "efcc9ed5c2fab32d96c6770472d22a3088cf8f0ee43f92e09ddfb714114df4e5",
+      "bytes": 6824
+    },
+    {
+      "originalPath": "artifacts/supported_families.json",
+      "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__supported_families.json",
+      "sha256": "054b27630330c236aef633be4775b15822c14d273f8b4fc93142057edd3d2299",
+      "bytes": 400
+    },
+    {
+      "originalPath": "artifacts/known_limitations.md",
+      "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__known_limitations.md",
+      "sha256": "6ed501822f5cd82de08b0cb06a3f4bdaaad08402808efb859e53e3f6056ca012",
+      "bytes": 398
+    }
+  ],
+  "checks": {
+    "hasReleaseNotes": true,
+    "hasVersionedSchema": false
+  }
+}

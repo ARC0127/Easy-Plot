@@ -1,0 +1,342 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://figure-editor.local/schema/project.schema.json",
+    "title": "FigureEditorProject",
+    "type": "object",
+    "required": [
+        "schemaVersion",
+        "project"
+    ],
+    "properties": {
+        "schemaVersion": {
+            "type": "string",
+            "const": "1.0.0-mvp"
+        },
+        "project": {
+            "type": "object",
+            "required": [
+                "projectId",
+                "createdAt",
+                "updatedAt",
+                "sourceMode",
+                "originalSources",
+                "figure",
+                "importRecords",
+                "history",
+                "exportPolicy",
+                "objects"
+            ],
+            "properties": {
+                "projectId": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "sourceMode": {
+                    "enum": [
+                        "native",
+                        "imported"
+                    ]
+                },
+                "originalSources": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/OriginalSourceRef"
+                    }
+                },
+                "figure": {
+                    "$ref": "#/$defs/Figure"
+                },
+                "importRecords": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/ImportRecord"
+                    }
+                },
+                "history": {
+                    "$ref": "#/$defs/HistoryState"
+                },
+                "exportPolicy": {
+                    "$ref": "#/$defs/ExportPolicy"
+                },
+                "objects": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/AnyObject"
+                    }
+                }
+            }
+        }
+    },
+    "$defs": {
+        "BBox": {
+            "type": "object",
+            "required": [
+                "x",
+                "y",
+                "w",
+                "h"
+            ],
+            "properties": {
+                "x": {
+                    "type": "number"
+                },
+                "y": {
+                    "type": "number"
+                },
+                "w": {
+                    "type": "number"
+                },
+                "h": {
+                    "type": "number"
+                }
+            }
+        },
+        "OriginalSourceRef": {
+            "type": "object",
+            "required": [
+                "sourceId",
+                "kind",
+                "path",
+                "sha256",
+                "familyHint",
+                "importedAt"
+            ],
+            "properties": {
+                "sourceId": {
+                    "type": "string"
+                },
+                "kind": {
+                    "enum": [
+                        "svg",
+                        "html",
+                        "asset_image"
+                    ]
+                },
+                "path": {
+                    "type": "string"
+                },
+                "sha256": {
+                    "type": "string"
+                },
+                "familyHint": {
+                    "enum": [
+                        "matplotlib",
+                        "chart_family",
+                        "illustration_like",
+                        "llm_svg",
+                        "static_html_inline_svg",
+                        "degraded_svg",
+                        "unknown"
+                    ]
+                },
+                "importedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Figure": {
+            "type": "object",
+            "required": [
+                "figureId",
+                "width",
+                "height",
+                "viewBox",
+                "background",
+                "panels",
+                "legends",
+                "floatingObjects",
+                "renderTreeRootId",
+                "constraints",
+                "metadata"
+            ],
+            "properties": {
+                "figureId": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "viewBox": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "background": {
+                    "type": "string"
+                },
+                "panels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "legends": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "floatingObjects": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "renderTreeRootId": {
+                    "type": "string"
+                },
+                "constraints": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "metadata": {
+                    "type": "object"
+                }
+            }
+        },
+        "ImportRecord": {
+            "type": "object",
+            "required": [
+                "importId",
+                "sourceId",
+                "familyClassifiedAs",
+                "liftSuccesses",
+                "liftFailures",
+                "unknownObjects",
+                "atomicRasterObjects",
+                "manualAttentionRequired",
+                "metrics"
+            ],
+            "properties": {
+                "importId": {
+                    "type": "string"
+                },
+                "sourceId": {
+                    "type": "string"
+                },
+                "familyClassifiedAs": {
+                    "type": "string"
+                },
+                "liftSuccesses": {
+                    "type": "array"
+                },
+                "liftFailures": {
+                    "type": "array"
+                },
+                "unknownObjects": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "atomicRasterObjects": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "manualAttentionRequired": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "metrics": {
+                    "type": "object"
+                }
+            }
+        },
+        "HistoryState": {
+            "type": "object",
+            "required": [
+                "undoStack",
+                "redoStack",
+                "operationLog"
+            ],
+            "properties": {
+                "undoStack": {
+                    "type": "array"
+                },
+                "redoStack": {
+                    "type": "array"
+                },
+                "operationLog": {
+                    "type": "array"
+                }
+            }
+        },
+        "ExportPolicy": {
+            "type": "object",
+            "required": [
+                "defaultExportKind",
+                "svg",
+                "html"
+            ],
+            "properties": {
+                "defaultExportKind": {
+                    "enum": [
+                        "svg",
+                        "html"
+                    ]
+                },
+                "svg": {
+                    "type": "object"
+                },
+                "html": {
+                    "type": "object"
+                }
+            }
+        },
+        "AnyObject": {
+            "type": "object",
+            "required": [
+                "id",
+                "objectType",
+                "bbox",
+                "capabilities",
+                "provenance",
+                "stability",
+                "manualEdits"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "objectType": {
+                    "type": "string"
+                },
+                "bbox": {
+                    "$ref": "#/$defs/BBox"
+                },
+                "capabilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "provenance": {
+                    "type": "object"
+                },
+                "stability": {
+                    "type": "object"
+                },
+                "manualEdits": {
+                    "type": "array"
+                }
+            }
+        }
+    }
+}

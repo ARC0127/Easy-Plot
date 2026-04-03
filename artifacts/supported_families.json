@@ -1,0 +1,26 @@
+[
+  {
+    "family": "matplotlib",
+    "level": "supported"
+  },
+  {
+    "family": "chart_family",
+    "level": "supported"
+  },
+  {
+    "family": "illustration_like",
+    "level": "supported"
+  },
+  {
+    "family": "llm_svg",
+    "level": "supported"
+  },
+  {
+    "family": "static_html_inline_svg",
+    "level": "supported"
+  },
+  {
+    "family": "degraded_svg",
+    "level": "weak_supported"
+  }
+]

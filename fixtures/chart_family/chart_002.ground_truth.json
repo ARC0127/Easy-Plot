@@ -1,0 +1,1 @@
+{"family":"chart_family","hasLegend":true,"panelIds":["chart_root"],"editableRawTextIds":["chart_title"],"atomicRasterIds":[],"expectedCapabilities":{"chart_root":["select","drag","resize","delete","reparent"],"chart_title":["text_edit"]},"fixtureId":"chart_002","provenanceRef":"chart_002"}

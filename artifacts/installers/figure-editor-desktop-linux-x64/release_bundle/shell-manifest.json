@@ -1,0 +1,37 @@
+{
+  "productName": "Figure Editor",
+  "generatedAt": "2026-04-03T13:10:47.582Z",
+  "entrypoint": "index.html",
+  "supportsOffline": true,
+  "supportsLocalFilesystem": true,
+  "window": {
+    "windowId": "desktop_window_1775221847581",
+    "title": "Figure Editor",
+    "state": "running",
+    "openedAt": "2026-04-03T13:10:47.582Z",
+    "closedAt": null,
+    "renderRevision": 0
+  },
+  "layout": [
+    {
+      "id": "object_tree",
+      "title": "Object Tree",
+      "dock": "left"
+    },
+    {
+      "id": "canvas",
+      "title": "Canvas",
+      "dock": "center"
+    },
+    {
+      "id": "properties",
+      "title": "Properties",
+      "dock": "right"
+    },
+    {
+      "id": "import_report",
+      "title": "Import Report",
+      "dock": "bottom"
+    }
+  ]
+}

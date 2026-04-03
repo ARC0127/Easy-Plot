@@ -1,0 +1,15 @@
+export type SourceMode = 'native' | 'imported';
+export type SourceKind = 'svg' | 'html' | 'asset_image';
+export type FamilyClass = 'matplotlib' | 'chart_family' | 'illustration_like' | 'llm_svg' | 'static_html_inline_svg' | 'degraded_svg' | 'unknown';
+export type ObjectType = 'panel' | 'legend' | 'annotation_block' | 'text_node' | 'image_node' | 'shape_node' | 'group_node' | 'html_block' | 'figure_title' | 'panel_label' | 'unknown';
+export type TextKind = 'raw_text' | 'path_text_proxy' | 'raster_text_proxy';
+export type ImageKind = 'embedded_base64' | 'linked_asset' | 'html_img';
+export type ShapeKind = 'path' | 'line' | 'rect' | 'circle' | 'polyline' | 'polygon';
+export type LiftConfidence = 'high' | 'medium' | 'low' | 'manual';
+export type LiftedBy = 'native' | 'generic_importer' | 'matplotlib_adapter' | 'chart_adapter' | 'illustration_adapter' | 'llm_svg_adapter' | 'manual_promote';
+export type DegradationReason = 'none' | 'text_as_path' | 'raster_embedded' | 'css_external_unknown' | 'transform_complex_unknown' | 'dynamic_runtime_html' | 'unknown';
+export type CapabilityFlag = 'select' | 'multi_select' | 'drag' | 'resize' | 'delete' | 'text_edit' | 'style_edit' | 'group_only' | 'crop_only' | 'replace_image' | 'promote_semantic_role' | 'reparent';
+export type ExportStabilityClass = 'stable' | 'fragile' | 'unknown';
+export type ReimportExpectation = 'semantic' | 'group_only' | 'atomic';
+export type EquivalenceTarget = 'EQ-L0' | 'EQ-L1' | 'EQ-L2' | 'EQ-L3';
+//# sourceMappingURL=enums.d.ts.map

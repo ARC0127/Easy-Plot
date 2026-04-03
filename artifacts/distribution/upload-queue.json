@@ -1,0 +1,23 @@
+[
+  {
+    "order": 1,
+    "channelId": "stable_linux_x64",
+    "manifestPath": "artifacts/distribution/channels/stable_linux_x64/channel-manifest.json",
+    "status": "ready_for_upload",
+    "uploader": "release-automation-dry-run"
+  },
+  {
+    "order": 2,
+    "channelId": "canary_linux_x64",
+    "manifestPath": "artifacts/distribution/channels/canary_linux_x64/channel-manifest.json",
+    "status": "ready_for_upload",
+    "uploader": "release-automation-dry-run"
+  },
+  {
+    "order": 3,
+    "channelId": "web_bundle_preview",
+    "manifestPath": "artifacts/distribution/channels/web_bundle_preview/channel-manifest.json",
+    "status": "ready_for_upload",
+    "uploader": "release-automation-dry-run"
+  }
+]

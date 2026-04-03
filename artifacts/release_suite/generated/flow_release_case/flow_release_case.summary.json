@@ -1,0 +1,27 @@
+{
+  "caseId": "flow_release_case",
+  "familyHint": "illustration_like",
+  "originalPath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
+  "outputs": {
+    "project": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.project.json",
+    "svg": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.adjusted.svg",
+    "html": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.adjusted.html",
+    "png": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.adjusted.png",
+    "summary": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\flow_release_case\\flow_release_case.summary.json"
+  },
+  "operations": [
+    "import",
+    "multi_select",
+    "move_group",
+    "edit_text",
+    "add_text",
+    "delete",
+    "save_project",
+    "load_project",
+    "export_svg",
+    "export_html",
+    "export_png"
+  ],
+  "selectedIdsAfterBuild": [],
+  "adjustedSvgLength": 6301
+}

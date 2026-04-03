@@ -1,0 +1,28 @@
+{
+  "caseId": "curve_release_case",
+  "familyHint": "chart_family",
+  "originalPath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\curve_release_case.svg",
+  "outputs": {
+    "project": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.project.json",
+    "svg": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.adjusted.svg",
+    "html": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.adjusted.html",
+    "png": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.adjusted.png",
+    "summary": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\curve_release_case\\curve_release_case.summary.json"
+  },
+  "operations": [
+    "import",
+    "select_text_at + edit_text",
+    "adjust_curve_series_a",
+    "adjust_curve_series_b",
+    "select_by_id + move_group",
+    "add_text",
+    "delete + undo + redo",
+    "save_project",
+    "load_project",
+    "export_svg",
+    "export_html",
+    "export_png"
+  ],
+  "selectedIdsAfterBuild": [],
+  "adjustedSvgLength": 13502
+}
