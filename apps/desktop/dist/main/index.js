@@ -8,6 +8,7 @@ const path_1 = require("path");
 const layout_1 = require("../renderer/layout");
 const shellDocument_1 = require("../renderer/shellDocument");
 const workbench_1 = require("../renderer/workbench");
+const { copyFontPack } = require('../../../../scripts/font_pack.cjs');
 function createWindowSession(state) {
     return {
         windowId: `desktop_window_${Date.now()}`,
@@ -99,9 +100,9 @@ class DesktopAppShell {
         this.ensureRunning('importDocument');
         return this.syncView(this.workbench.importDocument(input), { bumpRenderRevision: true });
     }
-    selectAtPoint(x, y) {
+    selectAtPoint(x, y, options) {
         this.ensureRunning('selectAtPoint');
-        return this.syncView(this.workbench.selectAtPoint(x, y));
+        return this.syncView(this.workbench.selectAtPoint(x, y, options));
     }
     selectTextAtPoint(x, y, maxDistance = 32) {
         this.ensureRunning('selectTextAtPoint');
@@ -111,9 +112,25 @@ class DesktopAppShell {
         this.ensureRunning('selectObject');
         return this.syncView(this.workbench.selectById(objectId));
     }
+    multiSelectByIds(objectIds) {
+        this.ensureRunning('multiSelectByIds');
+        return this.syncView(this.workbench.multiSelectByIds(objectIds));
+    }
+    clearSelection() {
+        this.ensureRunning('clearSelection');
+        return this.syncView(this.workbench.clearSelection());
+    }
     selectFirstEditableText() {
         this.ensureRunning('selectFirstEditableText');
         return this.syncView(this.workbench.selectFirstEditableText());
+    }
+    copySelection() {
+        this.ensureRunning('copySelection');
+        return this.syncView(this.workbench.copySelection());
+    }
+    pasteSelection() {
+        this.ensureRunning('pasteSelection');
+        return this.syncView(this.workbench.pasteSelection(), { bumpRenderRevision: true });
     }
     moveSelected(dx, dy) {
         this.ensureRunning('moveSelected');
@@ -131,6 +148,14 @@ class DesktopAppShell {
         this.ensureRunning('editSelectedText');
         return this.syncView(this.workbench.editSelectedText(content), { bumpRenderRevision: true });
     }
+    updateSelectedAppearance(patch) {
+        this.ensureRunning('updateSelectedAppearance');
+        return this.syncView(this.workbench.updateSelectedAppearance(patch), { bumpRenderRevision: true });
+    }
+    updateSelectedTextStyle(patch) {
+        this.ensureRunning('updateSelectedTextStyle');
+        return this.syncView(this.workbench.updateSelectedTextStyle(patch), { bumpRenderRevision: true });
+    }
     addTextAtPoint(x, y, content) {
         this.ensureRunning('addTextAtPoint');
         return this.syncView(this.workbench.addTextAtPoint(x, y, content), { bumpRenderRevision: true });
@@ -142,6 +167,14 @@ class DesktopAppShell {
     promoteSelection(role, reason = 'desktop_shell_promote') {
         this.ensureRunning('promoteSelection');
         return this.syncView(this.workbench.promoteSelection(role, reason), { bumpRenderRevision: true });
+    }
+    alignSelected(mode) {
+        this.ensureRunning('alignSelected');
+        return this.syncView(this.workbench.alignSelected(mode), { bumpRenderRevision: true });
+    }
+    distributeSelected(mode) {
+        this.ensureRunning('distributeSelected');
+        return this.syncView(this.workbench.distributeSelected(mode), { bumpRenderRevision: true });
     }
     undo() {
         this.ensureRunning('undo');
@@ -193,6 +226,7 @@ class DesktopAppShell {
         this.ensureRunning('buildReleaseBundle');
         const resolvedOutDir = (0, path_1.resolve)(outputDir);
         (0, fs_1.mkdirSync)(resolvedOutDir, { recursive: true });
+        copyFontPack(resolvedOutDir);
         const indexHtmlPath = (0, path_1.join)(resolvedOutDir, 'index.html');
         const manifestPath = (0, path_1.join)(resolvedOutDir, 'shell-manifest.json');
         const generatedAt = new Date().toISOString();
@@ -206,6 +240,9 @@ class DesktopAppShell {
             supportsLocalFilesystem: this.bootstrap.supportsLocalFilesystem,
             window: this.window,
             layout: this.bootstrap.layout,
+            fontPack: {
+                directory: 'fonts',
+            },
         }, null, 2), 'utf8');
         return {
             outputDir: resolvedOutDir,

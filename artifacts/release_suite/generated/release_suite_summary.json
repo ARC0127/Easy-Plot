@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T13:42:13.728Z",
+  "generatedAt": "2026-04-08T10:18:09.318Z",
   "cases": [
     {
       "caseId": "curve_release_case",
@@ -27,7 +27,7 @@
         "export_png"
       ],
       "selectedIdsAfterBuild": [],
-      "adjustedSvgLength": 13502
+      "adjustedSvgLength": 26329
     },
     {
       "caseId": "matrix_release_case",
@@ -53,7 +53,7 @@
         "export_png"
       ],
       "selectedIdsAfterBuild": [],
-      "adjustedSvgLength": 12417
+      "adjustedSvgLength": 25412
     },
     {
       "caseId": "flow_release_case",
@@ -80,7 +80,7 @@
         "export_png"
       ],
       "selectedIdsAfterBuild": [],
-      "adjustedSvgLength": 6301
+      "adjustedSvgLength": 17389
     }
   ],
   "montagePath": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\generated\\release_suite_results.png",

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-03T13:42:14.068Z",
+  "generatedAt": "2026-04-08T10:18:11.576Z",
   "mode": "dry_run",
   "requireCredentials": false,
   "credentialsProvided": false,
   "endpointConfigured": false,
   "channelCount": 3,
-  "releaseVersion": "0.01",
+  "releaseVersion": "0.0.2",
   "schemaVersion": "1.0.0-mvp",
   "overallPass": true,
   "channelReports": [
@@ -13,19 +13,19 @@
       "channelId": "stable_linux_x64",
       "mode": "dry_run",
       "publishStatus": "ready",
-      "requestDigest": "329b20122500b01887fac6fc0d9478ed94c85989617a1028504504cfcdc8045f"
+      "requestDigest": "6d9afa0091eea44b8d2869085c32b3eeadcb133408f3f64cec9f9dc302d477b4"
     },
     {
       "channelId": "canary_linux_x64",
       "mode": "dry_run",
       "publishStatus": "ready",
-      "requestDigest": "b726249bfff04e8a79dc01629486feda595cdeb86d0dcf75b4d8c558945003e6"
+      "requestDigest": "fdca62c0cf204d23f5c73089920524ef9c486dc8f46a2c975a10431df20ad249"
     },
     {
       "channelId": "web_bundle_preview",
       "mode": "dry_run",
       "publishStatus": "ready",
-      "requestDigest": "1e85f609b5236093c3896c3407fdecaa2585904b5136b96704481dbb7845acaa"
+      "requestDigest": "8fa9fc4558ca75944cebd21d31be37aa055eab8ccbc1794a0d455a86e5de04a4"
     }
   ]
 }

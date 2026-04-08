@@ -21,7 +21,7 @@ export interface DesktopBridge {
   invoke<T = unknown>(command: DesktopBridgeCommand, payload?: Record<string, unknown>): T;
 }
 
-export function createDesktopBridge(version = '0.01', initialHandler?: DesktopBridgeHandler): DesktopBridge {
+export function createDesktopBridge(version = '0.0.2', initialHandler?: DesktopBridgeHandler): DesktopBridge {
   let handler = initialHandler;
   return {
     version,

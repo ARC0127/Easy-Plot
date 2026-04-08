@@ -1,0 +1,500 @@
+{
+  "manifestVersion": "1.0.0",
+  "generatedAt": "2026-04-08T07:08:22.524Z",
+  "source": "Google Fonts",
+  "license": "Open Font License / vendor-provided free font licenses",
+  "families": [
+    {
+      "family": "Inter",
+      "category": "sans",
+      "priority": 10,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "inter-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/inter/v20/UcCM3FwrK3iLTcvneQg7Ca725JhhKnNqk4j1ebLhAm8SrXTc2dthjQ.ttf"
+        },
+        {
+          "file": "inter-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZg.ttf"
+        },
+        {
+          "file": "inter-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/inter/v20/UcCM3FwrK3iLTcvneQg7Ca725JhhKnNqk4j1ebLhAm8SrXTcPtxhjQ.ttf"
+        },
+        {
+          "file": "inter-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYMZg.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Source Sans 3",
+      "category": "sans",
+      "priority": 20,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "source-sans-3-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourcesans3/v19/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqLlO9C4.ttf"
+        },
+        {
+          "file": "source-sans-3-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourcesans3/v19/nwpBtKy2OAdR1K-IwhWudF-R9QMylBJAV3Bo8Ky461EN.ttf"
+        },
+        {
+          "file": "source-sans-3-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourcesans3/v19/nwpDtKy2OAdR1K-IwhWudF-R3woAa8opPOrG97lwqF5J9C4.ttf"
+        },
+        {
+          "file": "source-sans-3-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourcesans3/v19/nwpBtKy2OAdR1K-IwhWudF-R9QMylBJAV3Bo8Kxf7FEN.ttf"
+        }
+      ]
+    },
+    {
+      "family": "IBM Plex Sans",
+      "category": "sans",
+      "priority": 30,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "ibm-plex-sans-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXEKVElMYYaJe8bpLHnCwDKhdTEG46kmUZQCX598fQbM4jw8V78x9OWIhqbQ6g9.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSD6llzAA.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXEKVElMYYaJe8bpLHnCwDKhdTEG46kmUZQCX598fQbM4jw8V78x9OWIhp8RKg9.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXGKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1swZSAXcomDVmadSDDV5zAA.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Roboto",
+      "category": "sans",
+      "priority": 40,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "roboto-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/roboto/v51/KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLoHQiA8.ttf"
+        },
+        {
+          "file": "roboto-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf"
+        },
+        {
+          "file": "roboto-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/roboto/v51/KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLmbXiA8.ttf"
+        },
+        {
+          "file": "roboto-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjammT.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Open Sans",
+      "category": "sans",
+      "priority": 50,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "open-sans-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/opensans/v44/memQYaGs126MiZpBA-UFUIcVXSCEkx2cmqvXlWq8tWZ0Pw86hd0Rk8ZkaVc.ttf"
+        },
+        {
+          "file": "open-sans-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4n.ttf"
+        },
+        {
+          "file": "open-sans-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/opensans/v44/memQYaGs126MiZpBA-UFUIcVXSCEkx2cmqvXlWq8tWZ0Pw86hd0RkyFjaVc.ttf"
+        },
+        {
+          "file": "open-sans-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1y4n.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Source Serif 4",
+      "category": "serif",
+      "priority": 60,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "source-serif-4-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourceserif4/v14/vEF02_tTDB4M7-auWDN0ahZJW1ge6NmXpVAHV83Bfb_US2D2QYxoUKIkn98pRl9dCw.ttf"
+        },
+        {
+          "file": "source-serif-4-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourceserif4/v14/vEFy2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6OAVIJmeUDygwjihdqrhw.ttf"
+        },
+        {
+          "file": "source-serif-4-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourceserif4/v14/vEF02_tTDB4M7-auWDN0ahZJW1ge6NmXpVAHV83Bfb_US2D2QYxoUKIkn98poVhdCw.ttf"
+        },
+        {
+          "file": "source-serif-4-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourceserif4/v14/vEFy2_tTDB4M7-auWDN0ahZJW3IX2ih5nk3AucvUHf6OAVIJmeUDygwjivBtrhw.ttf"
+        }
+      ]
+    },
+    {
+      "family": "IBM Plex Serif",
+      "category": "serif",
+      "priority": 70,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "ibm-plex-serif-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexserif/v20/jizBREVNn1dOx-zrZ2X3pZvkTiUa2zI.ttf"
+        },
+        {
+          "file": "ibm-plex-serif-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexserif/v20/jizDREVNn1dOx-zrZ2X3pZvkThUY.ttf"
+        },
+        {
+          "file": "ibm-plex-serif-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexserif/v20/jizGREVNn1dOx-zrZ2X3pZvkTiUa4442q14.ttf"
+        },
+        {
+          "file": "ibm-plex-serif-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexserif/v20/jizAREVNn1dOx-zrZ2X3pZvkTi2k_hIz.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Merriweather",
+      "category": "serif",
+      "priority": 80,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "merriweather-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/merriweather/v33/u-4B0qyriQwlOrhSvowK_l5-eTxCVx0ZbwLvKH2Gk9hLmp0v5yA-xXPqCzLvPee1XYk_XSf-FmTCUF3w.ttf"
+        },
+        {
+          "file": "merriweather-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/merriweather/v33/u-4D0qyriQwlOrhSvowK_l5UcA6zuSYEqOzpPe3HOZJ5eX1WtLaQwmYiScCmDxhtNOKl8yDr3icqEw.ttf"
+        },
+        {
+          "file": "merriweather-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/merriweather/v33/u-4B0qyriQwlOrhSvowK_l5-eTxCVx0ZbwLvKH2Gk9hLmp0v5yA-xXPqCzLvPee1XYk_XSf-FmQlV13w.ttf"
+        },
+        {
+          "file": "merriweather-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/merriweather/v33/u-4D0qyriQwlOrhSvowK_l5UcA6zuSYEqOzpPe3HOZJ5eX1WtLaQwmYiScCmDxhtNOKl8yDrOSAqEw.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Lora",
+      "category": "serif",
+      "priority": 90,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "lora-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-MoFkqg.ttf"
+        },
+        {
+          "file": "lora-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/lora/v37/0QI6MX1D_JOuGQbT0gvTJPa787weuyJG.ttf"
+        },
+        {
+          "file": "lora-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/lora/v37/0QI8MX1D_JOuMw_hLdO6T2wV9KnW-C0Ckqg.ttf"
+        },
+        {
+          "file": "lora-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/lora/v37/0QI6MX1D_JOuGQbT0gvTJPa787z5vCJG.ttf"
+        }
+      ]
+    },
+    {
+      "family": "PT Serif",
+      "category": "serif",
+      "priority": 100,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "faces": [
+        {
+          "file": "pt-serif-400-italic.ttf",
+          "style": "italic",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ptserif/v19/EJRTQgYoZZY2vCFuvAFTzro.ttf"
+        },
+        {
+          "file": "pt-serif-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ptserif/v19/EJRVQgYoZZY2vCFuvDFR.ttf"
+        },
+        {
+          "file": "pt-serif-700-italic.ttf",
+          "style": "italic",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ptserif/v19/EJRQQgYoZZY2vCFuvAFT9gaQVy4.ttf"
+        },
+        {
+          "file": "pt-serif-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ptserif/v19/EJRSQgYoZZY2vCFuvAnt65qV.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Source Code Pro",
+      "category": "mono",
+      "priority": 110,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap",
+      "faces": [
+        {
+          "file": "source-code-pro-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourcecodepro/v31/HI_diYsKILxRpg3hIP6sJ7fM7PqPMcMnZFqUwX28DMyQhM4.ttf"
+        },
+        {
+          "file": "source-code-pro-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/sourcecodepro/v31/HI_diYsKILxRpg3hIP6sJ7fM7PqPMcMnZFqUwX28DCuXhM4.ttf"
+        }
+      ]
+    },
+    {
+      "family": "IBM Plex Mono",
+      "category": "mono",
+      "priority": 120,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap",
+      "faces": [
+        {
+          "file": "ibm-plex-mono-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n5ig.ttf"
+        },
+        {
+          "file": "ibm-plex-mono-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3pQP8lc.ttf"
+        }
+      ]
+    },
+    {
+      "family": "JetBrains Mono",
+      "category": "mono",
+      "priority": 130,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap",
+      "faces": [
+        {
+          "file": "jetbrains-mono-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPQ.ttf"
+        },
+        {
+          "file": "jetbrains-mono-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8L6tjPQ.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Fira Code",
+      "category": "mono",
+      "priority": 140,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap",
+      "faces": [
+        {
+          "file": "fira-code-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/firacode/v27/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_D1sFVc.ttf"
+        },
+        {
+          "file": "fira-code-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/firacode/v27/uU9eCBsR6Z2vfE9aq3bL0fxyUs4tcw4W_NprFVc.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Noto Sans SC",
+      "category": "cjk",
+      "priority": 150,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap",
+      "faces": [
+        {
+          "file": "noto-sans-sc-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYw.ttf"
+        },
+        {
+          "file": "noto-sans-sc-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/notosanssc/v40/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaGzjCnYw.ttf"
+        }
+      ]
+    },
+    {
+      "family": "Noto Serif SC",
+      "category": "cjk",
+      "priority": 160,
+      "sourceQueryUrl": "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap",
+      "faces": [
+        {
+          "file": "noto-serif-sc-400-normal.ttf",
+          "style": "normal",
+          "weight": 400,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/notoserifsc/v35/H4cyBXePl9DZ0Xe7gG9cyOj7uK2-n-D2rd4FY7SCqyWv.ttf"
+        },
+        {
+          "file": "noto-serif-sc-700-normal.ttf",
+          "style": "normal",
+          "weight": 700,
+          "format": "truetype",
+          "sourceUrl": "https://fonts.gstatic.com/s/notoserifsc/v35/H4cyBXePl9DZ0Xe7gG9cyOj7uK2-n-D2rd4FY7RlrCWv.ttf"
+        }
+      ]
+    }
+  ]
+}

@@ -79,6 +79,71 @@ function childRefsOf(obj) {
     }
     return [...refs];
 }
+function uniqueExistingObjectIds(project, objectIds) {
+    const objects = project.project.objects;
+    const seen = new Set();
+    const out = [];
+    for (const rawId of objectIds) {
+        const objectId = String(rawId ?? '').trim();
+        if (!objectId || seen.has(objectId) || !objects[objectId])
+            continue;
+        seen.add(objectId);
+        out.push(objectId);
+    }
+    return out;
+}
+function buildParentMap(project) {
+    const parentMap = new Map();
+    for (const obj of Object.values(project.project.objects)) {
+        for (const childId of childRefsOf(obj)) {
+            if (!project.project.objects[childId])
+                continue;
+            let parents = parentMap.get(childId);
+            if (!parents) {
+                parents = new Set();
+                parentMap.set(childId, parents);
+            }
+            parents.add(obj.id);
+        }
+    }
+    return parentMap;
+}
+function hasSelectedAncestor(objectId, selectedIds, parentMap, seen = new Set()) {
+    const parents = parentMap.get(objectId);
+    if (!parents)
+        return false;
+    for (const parentId of parents) {
+        if (selectedIds.has(parentId))
+            return true;
+        if (seen.has(parentId))
+            continue;
+        seen.add(parentId);
+        if (hasSelectedAncestor(parentId, selectedIds, parentMap, seen))
+            return true;
+    }
+    return false;
+}
+function filterTopLevelSelection(project, objectIds) {
+    const uniqueExisting = uniqueExistingObjectIds(project, objectIds);
+    if (uniqueExisting.length < 2)
+        return uniqueExisting;
+    const selectedIds = new Set(uniqueExisting);
+    const parentMap = buildParentMap(project);
+    return uniqueExisting.filter((objectId) => !hasSelectedAncestor(objectId, selectedIds, parentMap));
+}
+function removeIdsFromArray(arr, removedIds) {
+    return arr.filter((value) => !removedIds.has(value));
+}
+function updateChildRefsForRemovedIds(project, removedIds) {
+    for (const obj of Object.values(project.project.objects)) {
+        if ('childObjectIds' in obj && Array.isArray(obj.childObjectIds)) {
+            obj.childObjectIds = removeIdsFromArray(obj.childObjectIds, removedIds);
+        }
+        if (obj.objectType === 'legend') {
+            obj.itemObjectIds = removeIdsFromArray(obj.itemObjectIds, removedIds);
+        }
+    }
+}
 function moveObjectTree(project, objectId, dx, dy, visited = new Set()) {
     if (visited.has(objectId))
         return;
@@ -201,6 +266,13 @@ function applyOperation(project, operation) {
             moveObjectTree(next, operation.payload.objectId, operation.payload.delta.x, operation.payload.delta.y);
             break;
         }
+        case 'MOVE_OBJECTS': {
+            const objectIds = filterTopLevelSelection(next, operation.payload.objectIds);
+            for (const objectId of objectIds) {
+                moveObjectTree(next, objectId, operation.payload.delta.x, operation.payload.delta.y);
+            }
+            break;
+        }
         case 'RESIZE_OBJECT': {
             const obj = getObject(next, operation.payload.objectId);
             obj.bbox = { ...operation.payload.bbox };
@@ -209,10 +281,23 @@ function applyOperation(project, operation) {
         case 'DELETE_OBJECT': {
             getObject(next, operation.payload.objectId);
             delete next.project.objects[operation.payload.objectId];
-            next.project.figure.panels = removeId(next.project.figure.panels, operation.payload.objectId);
-            next.project.figure.legends = removeId(next.project.figure.legends, operation.payload.objectId);
-            next.project.figure.floatingObjects = removeId(next.project.figure.floatingObjects, operation.payload.objectId);
-            updateChildRefs(next, operation.payload.objectId);
+            const removedIds = new Set([operation.payload.objectId]);
+            next.project.figure.panels = removeIdsFromArray(next.project.figure.panels, removedIds);
+            next.project.figure.legends = removeIdsFromArray(next.project.figure.legends, removedIds);
+            next.project.figure.floatingObjects = removeIdsFromArray(next.project.figure.floatingObjects, removedIds);
+            updateChildRefsForRemovedIds(next, removedIds);
+            break;
+        }
+        case 'DELETE_OBJECTS': {
+            const objectIds = uniqueExistingObjectIds(next, operation.payload.objectIds);
+            const removedIds = new Set(objectIds);
+            for (const objectId of objectIds) {
+                delete next.project.objects[objectId];
+            }
+            next.project.figure.panels = removeIdsFromArray(next.project.figure.panels, removedIds);
+            next.project.figure.legends = removeIdsFromArray(next.project.figure.legends, removedIds);
+            next.project.figure.floatingObjects = removeIdsFromArray(next.project.figure.floatingObjects, removedIds);
+            updateChildRefsForRemovedIds(next, removedIds);
             break;
         }
         case 'EDIT_TEXT_CONTENT': {

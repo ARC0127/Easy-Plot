@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDesktopBridge = createDesktopBridge;
-function createDesktopBridge(version = '0.01', initialHandler) {
+function createDesktopBridge(version = '0.0.2', initialHandler) {
     let handler = initialHandler;
     return {
         version,

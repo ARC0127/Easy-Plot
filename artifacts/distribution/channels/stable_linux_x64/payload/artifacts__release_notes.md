@@ -1,6 +1,6 @@
-# Easy Plot Release Notes v0.01
+# Easy Plot Release Notes v0.0.2
 
-- Generated At: 2026-04-03T13:42:14.069Z
+- Generated At: 2026-04-08T10:18:11.577Z
 - Schema Version: 1.0.0-mvp
 
 ## Highlights

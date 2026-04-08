@@ -22,17 +22,23 @@ function runOperation(state, operation) {
     return { ...state, project };
 }
 function moveSelected(state, dx, dy) {
-    let next = state;
-    for (const objectId of state.selection.selectedIds) {
-        next = runOperation(next, { type: 'MOVE_OBJECT', payload: { objectId, delta: { x: dx, y: dy } } });
-    }
-    return next;
+    if (state.selection.selectedIds.length === 0)
+        return state;
+    return runOperation(state, {
+        type: 'MOVE_OBJECTS',
+        payload: {
+            objectIds: [...state.selection.selectedIds],
+            delta: { x: dx, y: dy },
+        },
+    });
 }
 function deleteSelected(state) {
-    let next = state;
-    for (const objectId of state.selection.selectedIds) {
-        next = runOperation(next, { type: 'DELETE_OBJECT', payload: { objectId } });
-    }
+    if (state.selection.selectedIds.length === 0)
+        return state;
+    const next = runOperation(state, {
+        type: 'DELETE_OBJECTS',
+        payload: { objectIds: [...state.selection.selectedIds] },
+    });
     return { ...next, selection: { ...next.selection, selectedIds: [] } };
 }
 function editSelectedText(state, content) {

@@ -1,4 +1,4 @@
-# Easy Plot v0.01
+# Easy Plot v0.0.2
 
 Easy Plot is the working repository for the first end-to-end implementation pass of the plotting editor system. It combines:
 
@@ -12,6 +12,17 @@ Author: `ARC - SJTU PhD Student`
 License: `MIT`
 
 Copyright: `Copyright (c) 2026 ARC - SJTU PhD Student`
+
+## Use And Ethics Statement
+
+This project is published to make chart and figure editing easier for legitimate research and documentation workflows.
+
+- The original data, source files, and experiment records should remain under the control of the user who owns them.
+- The author explicitly opposes scientific misconduct, including fabrication, falsification, selective omission, and any misleading presentation of research results.
+- This tool must not be used to directly alter the source data of a formal paper figure in a way that hides, rewrites, or fabricates the underlying data.
+- If a figure needs to be revised, the correct workflow is to edit the legitimate source material under the user's own custody and keep the change traceable.
+
+In short: use the tool to improve figure editing and presentation, not to manipulate official scientific evidence.
 
 The repository follows a strict separation of evidence:
 
@@ -136,7 +147,7 @@ npm run acceptance:family
 
 ## Release Verification Snapshot
 
-Last locally verified: `2026-04-03`
+Last locally verified: `2026-04-08`
 
 - `npm run build:all` : pass
 - `npm run test:all` : pass

@@ -13,7 +13,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg id="figure_1" viewBox="0 0 320 180" width="320" height="180">
   <g id="axes_1">
     <text id="text_1" x="20" y="20">Title</text>
-    <rect id="rect_1" x="20" y="40" width="100" height="60" />
+    <rect id="rect_1" x="20" y="40" width="100" height="60" fill="#dbeafe" stroke="#334155" />
   </g>
   <g id="legend_1"><text x="220" y="20">Legend</text></g>
 </svg>`;

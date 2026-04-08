@@ -1,1 +1,1 @@
-{"version":3,"file":"htmlSerializer.d.ts","sourceRoot":"","sources":["../../src/serializer/htmlSerializer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,MAAM,+BAA+B,CAAC;AAGxD,wBAAgB,sBAAsB,CAAC,OAAO,EAAE,OAAO,GAAG,MAAM,CAK/D"}
+{"version":3,"file":"htmlSerializer.d.ts","sourceRoot":"","sources":["../../src/serializer/htmlSerializer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,MAAM,+BAA+B,CAAC;AAIxD,wBAAgB,sBAAsB,CAAC,OAAO,EAAE,OAAO,GAAG,MAAM,CAO/D"}

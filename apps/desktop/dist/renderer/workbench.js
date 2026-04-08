@@ -14,8 +14,15 @@ const index_6 = require("../../../../packages/editor-import-report/dist/index");
 const index_7 = require("../../../../packages/editor-properties/dist/index");
 const index_8 = require("../../../../packages/editor-state/dist/index");
 const index_9 = require("../../../../packages/editor-tree/dist/index");
+const { copyFontPack, getBundledFontStackPresets, getFontPackRoot, } = require('../../../../scripts/font_pack.cjs');
 const projectApi = require('../../../../packages/editor-state/dist/index');
 const importApi = index_8.importIntoSession;
+const FONT_STACK_PRESETS = getBundledFontStackPresets();
+const FONT_PACK_ROOT = getFontPackRoot();
+const DEFAULT_SELECT_HIT_DISTANCE = 6;
+const BACKDROP_ONLY_HIT_DISTANCE = 4;
+const TEXT_SELECT_HIT_DISTANCE = 32;
+const MIN_SHAPE_HIT_SPAN = 14;
 function pointToRectDistance(x, y, bbox) {
     const dx = Math.max(bbox.x - x, 0, x - (bbox.x + bbox.w));
     const dy = Math.max(bbox.y - y, 0, y - (bbox.y + bbox.h));
@@ -42,17 +49,36 @@ function approxTextBBox(obj) {
         h: fontSize * 1.35,
     };
 }
+function expandBBoxToMinimumSpan(bbox, minWidth, minHeight) {
+    const extraWidth = Math.max(0, minWidth - bbox.w);
+    const extraHeight = Math.max(0, minHeight - bbox.h);
+    return {
+        x: bbox.x - extraWidth * 0.5,
+        y: bbox.y - extraHeight * 0.5,
+        w: bbox.w + extraWidth,
+        h: bbox.h + extraHeight,
+    };
+}
 function effectiveHitBBox(obj) {
     if (!obj || !obj.visible)
         return null;
     const b = obj.bbox;
     if (isFiniteBBox(b) && b.w > 0 && b.h > 0) {
+        if (obj.objectType === 'shape_node') {
+            const strokeWidth = Math.max(1, Number(obj?.stroke?.width ?? 1));
+            const minWidth = b.w >= b.h ? b.w : Math.max(MIN_SHAPE_HIT_SPAN, strokeWidth * 4);
+            const minHeight = b.h >= b.w ? b.h : Math.max(MIN_SHAPE_HIT_SPAN, strokeWidth * 4);
+            return expandBBoxToMinimumSpan(b, minWidth, minHeight);
+        }
         return b;
     }
     if (obj.objectType === 'text_node') {
         return approxTextBBox(obj);
     }
     return isFiniteBBox(b) ? b : null;
+}
+function uniqueCapabilities(capabilities) {
+    return Array.from(new Set(capabilities.filter((item) => String(item).trim().length > 0)));
 }
 function normalizeHexColor(token) {
     const raw = String(token ?? '').trim().toLowerCase();
@@ -61,6 +87,104 @@ function normalizeHexColor(token) {
     if (raw === '#000')
         return '#000000';
     return raw;
+}
+function normalizeFontFamilyToken(value) {
+    return String(value ?? '')
+        .trim()
+        .replace(/^['"]+|['"]+$/g, '')
+        .replace(/\s+/g, ' ');
+}
+function normalizeFontWeightToken(value) {
+    const raw = String(value ?? '').trim().toLowerCase();
+    if (!raw)
+        return '400';
+    if (raw === 'bold')
+        return '700';
+    if (raw === 'normal')
+        return '400';
+    if (/^[1-9]00$/.test(raw))
+        return raw;
+    return '400';
+}
+function normalizeFontStyleToken(value) {
+    const raw = String(value ?? '').trim().toLowerCase();
+    return raw === 'italic' || raw === 'oblique' ? 'italic' : 'normal';
+}
+function normalizeTextFillToken(value) {
+    const raw = String(value ?? '').trim();
+    if (!raw)
+        return '#111827';
+    if (raw.toLowerCase() === 'none')
+        return 'none';
+    if (/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw)) {
+        return normalizeHexColor(raw);
+    }
+    return raw;
+}
+function normalizeShapeFillToken(value) {
+    const raw = String(value ?? '').trim();
+    if (!raw || raw.toLowerCase() === 'none')
+        return null;
+    if (/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw)) {
+        return normalizeHexColor(raw);
+    }
+    return raw;
+}
+function normalizeStrokeColorToken(value) {
+    const raw = String(value ?? '').trim();
+    if (!raw)
+        return '#334155';
+    if (raw.toLowerCase() === 'none')
+        return 'none';
+    if (/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(raw)) {
+        return normalizeHexColor(raw);
+    }
+    return raw;
+}
+function resolveTextStyleTarget(project, selectedId) {
+    if (!selectedId)
+        return null;
+    const selected = project.project.objects[selectedId];
+    if (!selected)
+        return null;
+    if (selected.objectType === 'text_node')
+        return selected;
+    const linkedTextId = typeof selected.textObjectId === 'string' ? selected.textObjectId : null;
+    if (!linkedTextId)
+        return null;
+    const linked = project.project.objects[linkedTextId];
+    return linked?.objectType === 'text_node' ? linked : null;
+}
+function resolveTextTargets(project, selectedId) {
+    if (!selectedId)
+        return [];
+    const objects = project.project.objects;
+    const descendantIds = collectDescendantObjectIds(objects, selectedId);
+    return descendantIds
+        .map((id) => objects[id])
+        .filter((obj) => obj?.objectType === 'text_node');
+}
+function resolveShapeTargets(project, selectedId) {
+    if (!selectedId)
+        return [];
+    const objects = project.project.objects;
+    const descendantIds = collectDescendantObjectIds(objects, selectedId);
+    return descendantIds
+        .map((id) => objects[id])
+        .filter((obj) => obj?.objectType === 'shape_node');
+}
+function upgradeProxyTextNodeForStyleEditing(obj) {
+    if (obj.textKind !== 'path_text_proxy' && obj.textKind !== 'raster_text_proxy')
+        return;
+    obj.textKind = 'raw_text';
+    obj.capabilities = uniqueCapabilities([
+        ...obj.capabilities.filter((capability) => capability !== 'group_only'),
+        'text_edit',
+        'style_edit',
+    ]);
+    if (!obj.font.family || obj.font.family === 'glyph_proxy') {
+        obj.font.family = DEFAULT_EDITOR_FONT_STACK;
+    }
 }
 function ensureSvgNamespaces(svgText) {
     const hasXmlns = /\sxmlns\s*=\s*['"][^'"]+['"]/i.test(svgText);
@@ -203,7 +327,7 @@ function pickBestObjectAtPoint(objects, x, y, options) {
         return null;
     return scored[0].backdropLike === 1 ? null : scored[0].obj;
 }
-const DEFAULT_EDITOR_FONT_STACK = 'Aptos, Calibri, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "DejaVu Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif';
+const DEFAULT_EDITOR_FONT_STACK = FONT_STACK_PRESETS.sans;
 const PATH_PARAM_COUNTS = {
     M: 2,
     L: 2,
@@ -231,6 +355,9 @@ function childObjectIdsOf(obj) {
     if (Array.isArray(obj?.childObjectIds)) {
         for (const childId of obj.childObjectIds)
             refs.add(String(childId));
+    }
+    if (typeof obj?.textObjectId === 'string' && obj.textObjectId.length > 0) {
+        refs.add(String(obj.textObjectId));
     }
     if (obj?.objectType === 'panel') {
         if (obj?.contentRootId)
@@ -733,6 +860,116 @@ function collectDescendantObjectIds(objects, rootId, visited = new Set()) {
     }
     return out;
 }
+function collectClipboardRootIds(objects, selectedIds) {
+    const selectedSet = new Set(selectedIds);
+    return selectedIds.filter((candidateId) => {
+        for (const otherId of selectedSet) {
+            if (otherId === candidateId)
+                continue;
+            const descendants = collectDescendantObjectIds(objects, otherId);
+            if (descendants.includes(candidateId))
+                return false;
+        }
+        return true;
+    });
+}
+function collectClipboardObjectIds(objects, rootIds) {
+    const visited = new Set();
+    const ordered = [];
+    const walk = (objectId) => {
+        if (visited.has(objectId))
+            return;
+        visited.add(objectId);
+        const obj = objects[objectId];
+        if (!obj)
+            return;
+        ordered.push(objectId);
+        for (const childId of childObjectIdsOf(obj)) {
+            walk(childId);
+        }
+    };
+    for (const rootId of rootIds) {
+        walk(rootId);
+    }
+    return ordered;
+}
+function rewriteClipboardObjectReferences(obj, idMap) {
+    const rewriteId = (value) => {
+        const raw = String(value ?? '').trim();
+        if (!raw)
+            return raw;
+        return idMap.get(raw) ?? raw;
+    };
+    const rewriteIdList = (value) => {
+        if (!Array.isArray(value))
+            return [];
+        return value.map((item) => rewriteId(item)).filter((item) => String(item).trim().length > 0);
+    };
+    if ('childObjectIds' in obj && Array.isArray(obj.childObjectIds)) {
+        obj.childObjectIds = rewriteIdList(obj.childObjectIds);
+    }
+    if ('itemObjectIds' in obj && Array.isArray(obj.itemObjectIds)) {
+        obj.itemObjectIds = rewriteIdList(obj.itemObjectIds);
+    }
+    if ('textObjectId' in obj && typeof obj.textObjectId === 'string' && obj.textObjectId.trim().length > 0) {
+        obj.textObjectId = rewriteId(obj.textObjectId);
+    }
+    if ('contentRootId' in obj && typeof obj.contentRootId === 'string' && obj.contentRootId.trim().length > 0) {
+        obj.contentRootId = rewriteId(obj.contentRootId);
+    }
+    if ('titleObjectId' in obj && typeof obj.titleObjectId === 'string' && obj.titleObjectId.trim().length > 0) {
+        obj.titleObjectId = rewriteId(obj.titleObjectId);
+    }
+    if (obj?.axisHints && Array.isArray(obj.axisHints.axisGroupIds)) {
+        obj.axisHints.axisGroupIds = rewriteIdList(obj.axisHints.axisGroupIds);
+    }
+}
+function translateCopiedObject(obj, dx, dy) {
+    if (!obj)
+        return;
+    if (obj.bbox) {
+        const nextX = Number(obj.bbox.x);
+        const nextY = Number(obj.bbox.y);
+        if (Number.isFinite(nextX) && Number.isFinite(nextY)) {
+            obj.bbox = {
+                ...obj.bbox,
+                x: roundCoord(nextX + dx),
+                y: roundCoord(nextY + dy),
+            };
+        }
+    }
+    if (obj.transform && Array.isArray(obj.transform.translate)) {
+        const [tx, ty] = obj.transform.translate;
+        const nextTx = Number(tx);
+        const nextTy = Number(ty);
+        if (Number.isFinite(nextTx) && Number.isFinite(nextTy)) {
+            obj.transform = {
+                ...obj.transform,
+                translate: [roundCoord(nextTx + dx), roundCoord(nextTy + dy)],
+            };
+        }
+    }
+    if (obj.objectType === 'text_node' && Array.isArray(obj.position)) {
+        const [x, y] = obj.position;
+        const nextX = Number(x);
+        const nextY = Number(y);
+        if (Number.isFinite(nextX) && Number.isFinite(nextY)) {
+            obj.position = [roundCoord(nextX + dx), roundCoord(nextY + dy)];
+        }
+    }
+}
+function allocateCopiedObjectId(baseId, existingIds, allocatedIds, batchToken) {
+    const safeBase = String(baseId || 'object').trim() || 'object';
+    const seed = `${safeBase}_copy_${batchToken}`;
+    let candidate = seed;
+    let suffix = 2;
+    while (existingIds.has(candidate) || allocatedIds.has(candidate)) {
+        candidate = `${seed}_${suffix}`;
+        suffix += 1;
+    }
+    allocatedIds.add(candidate);
+    return candidate;
+}
 function shapeCenter(obj) {
     const attrs = obj?.geometry?.attributes ?? {};
     if (obj?.shapeKind === 'circle' || obj?.shapeKind === 'ellipse') {
@@ -959,12 +1196,60 @@ class DesktopWorkbench {
     importedSourcePath = null;
     importedSourceKind = null;
     hasProjectMutations = false;
+    clipboard = null;
+    treeCacheProject = null;
+    treeCacheValue = [];
+    importReportCacheProject = null;
+    importReportCacheValue = null;
+    propertyCacheProject = null;
+    propertyCacheSelectedId = null;
+    propertyCacheValue = null;
+    previewSvgCacheProject = null;
+    previewSvgCacheValue = '';
+    getCachedTreeView() {
+        if (!this.state)
+            return [];
+        if (this.treeCacheProject !== this.state.project) {
+            this.treeCacheProject = this.state.project;
+            this.treeCacheValue = (0, index_9.buildTreeViewModel)(this.state.project);
+        }
+        return this.treeCacheValue;
+    }
+    getCachedImportReport() {
+        if (!this.state)
+            return null;
+        if (this.importReportCacheProject !== this.state.project) {
+            this.importReportCacheProject = this.state.project;
+            this.importReportCacheValue = (0, index_6.buildLatestImportReport)(this.state.project);
+        }
+        return this.importReportCacheValue;
+    }
+    getCachedPropertyView(selectedId) {
+        if (!this.state || !selectedId)
+            return null;
+        if (this.propertyCacheProject !== this.state.project || this.propertyCacheSelectedId !== selectedId) {
+            this.propertyCacheProject = this.state.project;
+            this.propertyCacheSelectedId = selectedId;
+            this.propertyCacheValue = (0, index_7.buildPropertyViewModel)(this.state.project, selectedId);
+        }
+        return this.propertyCacheValue;
+    }
+    getCachedPreviewSvg() {
+        if (!this.state)
+            return '';
+        if (this.previewSvgCacheProject !== this.state.project) {
+            this.previewSvgCacheProject = this.state.project;
+            this.previewSvgCacheValue = (0, index_2.exportSVG)(this.state.project).content;
+        }
+        return this.previewSvgCacheValue;
+    }
     importDocument(input) {
         this.state = importApi({ path: input.path, content: input.content }, makeSource(input), input.kind === 'html' ? { htmlMode: input.htmlMode ?? 'limited' } : undefined);
         this.lastHit = null;
         this.importedSourcePath = input.path || null;
         this.importedSourceKind = input.kind;
         this.hasProjectMutations = false;
+        this.clipboard = null;
         return this.snapshot();
     }
     importFromFile(path, familyHint = 'unknown', htmlMode = 'limited') {
@@ -992,18 +1277,20 @@ class DesktopWorkbench {
         this.importedSourcePath = null;
         this.importedSourceKind = null;
         this.hasProjectMutations = false;
+        this.clipboard = null;
         return this.snapshot();
     }
     exportSvgToFile(path) {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
-        const artifact = (0, index_2.exportSVG)(this.state.project);
-        (0, fs_1.writeFileSync)(path, artifact.content, 'utf8');
+        copyFontPack((0, path_1.parse)(path).dir || process.cwd());
+        (0, fs_1.writeFileSync)(path, this.getCachedPreviewSvg(), 'utf8');
         return this.snapshot();
     }
     exportHtmlToFile(path) {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        copyFontPack((0, path_1.parse)(path).dir || process.cwd());
         const artifact = (0, index_1.exportHTML)(this.state.project);
         (0, fs_1.writeFileSync)(path, artifact.content, 'utf8');
         return this.snapshot();
@@ -1011,10 +1298,13 @@ class DesktopWorkbench {
     exportPngToFile(path, dpi = 300) {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
-        const artifact = (0, index_2.exportSVG)(this.state.project);
-        const normalizedSvg = ensureSvgNamespaces(artifact.content);
+        const normalizedSvg = ensureSvgNamespaces(this.getCachedPreviewSvg());
         const probe = new resvg_js_1.Resvg(normalizedSvg, {
-            font: { loadSystemFonts: true },
+            font: {
+                loadSystemFonts: false,
+                fontDirs: [FONT_PACK_ROOT],
+                defaultFontFamily: 'Inter',
+            },
             shapeRendering: 2,
             textRendering: 2,
             imageRendering: 0,
@@ -1026,7 +1316,11 @@ class DesktopWorkbench {
         const zoom = targetLongestSide / longestSide;
         const rendered = new resvg_js_1.Resvg(normalizedSvg, {
             fitTo: { mode: 'zoom', value: zoom },
-            font: { loadSystemFonts: true },
+            font: {
+                loadSystemFonts: false,
+                fontDirs: [FONT_PACK_ROOT],
+                defaultFontFamily: 'Inter',
+            },
             shapeRendering: 2,
             textRendering: 2,
             imageRendering: 0,
@@ -1045,15 +1339,25 @@ class DesktopWorkbench {
         return (0, path_1.join)(outputDir, `${fileBase}_full.png`);
     }
     previewSvgContent() {
-        if (!this.state)
-            return '';
-        const artifact = (0, index_2.exportSVG)(this.state.project);
-        return artifact.content;
+        return this.getCachedPreviewSvg();
     }
-    selectById(objectId) {
+    selectById(objectId, options) {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
-        this.state = (0, index_8.selectObject)(this.state, objectId);
+        const targetId = String(objectId ?? '').trim();
+        if (!targetId)
+            return this.snapshot();
+        if (options?.appendSelection) {
+            const nextIds = [...this.state.selection.selectedIds];
+            if (!nextIds.includes(targetId)) {
+                nextIds.push(targetId);
+            }
+            this.state = (0, index_8.multiSelectObjects)(this.state, nextIds);
+        }
+        else {
+            this.state = (0, index_8.selectObject)(this.state, targetId);
+        }
+        this.lastHit = { objectId: targetId, objectType: this.state.project.project.objects[targetId]?.objectType ?? 'unknown' };
         return this.snapshot();
     }
     selectFirstEditableText() {
@@ -1066,22 +1370,20 @@ class DesktopWorkbench {
         this.state = (0, index_8.selectObject)(this.state, candidate.id);
         return this.snapshot();
     }
-    selectAtPoint(x, y) {
+    selectAtPoint(x, y, options) {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
         const objects = this.state.project.project.objects;
         const figure = this.state.project.project.figure;
         const best = pickBestObjectAtPoint(objects, x, y, {
-            maxDistance: 4,
+            maxDistance: DEFAULT_SELECT_HIT_DISTANCE,
             figureWidth: Number(figure.width ?? figure.viewBox?.[2] ?? 0),
             figureHeight: Number(figure.height ?? figure.viewBox?.[3] ?? 0),
         });
         if (best) {
-            this.state = (0, index_8.selectObject)(this.state, best.id);
-            this.lastHit = { objectId: best.id, objectType: best.objectType };
-            return this.snapshot();
+            return this.selectById(best.id, options);
         }
-        const backdropOnly = pickBestObjectAtPoint(objects, x, y, { maxDistance: 4 });
+        const backdropOnly = pickBestObjectAtPoint(objects, x, y, { maxDistance: BACKDROP_ONLY_HIT_DISTANCE });
         if (backdropOnly) {
             this.lastHit = null;
             return this.snapshot();
@@ -1091,9 +1393,7 @@ class DesktopWorkbench {
             this.lastHit = null;
             return this.snapshot();
         }
-        this.state = (0, index_8.selectObject)(this.state, hit.objectId);
-        this.lastHit = hit;
-        return this.snapshot();
+        return this.selectById(hit.objectId, options);
     }
     selectTextAtPoint(x, y, maxDistance = 32) {
         if (!this.state)
@@ -1102,7 +1402,7 @@ class DesktopWorkbench {
         const figure = this.state.project.project.figure;
         const best = pickBestObjectAtPoint(objects, x, y, {
             preferText: true,
-            maxDistance: Number.isFinite(maxDistance) ? maxDistance : 32,
+            maxDistance: Number.isFinite(maxDistance) ? maxDistance : TEXT_SELECT_HIT_DISTANCE,
             figureWidth: Number(figure.width ?? figure.viewBox?.[2] ?? 0),
             figureHeight: Number(figure.height ?? figure.viewBox?.[3] ?? 0),
         });
@@ -1111,6 +1411,114 @@ class DesktopWorkbench {
         }
         this.state = (0, index_8.selectObject)(this.state, best.id);
         this.lastHit = { objectId: best.id, objectType: best.objectType };
+        return this.snapshot();
+    }
+    copySelection() {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        const objects = this.state.project.project.objects;
+        const selectedIds = this.state.selection.selectedIds.filter((id) => Boolean(objects[id]));
+        if (selectedIds.length === 0) {
+            throw new Error('No objects selected to copy.');
+        }
+        const rootIds = collectClipboardRootIds(objects, selectedIds);
+        if (rootIds.length === 0) {
+            throw new Error('No objects selected to copy.');
+        }
+        const objectIds = collectClipboardObjectIds(objects, rootIds);
+        const clipboardObjects = {};
+        for (const objectId of objectIds) {
+            clipboardObjects[objectId] = structuredClone(objects[objectId]);
+        }
+        this.clipboard = {
+            rootIds,
+            objectIds,
+            objects: clipboardObjects,
+            pastedCount: 0,
+        };
+        return this.snapshot();
+    }
+    pasteSelection() {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        if (this.state.policy.readOnly) {
+            throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); pasteSelection is blocked.`);
+        }
+        if (!this.clipboard || this.clipboard.rootIds.length === 0 || this.clipboard.objectIds.length === 0) {
+            throw new Error('Clipboard is empty. Copy objects before pasting.');
+        }
+        const nextProject = (0, index_4.pushSnapshot)(this.state.project);
+        const nextState = structuredClone(this.state);
+        nextState.project = nextProject;
+        const objects = nextProject.project.objects;
+        const existingIds = new Set(Object.keys(objects));
+        const allocatedIds = new Set();
+        const newIdMap = new Map();
+        const pasteToken = Date.now();
+        const offset = 12 * (this.clipboard.pastedCount + 1);
+        const pastedEntries = [];
+        for (const oldId of this.clipboard.objectIds) {
+            const original = this.clipboard.objects[oldId];
+            if (!original)
+                continue;
+            const newId = allocateCopiedObjectId(oldId, existingIds, allocatedIds, pasteToken);
+            newIdMap.set(oldId, newId);
+        }
+        for (const oldId of this.clipboard.objectIds) {
+            const original = this.clipboard.objects[oldId];
+            if (!original)
+                continue;
+            const newId = newIdMap.get(oldId);
+            if (!newId)
+                continue;
+            const cloned = structuredClone(original);
+            cloned.id = newId;
+            cloned.name = `${String(original.name || original.id || 'object').trim() || original.id} copy`;
+            rewriteClipboardObjectReferences(cloned, newIdMap);
+            translateCopiedObject(cloned, offset, offset);
+            pastedEntries.push({
+                oldId,
+                newId,
+                object: cloned,
+                originalZIndex: Number(original.zIndex ?? 0),
+            });
+        }
+        if (pastedEntries.length === 0) {
+            throw new Error('Clipboard is empty. Copy objects before pasting.');
+        }
+        pastedEntries.sort((a, b) => a.originalZIndex - b.originalZIndex || a.oldId.localeCompare(b.oldId));
+        const maxZIndex = Object.values(objects).reduce((max, obj) => Math.max(max, Number(obj?.zIndex ?? 0)), 0);
+        pastedEntries.forEach((entry, index) => {
+            entry.object.zIndex = maxZIndex + 1 + index;
+            objects[entry.newId] = entry.object;
+        });
+        const newRootIds = this.clipboard.rootIds
+            .map((oldId) => newIdMap.get(oldId))
+            .filter((id) => Boolean(id));
+        for (const rootId of newRootIds) {
+            recomputeCompositeBBox(objects, rootId);
+            const root = objects[rootId];
+            if (!root)
+                continue;
+            if (root.objectType === 'panel') {
+                if (!nextProject.project.figure.panels.includes(rootId))
+                    nextProject.project.figure.panels.push(rootId);
+            }
+            else if (root.objectType === 'legend') {
+                if (!nextProject.project.figure.legends.includes(rootId))
+                    nextProject.project.figure.legends.push(rootId);
+            }
+            else if (!nextProject.project.figure.floatingObjects.includes(rootId)) {
+                nextProject.project.figure.floatingObjects.push(rootId);
+            }
+        }
+        nextState.selection.selectedIds = [...newRootIds];
+        this.state = nextState;
+        this.lastHit = newRootIds[0]
+            ? { objectId: newRootIds[0], objectType: objects[newRootIds[0]]?.objectType ?? 'unknown' }
+            : null;
+        this.clipboard.pastedCount += 1;
+        this.hasProjectMutations = true;
         return this.snapshot();
     }
     moveSelected(dx, dy) {
@@ -1269,7 +1677,24 @@ class DesktopWorkbench {
     multiSelectByIds(objectIds) {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
-        this.state = (0, index_8.multiSelectObjects)(this.state, objectIds);
+        const objects = this.state.project.project.objects;
+        const seen = new Set();
+        const nextIds = [];
+        for (const rawId of objectIds) {
+            const objectId = String(rawId ?? '').trim();
+            if (!objectId || seen.has(objectId) || !objects[objectId])
+                continue;
+            seen.add(objectId);
+            nextIds.push(objectId);
+        }
+        this.state = (0, index_8.multiSelectObjects)(this.state, nextIds);
+        return this.snapshot();
+    }
+    clearSelection() {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        this.state = (0, index_8.clearSelection)(this.state);
+        this.lastHit = null;
         return this.snapshot();
     }
     editSelectedText(content) {
@@ -1282,6 +1707,104 @@ class DesktopWorkbench {
         this.hasProjectMutations = true;
         return this.snapshot();
     }
+    updateSelectedAppearance(patch) {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        if (this.state.policy.readOnly) {
+            throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); updateSelectedAppearance is blocked.`);
+        }
+        const selectedId = this.state.selection.selectedIds[0] ?? null;
+        const currentTextTargets = resolveTextTargets(this.state.project, selectedId);
+        const currentShapeTargets = resolveShapeTargets(this.state.project, selectedId);
+        if (currentTextTargets.length === 0 && currentShapeTargets.length === 0) {
+            throw new Error('Selected object does not expose editable appearance.');
+        }
+        const normalizedFamily = patch.fontFamily === undefined ? undefined : normalizeFontFamilyToken(patch.fontFamily);
+        const normalizedSize = patch.fontSize === undefined
+            ? undefined
+            : Math.max(6, Math.min(256, Number.isFinite(patch.fontSize)
+                ? Number(patch.fontSize)
+                : (currentTextTargets[0]?.font.size ?? 16)));
+        const normalizedWeight = patch.fontWeight === undefined ? undefined : normalizeFontWeightToken(patch.fontWeight);
+        const normalizedStyle = patch.fontStyle === undefined ? undefined : normalizeFontStyleToken(patch.fontStyle);
+        const normalizedFill = patch.fill === undefined ? undefined : normalizeTextFillToken(patch.fill);
+        const normalizedStroke = patch.stroke === undefined ? undefined : normalizeStrokeColorToken(patch.stroke);
+        const textFormatChanged = currentTextTargets.some((target) => (normalizedFamily !== undefined && normalizedFamily.length > 0 && normalizedFamily !== target.font.family) ||
+            (normalizedSize !== undefined && normalizedSize !== target.font.size) ||
+            (normalizedWeight !== undefined && normalizedWeight !== target.font.weight) ||
+            (normalizedStyle !== undefined && normalizedStyle !== target.font.style));
+        const textFillChanged = currentTextTargets.some((target) => normalizedFill !== undefined && normalizedFill !== target.fill);
+        const shapeChanged = currentShapeTargets.some((target) => (normalizedFill !== undefined &&
+            target.shapeKind !== 'line' &&
+            target.shapeKind !== 'polyline' &&
+            normalizeShapeFillToken(normalizedFill) !== target.fill.color) ||
+            (normalizedStroke !== undefined && normalizedStroke !== target.stroke.color));
+        if (!textFormatChanged && !textFillChanged && !shapeChanged) {
+            return this.snapshot();
+        }
+        const nextProject = (0, index_4.pushSnapshot)(this.state.project);
+        const nextState = structuredClone(this.state);
+        nextState.project = nextProject;
+        const nextTextTargets = resolveTextTargets(nextProject, selectedId);
+        const nextShapeTargets = resolveShapeTargets(nextProject, selectedId);
+        for (const nextTarget of nextTextTargets) {
+            const before = {
+                textKind: nextTarget.textKind,
+                bbox: { ...nextTarget.bbox },
+                font: { ...nextTarget.font },
+                fill: nextTarget.fill,
+                capabilities: [...nextTarget.capabilities],
+            };
+            if (textFormatChanged) {
+                upgradeProxyTextNodeForStyleEditing(nextTarget);
+            }
+            if (normalizedFamily !== undefined && normalizedFamily.length > 0)
+                nextTarget.font.family = normalizedFamily;
+            if (normalizedSize !== undefined)
+                nextTarget.font.size = normalizedSize;
+            if (normalizedWeight !== undefined)
+                nextTarget.font.weight = normalizedWeight;
+            if (normalizedStyle !== undefined)
+                nextTarget.font.style = normalizedStyle;
+            if (normalizedFill !== undefined)
+                nextTarget.fill = normalizedFill;
+            if (textFormatChanged) {
+                nextTarget.bbox = approxTextBBox(nextTarget);
+            }
+            (0, index_4.appendManualEdit)(nextTarget, 'manual_role_override', before, {
+                textKind: nextTarget.textKind,
+                bbox: { ...nextTarget.bbox },
+                font: { ...nextTarget.font },
+                fill: nextTarget.fill,
+                capabilities: [...nextTarget.capabilities],
+            }, 'update_text_style');
+        }
+        for (const nextShape of nextShapeTargets) {
+            const before = {
+                fill: { ...nextShape.fill },
+                stroke: { ...nextShape.stroke },
+            };
+            if (normalizedFill !== undefined && nextShape.shapeKind !== 'line' && nextShape.shapeKind !== 'polyline') {
+                nextShape.fill.color = normalizeShapeFillToken(normalizedFill);
+            }
+            if (normalizedStroke !== undefined) {
+                nextShape.stroke.color = normalizedStroke;
+            }
+            (0, index_4.appendManualEdit)(nextShape, 'manual_role_override', before, {
+                fill: { ...nextShape.fill },
+                stroke: { ...nextShape.stroke },
+            }, 'update_object_color');
+        }
+        if (selectedId) {
+            recomputeCompositeBBox(nextProject.project.objects, selectedId);
+        }
+        this.state = nextState;
+        this.hasProjectMutations = true;
+        return this.snapshot();
+    }
+    updateSelectedTextStyle(patch) {
+        return this.updateSelectedAppearance(patch);
+    }
     deleteSelected() {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
@@ -1293,6 +1816,30 @@ class DesktopWorkbench {
         if (!this.state)
             throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
         this.state = (0, index_8.promoteSelected)(this.state, role, reason);
+        this.hasProjectMutations = true;
+        return this.snapshot();
+    }
+    alignSelected(mode) {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        if (this.state.policy.readOnly) {
+            throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); alignSelected is blocked.`);
+        }
+        if (this.state.selection.selectedIds.length < 2)
+            return this.snapshot();
+        this.state = (0, index_8.alignSelected)(this.state, mode);
+        this.hasProjectMutations = true;
+        return this.snapshot();
+    }
+    distributeSelected(mode) {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        if (this.state.policy.readOnly) {
+            throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); distributeSelected is blocked.`);
+        }
+        if (this.state.selection.selectedIds.length < 2)
+            return this.snapshot();
+        this.state = (0, index_8.distributeSelected)(this.state, mode);
         this.hasProjectMutations = true;
         return this.snapshot();
     }
@@ -1433,15 +1980,15 @@ class DesktopWorkbench {
         }
         const selectedId = this.state.selection.selectedIds[0] ?? null;
         return {
-            objectTree: (0, index_9.buildTreeViewModel)(this.state.project),
+            objectTree: this.getCachedTreeView(),
             canvas: {
                 selectedIds: [...this.state.selection.selectedIds],
                 overlays: (0, index_3.buildSelectionOverlay)(this.state.project, this.state.selection.selectedIds),
                 curveHandles: buildCurveHandles(this.state.project.project.objects, this.state.selection.selectedIds),
                 lastHit: this.lastHit,
             },
-            properties: selectedId ? (0, index_7.buildPropertyViewModel)(this.state.project, selectedId) : null,
-            importReport: (0, index_6.buildLatestImportReport)(this.state.project),
+            properties: this.getCachedPropertyView(selectedId),
+            importReport: this.getCachedImportReport(),
             warnings: [...this.state.warnings],
         };
     }

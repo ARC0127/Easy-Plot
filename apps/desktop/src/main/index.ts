@@ -3,7 +3,8 @@ import { join, resolve } from 'path';
 import type { FamilyClass } from '../../../../packages/ir-schema/dist/index';
 import { createDefaultRendererLayout } from '../renderer/layout';
 import { renderDesktopShellDocument } from '../renderer/shellDocument';
-import { createDesktopWorkbench, DesktopImportInput, DesktopLinkedStatus, DesktopViewSnapshot } from '../renderer/workbench';
+import { createDesktopWorkbench, DesktopAppearancePatch, DesktopImportInput, DesktopLinkedStatus, DesktopViewSnapshot } from '../renderer/workbench';
+const { copyFontPack } = require('../../../../scripts/font_pack.cjs');
 
 export type DesktopRegionId = 'object_tree' | 'canvas' | 'properties' | 'import_report';
 export type DesktopRegionDock = 'left' | 'center' | 'right' | 'bottom';
@@ -145,9 +146,9 @@ export class DesktopAppShell {
     return this.syncView(this.workbench.importDocument(input), { bumpRenderRevision: true });
   }
 
-  selectAtPoint(x: number, y: number): DesktopViewSnapshot {
+  selectAtPoint(x: number, y: number, options?: { appendSelection?: boolean }): DesktopViewSnapshot {
     this.ensureRunning('selectAtPoint');
-    return this.syncView(this.workbench.selectAtPoint(x, y));
+    return this.syncView(this.workbench.selectAtPoint(x, y, options));
   }
 
   selectTextAtPoint(x: number, y: number, maxDistance = 32): DesktopViewSnapshot {
@@ -160,9 +161,29 @@ export class DesktopAppShell {
     return this.syncView(this.workbench.selectById(objectId));
   }
 
+  multiSelectByIds(objectIds: string[]): DesktopViewSnapshot {
+    this.ensureRunning('multiSelectByIds');
+    return this.syncView(this.workbench.multiSelectByIds(objectIds));
+  }
+
+  clearSelection(): DesktopViewSnapshot {
+    this.ensureRunning('clearSelection');
+    return this.syncView(this.workbench.clearSelection());
+  }
+
   selectFirstEditableText(): DesktopViewSnapshot {
     this.ensureRunning('selectFirstEditableText');
     return this.syncView(this.workbench.selectFirstEditableText());
+  }
+
+  copySelection(): DesktopViewSnapshot {
+    this.ensureRunning('copySelection');
+    return this.syncView(this.workbench.copySelection());
+  }
+
+  pasteSelection(): DesktopViewSnapshot {
+    this.ensureRunning('pasteSelection');
+    return this.syncView(this.workbench.pasteSelection(), { bumpRenderRevision: true });
   }
 
   moveSelected(dx: number, dy: number): DesktopViewSnapshot {
@@ -185,6 +206,16 @@ export class DesktopAppShell {
     return this.syncView(this.workbench.editSelectedText(content), { bumpRenderRevision: true });
   }
 
+  updateSelectedAppearance(patch: DesktopAppearancePatch): DesktopViewSnapshot {
+    this.ensureRunning('updateSelectedAppearance');
+    return this.syncView(this.workbench.updateSelectedAppearance(patch), { bumpRenderRevision: true });
+  }
+
+  updateSelectedTextStyle(patch: DesktopAppearancePatch): DesktopViewSnapshot {
+    this.ensureRunning('updateSelectedTextStyle');
+    return this.syncView(this.workbench.updateSelectedTextStyle(patch), { bumpRenderRevision: true });
+  }
+
   addTextAtPoint(x: number, y: number, content: string): DesktopViewSnapshot {
     this.ensureRunning('addTextAtPoint');
     return this.syncView(this.workbench.addTextAtPoint(x, y, content), { bumpRenderRevision: true });
@@ -198,6 +229,16 @@ export class DesktopAppShell {
   promoteSelection(role: 'panel' | 'legend' | 'annotation_block' | 'group_node', reason = 'desktop_shell_promote'): DesktopViewSnapshot {
     this.ensureRunning('promoteSelection');
     return this.syncView(this.workbench.promoteSelection(role, reason), { bumpRenderRevision: true });
+  }
+
+  alignSelected(mode: 'align_left' | 'align_right' | 'align_top' | 'align_bottom' | 'center_horizontal' | 'center_vertical'): DesktopViewSnapshot {
+    this.ensureRunning('alignSelected');
+    return this.syncView(this.workbench.alignSelected(mode), { bumpRenderRevision: true });
+  }
+
+  distributeSelected(mode: 'equal_spacing_horizontal' | 'equal_spacing_vertical'): DesktopViewSnapshot {
+    this.ensureRunning('distributeSelected');
+    return this.syncView(this.workbench.distributeSelected(mode), { bumpRenderRevision: true });
   }
 
   undo(): DesktopViewSnapshot {
@@ -260,6 +301,7 @@ export class DesktopAppShell {
     this.ensureRunning('buildReleaseBundle');
     const resolvedOutDir = resolve(outputDir);
     mkdirSync(resolvedOutDir, { recursive: true });
+    copyFontPack(resolvedOutDir);
     const indexHtmlPath = join(resolvedOutDir, 'index.html');
     const manifestPath = join(resolvedOutDir, 'shell-manifest.json');
     const generatedAt = new Date().toISOString();
@@ -277,6 +319,9 @@ export class DesktopAppShell {
           supportsLocalFilesystem: this.bootstrap.supportsLocalFilesystem,
           window: this.window,
           layout: this.bootstrap.layout,
+          fontPack: {
+            directory: 'fonts',
+          },
         },
         null,
         2

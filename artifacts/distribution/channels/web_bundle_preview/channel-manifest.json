@@ -1,35 +1,35 @@
 {
   "manifestVersion": "1.0.0",
-  "generatedAt": "2026-04-03T13:42:14.069Z",
+  "generatedAt": "2026-04-08T10:18:11.576Z",
   "channelId": "web_bundle_preview",
   "label": "Web Bundle Preview",
   "releaseRing": "preview",
   "sourceVersionManifest": "artifacts/version-manifest.json",
-  "releaseVersion": "0.01",
+  "releaseVersion": "0.0.2",
   "schemaVersion": "1.0.0-mvp",
   "packageFiles": [
     {
       "originalPath": "artifacts/desktop_release_bundle/index.html",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/artifacts__desktop_release_bundle__index.html",
-      "sha256": "e33246b3b15fd4d5a82e788ef9eb15ec70743677645372a6153161aad3337ba0",
-      "bytes": 3941
+      "sha256": "c8bc2a5b3c0dba49896a7ebc7a207f2e2315918f8d1c438cb9eba00f468b6ee1",
+      "bytes": 13163
     },
     {
       "originalPath": "artifacts/desktop_release_bundle/shell-manifest.json",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/artifacts__desktop_release_bundle__shell-manifest.json",
-      "sha256": "6ff465e716eb3a7e676ce780f5508b6e4ebcfdcd2609182591c6edd1c0bcd2ec",
-      "bytes": 755
+      "sha256": "87845fd1b182896674e4e9beb38445df9fd3e984dbade5367881648018ce5150",
+      "bytes": 801
     },
     {
       "originalPath": "artifacts/release_notes.md",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/artifacts__release_notes.md",
-      "sha256": "867330b1add1b406cab87dc9bde0e2f2388c444da17f6ac168a3403166580b00",
-      "bytes": 1060
+      "sha256": "d34652a2db5e09db70acd9bef757dc8768a5f2e44f3ebf8088e8ec2272c1c029",
+      "bytes": 1061
     },
     {
       "originalPath": "docs/audit/fixture_authenticity_report.json",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/docs__audit__fixture_authenticity_report.json",
-      "sha256": "4cac20234fee3234bc6df4709e844e9c287d1e8ced306f7efdbb80791b4ddcff",
+      "sha256": "6c8ea9efa4299527c481915b16e9220eab8d16ad1a7d34ecf90fe7d6b48818e9",
       "bytes": 22309
     },
     {

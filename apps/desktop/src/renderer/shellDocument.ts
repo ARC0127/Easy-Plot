@@ -1,5 +1,9 @@
 import { RendererLayout } from './layout';
 import { DesktopLinkedStatus, DesktopViewSnapshot } from './workbench';
+const {
+  buildFontFaceCss,
+  getBundledFontStackPresets,
+} = require('../../../../scripts/font_pack.cjs');
 
 export interface DesktopShellWindowState {
   windowId: string;
@@ -33,6 +37,9 @@ function escapeHtml(value: string): string {
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 }
+
+const FONT_STACK_PRESETS = getBundledFontStackPresets();
+const FONT_FACE_CSS = buildFontFaceCss('fonts');
 
 function renderTreeNodes(nodes: TreeNodeLike[], depth: number): string {
   if (nodes.length === 0) return '<li class="tree-empty">No objects</li>';
@@ -115,6 +122,7 @@ export function renderDesktopShellDocument(input: DesktopShellRenderInput): stri
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(input.appTitle)} - Desktop Shell</title>
   <style>
+${FONT_FACE_CSS}
     :root {
       --bg: #f5f7fb;
       --card: #ffffff;
@@ -124,7 +132,7 @@ export function renderDesktopShellDocument(input: DesktopShellRenderInput): stri
       --accent: #1762d6;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: "Segoe UI", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); }
+    body { margin: 0; font-family: ${FONT_STACK_PRESETS.sans}; background: var(--bg); color: var(--text); }
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 10px 16px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fff, #eef4ff);
@@ -152,7 +160,7 @@ export function renderDesktopShellDocument(input: DesktopShellRenderInput): stri
     .tree-node[data-depth="2"] { padding-left: 28px; }
     .tree-label { font-weight: 600; }
     .tree-meta { color: var(--muted); font-size: 11px; }
-    pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, "Cascadia Mono", "Consolas", monospace; }
+    pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: ${FONT_STACK_PRESETS.mono}; }
     .muted { color: var(--muted); }
     .status { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
   </style>

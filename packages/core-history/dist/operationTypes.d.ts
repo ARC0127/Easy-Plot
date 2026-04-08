@@ -8,6 +8,16 @@ export type MoveObjectOperation = {
         };
     };
 };
+export type MoveObjectsOperation = {
+    type: 'MOVE_OBJECTS';
+    payload: {
+        objectIds: string[];
+        delta: {
+            x: number;
+            y: number;
+        };
+    };
+};
 export type ResizeObjectOperation = {
     type: 'RESIZE_OBJECT';
     payload: {
@@ -24,6 +34,12 @@ export type DeleteObjectOperation = {
     type: 'DELETE_OBJECT';
     payload: {
         objectId: string;
+    };
+};
+export type DeleteObjectsOperation = {
+    type: 'DELETE_OBJECTS';
+    payload: {
+        objectIds: string[];
     };
 };
 export type EditTextContentOperation = {
@@ -69,5 +85,5 @@ export type UngroupObjectOperation = {
         groupId: string;
     };
 };
-export type Operation = MoveObjectOperation | ResizeObjectOperation | DeleteObjectOperation | EditTextContentOperation | SetAnchorOperation | PromoteSelectionOperation | OverrideRoleOperation | GroupObjectsOperation | UngroupObjectOperation;
+export type Operation = MoveObjectOperation | MoveObjectsOperation | ResizeObjectOperation | DeleteObjectOperation | DeleteObjectsOperation | EditTextContentOperation | SetAnchorOperation | PromoteSelectionOperation | OverrideRoleOperation | GroupObjectsOperation | UngroupObjectOperation;
 //# sourceMappingURL=operationTypes.d.ts.map

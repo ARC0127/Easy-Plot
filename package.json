@@ -1,9 +1,9 @@
 {
   "name": "figure-editor-monorepo",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "Easy Plot draft workspace for SVG/HTML import, direct desktop-style editing, and round-trip export validation.",
-  "displayVersion": "0.01",
+  "displayVersion": "0.0.2",
   "author": "ARC - SJTU PhD Student",
   "license": "MIT",
   "packageManager": "pnpm@10.7.0",

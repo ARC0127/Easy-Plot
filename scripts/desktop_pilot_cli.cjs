@@ -2,6 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const readline = require('node:readline');
 const { createDesktopWorkbench } = require('../apps/desktop/dist/renderer/index.js');
+const ROOT_PACKAGE_JSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf8'));
+const DISPLAY_VERSION = String(ROOT_PACKAGE_JSON.displayVersion ?? ROOT_PACKAGE_JSON.version ?? '0.0.2');
 
 const HELP_LINES = [
   'open <file> [familyHint] [htmlMode]',
@@ -231,7 +233,7 @@ function runBatch(commandsFilePath, options = {}) {
 function runInteractive() {
   const workbench = createDesktopWorkbench();
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout, prompt: 'desktop> ' });
-  console.log('Easy Plot Desktop Pilot CLI v0.01');
+  console.log(`Easy Plot Desktop Pilot CLI v${DISPLAY_VERSION}`);
   console.log('Type "help" for commands.');
   rl.prompt();
 

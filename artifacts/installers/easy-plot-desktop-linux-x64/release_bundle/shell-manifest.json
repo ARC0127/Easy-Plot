@@ -1,14 +1,14 @@
 {
   "productName": "Easy Plot",
-  "generatedAt": "2026-04-03T13:42:14.070Z",
+  "generatedAt": "2026-04-08T10:18:11.615Z",
   "entrypoint": "index.html",
   "supportsOffline": true,
   "supportsLocalFilesystem": true,
   "window": {
-    "windowId": "desktop_window_1775223734069",
+    "windowId": "desktop_window_1775643491577",
     "title": "Easy Plot",
     "state": "running",
-    "openedAt": "2026-04-03T13:42:14.069Z",
+    "openedAt": "2026-04-08T10:18:11.577Z",
     "closedAt": null,
     "renderRevision": 0
   },
@@ -33,5 +33,8 @@
       "title": "Import Report",
       "dock": "bottom"
     }
-  ]
+  ],
+  "fontPack": {
+    "directory": "fonts"
+  }
 }

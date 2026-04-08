@@ -1,8 +1,8 @@
 {
   "manifestVersion": "1.0.0",
-  "generatedAt": "2026-04-03T13:42:14.069Z",
+  "generatedAt": "2026-04-08T10:18:11.577Z",
   "productName": "Easy Plot",
-  "releaseVersion": "0.01",
+  "releaseVersion": "0.0.2",
   "schemaVersion": "1.0.0-mvp",
   "platformTargets": [
     "linux-x64"
@@ -11,12 +11,12 @@
     "releaseBundle": {
       "indexHtmlPath": "artifacts/desktop_release_bundle/index.html",
       "manifestPath": "artifacts/desktop_release_bundle/shell-manifest.json",
-      "indexHtmlSha256": "e33246b3b15fd4d5a82e788ef9eb15ec70743677645372a6153161aad3337ba0",
-      "manifestSha256": "6ff465e716eb3a7e676ce780f5508b6e4ebcfdcd2609182591c6edd1c0bcd2ec"
+      "indexHtmlSha256": "c8bc2a5b3c0dba49896a7ebc7a207f2e2315918f8d1c438cb9eba00f468b6ee1",
+      "manifestSha256": "87845fd1b182896674e4e9beb38445df9fd3e984dbade5367881648018ce5150"
     },
     "installer": {
       "archivePath": "artifacts/installers/easy-plot-desktop-linux-x64.tar.gz",
-      "archiveSha256": "595ef98d1a53e5ec7a6e7ed15a2619bf80c14e0335c76f7f5308f0469001f65a"
+      "archiveSha256": "bfa1c6dffc71ecc03e117d65062b2da2ee60936b365507581efbbd19f9926104"
     },
     "releaseNotes": "artifacts/release_notes.md",
     "versionedSchema": "artifacts/versioned_schema/project.schema.1.0.0-mvp.json",

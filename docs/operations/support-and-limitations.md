@@ -12,7 +12,7 @@
 - 导入提升层会跳过非可渲染定义子树（`defs/symbol/clipPath/mask/...`），避免字形定义被误渲染到画布左上角
 - 长尾 CSS 语义扩展：`var()` 自定义属性级联与 fallback、`:nth-last-child`、`:first/last/only-of-type`、`:nth-of-type`、`:nth-last-of-type`、`:lang`、`:is/:where`、`:not()` 多项选择器
 - 语义提升与能力标注（启发式实现）
-- 基础编辑操作（选中、移动、删除、改文本、promote/group）
+- 基础编辑操作（选中、移动、删除、改文本、promote/group）以及多选布局整理（对齐、分布）
 - SVG/HTML 导出与重导入 smoke 验证
 - SVG 导出已加入无样式 shape 线框兜底（避免浏览器默认黑填充导致预览失真）
 - compile/build/smoke/test/acceptance 闭环（含 desktop 四区联动 smoke）

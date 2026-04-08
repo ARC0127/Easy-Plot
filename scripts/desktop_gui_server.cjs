@@ -2,6 +2,13 @@ const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
+const {
+  buildFontFaceCss,
+  getBundledFontFamilies,
+  getBundledFontPresetOptions,
+  getBundledFontStackPresets,
+  getFontPackRoot,
+} = require('./font_pack.cjs');
 
 const distEntry = path.resolve(__dirname, '../apps/desktop/dist/main/index.js');
 if (!fs.existsSync(distEntry)) {
@@ -9,6 +16,20 @@ if (!fs.existsSync(distEntry)) {
 }
 
 const { createDesktopAppShell } = require(distEntry);
+const FONT_PACK_ROOT = getFontPackRoot();
+const FONT_PRESET_OPTIONS = getBundledFontPresetOptions();
+const FONT_FAMILIES = getBundledFontFamilies();
+const FONT_STACK_PRESETS = getBundledFontStackPresets();
+const FONT_FACE_CSS = buildFontFaceCss('/fonts');
+const ROOT_PACKAGE_JSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf8'));
+const DISPLAY_VERSION = String(ROOT_PACKAGE_JSON.displayVersion ?? ROOT_PACKAGE_JSON.version ?? '0.0.2');
+const SYSTEM_FONT_OPTIONS = [
+  {
+    value: 'Times New Roman',
+    label: 'Times New Roman',
+    family: 'Times New Roman, Times, serif',
+  },
+];
 
 function parseArgs(argv) {
   const out = {
@@ -78,6 +99,10 @@ function readJson(req) {
 function send(res, statusCode, payload, contentType = 'application/json; charset=utf-8') {
   res.statusCode = statusCode;
   res.setHeader('content-type', contentType);
+  if (Buffer.isBuffer(payload)) {
+    res.end(payload);
+    return;
+  }
   if (typeof payload === 'string') {
     res.end(payload);
     return;
@@ -97,6 +122,35 @@ function detectSaveMode(filePath) {
   if (ext === '.html' || ext === '.htm') return 'html';
   if (ext === '.svg') return 'svg';
   return 'png';
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function renderFontSelectOptions() {
+  const renderOption = (value, label, family = value) =>
+    `            <option value="${escapeHtmlAttribute(value)}" style="font-family: ${escapeHtmlAttribute(family)};">Aa ${escapeHtmlAttribute(label)}</option>`;
+
+  return [
+    '          <optgroup label="默认字体栈">',
+    renderOption(FONT_STACK_PRESETS.sans, '默认 Sans 栈'),
+    renderOption(FONT_STACK_PRESETS.serif, '默认 Serif 栈'),
+    renderOption(FONT_STACK_PRESETS.cjkSans, '默认 CJK Sans 栈'),
+    renderOption(FONT_STACK_PRESETS.cjkSerif, '默认 CJK Serif 栈'),
+    renderOption(FONT_STACK_PRESETS.mono, '默认 Mono 栈'),
+    '          </optgroup>',
+    '          <optgroup label="常用免费字体">',
+    ...FONT_FAMILIES.map((fontFamily) => renderOption(fontFamily, fontFamily)),
+    '          </optgroup>',
+    '          <optgroup label="系统常用字体">',
+    ...SYSTEM_FONT_OPTIONS.map((item) => renderOption(item.value, item.label, item.family)),
+    '          </optgroup>',
+  ].join('\n');
 }
 
 function parseNumericAttr(rawValue) {
@@ -221,6 +275,7 @@ function buildPreviewSnapshot(shell) {
   let previewViewport = null;
   let previewSanitizedCount = 0;
   let previewSanitizeReason = null;
+  let previewSvgMarkup = '';
   try {
     const rawSvg = shell.getPreviewSvgContent();
     if (typeof rawSvg === 'string' && rawSvg.trim().length > 0) {
@@ -229,19 +284,37 @@ function buildPreviewSnapshot(shell) {
       previewViewport = parseSvgViewport(sanitized.svg);
       previewSanitizedCount = sanitized.sanitizedCount;
       previewSanitizeReason = sanitized.reason;
+      previewSvgMarkup = sanitized.svg;
     }
   } catch {
     previewSvgDataUrl = null;
     previewViewport = null;
     previewSanitizedCount = 0;
     previewSanitizeReason = null;
+    previewSvgMarkup = '';
   }
   return {
-    svgDataUrl: previewSvgDataUrl,
-    viewport: previewViewport,
-    sanitizedCount: previewSanitizedCount,
-    sanitizeReason: previewSanitizeReason,
+    preview: {
+      svgDataUrl: previewSvgDataUrl,
+      viewport: previewViewport,
+      sanitizedCount: previewSanitizedCount,
+      sanitizeReason: previewSanitizeReason,
+    },
+    svg: previewSvgMarkup,
   };
+}
+
+function ensurePreviewPayload(shell, previewCache, windowState) {
+  if (previewCache && previewCache.revision === windowState.renderRevision && previewCache.payload) {
+    return previewCache.payload;
+  }
+  const built = buildPreviewSnapshot(shell);
+  if (previewCache) {
+    previewCache.revision = windowState.renderRevision;
+    previewCache.payload = built.preview;
+    previewCache.svg = built.svg;
+  }
+  return built.preview;
 }
 
 function createSnapshot(shell, previewCache) {
@@ -249,14 +322,7 @@ function createSnapshot(shell, previewCache) {
   const view = shell.snapshot();
   const linkedStatus = shell.getLinkedStatus();
   const defaultSavePath = shell.suggestDefaultPngPath();
-  let preview = previewCache?.payload ?? null;
-  if (!previewCache || previewCache.revision !== windowState.renderRevision || !preview) {
-    preview = buildPreviewSnapshot(shell);
-    if (previewCache) {
-      previewCache.revision = windowState.renderRevision;
-      previewCache.payload = preview;
-    }
-  }
+  const preview = ensurePreviewPayload(shell, previewCache, windowState);
   return {
     window: windowState,
     linkedStatus,
@@ -276,8 +342,9 @@ function htmlPage(port) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Easy Plot v0.01</title>
+  <title>Easy Plot v${DISPLAY_VERSION}</title>
   <style>
+${FONT_FACE_CSS}
     :root {
       --bg: #f3f6fb;
       --card: #ffffff;
@@ -291,7 +358,7 @@ function htmlPage(port) {
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Segoe UI", "PingFang SC", sans-serif;
+      font-family: ${FONT_STACK_PRESETS.sans};
       background: var(--bg);
       color: var(--text);
     }
@@ -354,8 +421,18 @@ function htmlPage(port) {
     }
     .status.ok { border-color: #b6e1ca; background: #f4fff8; color: var(--ok); }
     .status.err { border-color: #efc7c7; background: #fff6f6; color: var(--err); }
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 10px;
+      padding: 0 10px 10px;
+      align-items: start;
+    }
+    .workspace-main,
+    .workspace-sidebar {
+      min-width: 0;
+    }
     .preview-card {
-      margin: 0 10px 10px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: #fff;
@@ -410,8 +487,96 @@ function htmlPage(port) {
       color: var(--muted);
       font-size: 11px;
     }
+    .sidebar-card + .sidebar-card {
+      margin-top: 10px;
+    }
+    .sidebar-card h4 {
+      margin: 10px 0 6px;
+      font-size: 12px;
+      color: #2c3d55;
+    }
+    .sidebar-copy {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 120px;
+    }
+    .field span {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .field input[type="number"],
+    .field input[type="text"],
+    .field input[type="color"] {
+      width: 100%;
+      min-width: 0;
+    }
+    .field input[type="color"] {
+      min-height: 34px;
+      padding: 4px;
+    }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+    .toolbar button {
+      min-width: 36px;
+      font-weight: 700;
+    }
+    .toolbar button.is-active {
+      background: #e8f0ff;
+      border-color: #9cbef4;
+      color: #0b4bb3;
+    }
+    .toolbar button:disabled,
+    .field input:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      background: #f7f9fc;
+    }
+    .selection-summary {
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .selection-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #2957a4;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .style-preview {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px dashed #c8d7f2;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fbfdff, #f4f8ff);
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+    }
+    .style-preview-text {
+      word-break: break-word;
+    }
     @media (max-width: 980px) {
       .controls {
+        grid-template-columns: 1fr;
+      }
+      .workspace {
         grid-template-columns: 1fr;
       }
     }
@@ -419,8 +584,8 @@ function htmlPage(port) {
 </head>
 <body>
   <header class="topbar">
-    <div class="title">Easy Plot v0.01</div>
-    <div class="meta">localhost:${port} · 正式版本 0.01 · 点击选择 / 拖拽移动 / 拖控制点调曲线 / 双击改字 / Delete 删除 / 方向键微调 / Alt+↑↓ 调曲线 / Ctrl+S 保存</div>
+    <div class="title">Easy Plot v${DISPLAY_VERSION}</div>
+    <div class="meta">localhost:${port} · 正式版本 ${DISPLAY_VERSION} · 点击选择 / Shift+点击多选 / 拖拽移动 / 右键拖动对象或容器改位置 / 拖控制点调曲线 / 双击改字或空白新建 / Ctrl+滚轮缩放预览 / Esc 取消选择 / Delete 删除 / 方向键微调 / Alt+↑↓ 调曲线 / Ctrl+S 保存</div>
   </header>
 
   <section class="controls">
@@ -445,14 +610,102 @@ function htmlPage(port) {
 
   <div id="status" class="status">准备就绪。</div>
 
-  <section class="preview-card">
-    <h3>预览</h3>
-    <div id="preview-body" class="preview-body"></div>
+  <section class="workspace">
+    <div class="workspace-main">
+      <section class="preview-card">
+        <h3>预览</h3>
+        <div id="preview-body" class="preview-body"></div>
+      </section>
+    </div>
+    <aside class="workspace-sidebar">
+      <section class="card sidebar-card">
+        <h3>选择摘要</h3>
+        <div id="selection-summary" class="selection-summary">
+          <div class="sidebar-copy">当前未选中对象。Esc 可清空当前选择，Ctrl+V 可粘贴已复制对象。</div>
+        </div>
+      </section>
+      <section class="card sidebar-card">
+        <h3>对象外观</h3>
+        <div class="sidebar-copy">颜色控制会作用到当前对象及其可着色子对象；文本对象额外支持字体、字号、粗体、斜体。字体库已预置常用论文和开源字体，预览图里可右键拖动对象或其外层容器改位置。</div>
+        <div class="row">
+          <label class="field">
+            <span>填充 / 文本颜色</span>
+            <input id="style-fill-color" type="color" value="#111827" />
+          </label>
+          <label class="field">
+            <span>描边颜色</span>
+            <input id="style-stroke-color" type="color" value="#334155" />
+          </label>
+        </div>
+        <h4>文本格式</h4>
+        <div class="row">
+          <label class="field">
+            <span>字体</span>
+            <select id="style-font-family">
+${renderFontSelectOptions()}
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label class="field">
+            <span>字号</span>
+            <input id="style-font-size" type="number" min="6" max="256" step="1" />
+          </label>
+        </div>
+        <div class="toolbar">
+          <button id="style-bold" type="button" title="粗体">B</button>
+          <button id="style-italic" type="button" title="斜体"><em>I</em></button>
+          <button id="btn-apply-appearance" class="primary" type="button">应用外观</button>
+        </div>
+        <div id="appearance-hint" class="sidebar-copy">请先选中对象。</div>
+        <div class="style-preview">
+          <div id="style-preview-text" class="style-preview-text">Aa 文本预览</div>
+        </div>
+      </section>
+      <section class="card sidebar-card">
+        <h3>布局整理</h3>
+        <div class="sidebar-copy">Shift+点击可加入多选。至少选中 2 个对象可以对齐，至少 3 个对象可以分布。</div>
+        <h4>对齐</h4>
+        <div class="toolbar">
+          <button id="btn-align-left" type="button">左对齐</button>
+          <button id="btn-align-right" type="button">右对齐</button>
+          <button id="btn-align-top" type="button">上对齐</button>
+          <button id="btn-align-bottom" type="button">下对齐</button>
+          <button id="btn-align-center-h" type="button">水平居中</button>
+          <button id="btn-align-center-v" type="button">垂直居中</button>
+        </div>
+        <h4>分布</h4>
+        <div class="toolbar">
+          <button id="btn-distribute-h" type="button">水平分布</button>
+          <button id="btn-distribute-v" type="button">垂直分布</button>
+        </div>
+        <div id="layout-hint" class="sidebar-copy">请至少选中 2 个对象。</div>
+      </section>
+    </aside>
   </section>
 
   <script>
     const statusEl = document.getElementById('status');
     const previewBody = document.getElementById('preview-body');
+    const selectionSummaryEl = document.getElementById('selection-summary');
+    const fillColorInput = document.getElementById('style-fill-color');
+    const strokeColorInput = document.getElementById('style-stroke-color');
+    const fontFamilyInput = document.getElementById('style-font-family');
+    const fontSizeInput = document.getElementById('style-font-size');
+    const boldButton = document.getElementById('style-bold');
+    const italicButton = document.getElementById('style-italic');
+    const applyAppearanceButton = document.getElementById('btn-apply-appearance');
+    const appearanceHintEl = document.getElementById('appearance-hint');
+    const stylePreviewTextEl = document.getElementById('style-preview-text');
+    const alignLeftButton = document.getElementById('btn-align-left');
+    const alignRightButton = document.getElementById('btn-align-right');
+    const alignTopButton = document.getElementById('btn-align-top');
+    const alignBottomButton = document.getElementById('btn-align-bottom');
+    const alignCenterHButton = document.getElementById('btn-align-center-h');
+    const alignCenterVButton = document.getElementById('btn-align-center-v');
+    const distributeHButton = document.getElementById('btn-distribute-h');
+    const distributeVButton = document.getElementById('btn-distribute-v');
+    const layoutHintEl = document.getElementById('layout-hint');
     let currentState = null;
     let previewRenderToken = 0;
     let mountedPreviewRevision = null;
@@ -477,6 +730,181 @@ function htmlPage(port) {
       return props?.objectType ?? props?.type ?? null;
     }
 
+    function normalizeColorForInput(value) {
+      const raw = String(value ?? '').trim();
+      if (/^#([0-9a-f]{6})$/i.test(raw)) return raw.toLowerCase();
+      const shortHex = raw.match(/^#([0-9a-f]{3})$/i);
+      if (shortHex) {
+        return '#' + shortHex[1].split('').map((part) => part + part).join('').toLowerCase();
+      }
+      const rgb = raw.match(/^rgb\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)$/i);
+      if (rgb) {
+        const clamp = (item) => Math.max(0, Math.min(255, Number(item)));
+        return '#' + [clamp(rgb[1]), clamp(rgb[2]), clamp(rgb[3])]
+          .map((item) => item.toString(16).padStart(2, '0'))
+          .join('');
+      }
+      return '#111827';
+    }
+
+    function setToggleButtonState(button, active) {
+      button.dataset.active = active ? '1' : '0';
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    }
+
+    function setTextStyleControlsDisabled(disabled) {
+      fontFamilyInput.disabled = disabled;
+      fontSizeInput.disabled = disabled;
+      boldButton.disabled = disabled;
+      italicButton.disabled = disabled;
+    }
+
+    function setAppearanceColorControlsDisabled(disabled) {
+      fillColorInput.disabled = disabled;
+      strokeColorInput.disabled = disabled;
+    }
+
+    function ensureFontFamilyOption(value) {
+      const normalized = String(value ?? '').trim();
+      if (!normalized) return;
+      const existing = fontFamilyInput.querySelector('option[value="' + selectorEscape(normalized) + '"]');
+      if (existing) return;
+      const option = document.createElement('option');
+      option.value = normalized;
+      option.textContent = 'Aa 当前: ' + normalized;
+      option.style.fontFamily = normalized;
+      option.title = normalized;
+      option.dataset.dynamic = '1';
+      fontFamilyInput.appendChild(option);
+    }
+
+    function setFontFamilySelectValue(value) {
+      const nextValue = String(value ?? '').trim() || ${JSON.stringify(FONT_STACK_PRESETS.sans)};
+      ensureFontFamilyOption(nextValue);
+      fontFamilyInput.value = nextValue;
+      fontFamilyInput.style.fontFamily = nextValue;
+    }
+
+    function setApplyAppearanceDisabled(disabled) {
+      applyAppearanceButton.disabled = disabled;
+    }
+
+    function setLayoutControlsDisabled(disabled, selectedCount = 0) {
+      const canAlign = !disabled && selectedCount >= 2;
+      const canDistribute = !disabled && selectedCount >= 3;
+      alignLeftButton.disabled = !canAlign;
+      alignRightButton.disabled = !canAlign;
+      alignTopButton.disabled = !canAlign;
+      alignBottomButton.disabled = !canAlign;
+      alignCenterHButton.disabled = !canAlign;
+      alignCenterVButton.disabled = !canAlign;
+      distributeHButton.disabled = !canDistribute;
+      distributeVButton.disabled = !canDistribute;
+      if (layoutHintEl) {
+        if (disabled || selectedCount === 0) {
+          layoutHintEl.textContent = '请至少选中 2 个对象。Shift+点击可加入多选。';
+        } else if (selectedCount === 1) {
+          layoutHintEl.textContent = '当前只选中了 1 个对象。继续 Shift+点击可追加多选。';
+        } else if (selectedCount === 2) {
+          layoutHintEl.textContent = '可执行对齐；分布需要至少 3 个对象。';
+        } else {
+          layoutHintEl.textContent = '可执行对齐和分布。';
+        }
+      }
+    }
+
+    function applyPreviewTextStyle(textStyle) {
+      const previewText = textStyle?.content?.trim() || 'Aa 文本预览';
+      stylePreviewTextEl.textContent = previewText;
+      stylePreviewTextEl.style.fontFamily = textStyle?.fontFamily || ${JSON.stringify(FONT_STACK_PRESETS.sans)};
+      stylePreviewTextEl.style.fontSize = String(Math.max(10, Number(textStyle?.fontSize || 16))) + 'px';
+      stylePreviewTextEl.style.fontWeight = String(textStyle?.fontWeight || '400');
+      stylePreviewTextEl.style.fontStyle = String(textStyle?.fontStyle || 'normal');
+      stylePreviewTextEl.style.color = String(textStyle?.fill || fillColorInput.value || '#111827');
+    }
+
+    function syncSelectionSidebar(state) {
+      const props = state?.view?.properties || null;
+      const textStyle = props?.textStyle || null;
+      const appearance = props?.appearance || null;
+      const selectedIds = Array.isArray(state?.view?.canvas?.selectedIds) ? state.view.canvas.selectedIds : [];
+      if (!props) {
+        selectionSummaryEl.innerHTML = '<div class="sidebar-copy">当前未选中对象。拖拽画布、双击文本或点击对象后，这里会显示摘要。Esc 可清空当前选择，Ctrl+V 可粘贴已复制对象。</div>';
+        setTextStyleControlsDisabled(true);
+        setAppearanceColorControlsDisabled(true);
+        setApplyAppearanceDisabled(true);
+        setLayoutControlsDisabled(true, 0);
+        fillColorInput.value = '#111827';
+        strokeColorInput.value = '#334155';
+        setFontFamilySelectValue(${JSON.stringify(FONT_STACK_PRESETS.sans)});
+        fontSizeInput.value = '';
+        setToggleButtonState(boldButton, false);
+        setToggleButtonState(italicButton, false);
+        appearanceHintEl.textContent = '请先选中对象。';
+        applyPreviewTextStyle(null);
+        return;
+      }
+
+      const contentPreview = typeof props?.extra?.content === 'string' ? props.extra.content : '';
+      selectionSummaryEl.innerHTML =
+        '<span class="selection-pill">' + esc(props.objectType || 'unknown') + '</span>' +
+        '<div><strong>ID</strong>: ' + esc(props.id || '(none)') + '</div>' +
+        '<div><strong>名称</strong>: ' + esc(props.name || '(unnamed)') + '</div>' +
+        '<div><strong>当前选择数</strong>: ' + String(selectedIds.length) + '</div>' +
+        '<div><strong>文本</strong>: ' + (contentPreview ? esc(contentPreview) : '<span class="muted">当前对象没有文本内容</span>') + '</div>' +
+        '<div><strong>可着色对象数</strong>: ' + String(
+          Number(appearance?.fillTargetCount || 0) + Number(appearance?.strokeTargetCount || 0)
+        ) + '</div>' +
+        '<div><strong>快捷键</strong>: Ctrl+C 复制，Ctrl+V 粘贴</div>';
+
+      if (!appearance) {
+        setAppearanceColorControlsDisabled(true);
+        setApplyAppearanceDisabled(true);
+        fillColorInput.value = '#111827';
+        strokeColorInput.value = '#334155';
+      } else {
+        setAppearanceColorControlsDisabled(false);
+        setApplyAppearanceDisabled(false);
+        fillColorInput.value = normalizeColorForInput(appearance.fillColor || '#111827');
+        strokeColorInput.value = normalizeColorForInput(appearance.strokeColor || '#334155');
+      }
+
+      if (!textStyle) {
+        setTextStyleControlsDisabled(true);
+        setFontFamilySelectValue(${JSON.stringify(FONT_STACK_PRESETS.sans)});
+        fontSizeInput.value = '';
+        setToggleButtonState(boldButton, false);
+        setToggleButtonState(italicButton, false);
+        appearanceHintEl.textContent = appearance
+          ? '当前选择可调颜色；字体选项仅对文本对象生效。'
+          : '当前选择没有可编辑外观。';
+        applyPreviewTextStyle({
+          fill: fillColorInput.value,
+        });
+        setLayoutControlsDisabled(false, selectedIds.length);
+        return;
+      }
+
+      setTextStyleControlsDisabled(false);
+      setFontFamilySelectValue(String(textStyle.fontFamily || ${JSON.stringify(FONT_STACK_PRESETS.sans)}));
+      fontSizeInput.value = String(textStyle.fontSize || 16);
+      setToggleButtonState(boldButton, Number(textStyle.fontWeight || '400') >= 600 || String(textStyle.fontWeight).toLowerCase() === 'bold');
+      setToggleButtonState(italicButton, String(textStyle.fontStyle || '').toLowerCase() === 'italic');
+      appearanceHintEl.textContent = appearance
+        ? '颜色会作用到当前对象及其可着色子对象；字体设置仅作用到文本。'
+        : '格式会直接作用到当前所选文本，并可通过撤销/重做回退。';
+      setLayoutControlsDisabled(false, selectedIds.length);
+      applyPreviewTextStyle({
+        content: textStyle.content,
+        fontFamily: fontFamilyInput.value,
+        fontSize: Number(fontSizeInput.value || textStyle.fontSize || 16),
+        fontWeight: boldButton.dataset.active === '1' ? '700' : '400',
+        fontStyle: italicButton.dataset.active === '1' ? 'italic' : 'normal',
+        fill: fillColorInput.value,
+      });
+    }
+
     async function postJson(url, body) {
       const res = await fetch(url, {
         method: 'POST',
@@ -496,6 +924,67 @@ function htmlPage(port) {
         return window.CSS.escape(raw);
       }
       return raw.replace(/["\\\\]/g, '\\\\$&');
+    }
+
+    function resolveMovableObjectTarget(surface, startTarget) {
+      let current = startTarget?.closest?.('[data-fe-object-id]') || null;
+      if (!current) return null;
+      const visited = new Set();
+      while (current && !visited.has(current)) {
+        visited.add(current);
+        const parentId = current.getAttribute('data-fe-parent-id');
+        if (!parentId) break;
+        const parent = surface.querySelector('[data-fe-object-id="' + selectorEscape(parentId) + '"]');
+        if (!parent) break;
+        current = parent;
+      }
+      return current;
+    }
+
+    function getPreviewScale(surface) {
+      const raw = Number(surface?.dataset?.fePreviewScale || '1');
+      return Number.isFinite(raw) && raw > 0 ? raw : 1;
+    }
+
+    function clampPreviewScale(value) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric) || numeric <= 0) return 1;
+      return Math.max(0.25, Math.min(4, numeric));
+    }
+
+    function previewSummaryText(state, scale) {
+      const treeCount = state?.linkedStatus?.treeNodeCount ?? 0;
+      const selectedId = state?.view?.canvas?.selectedIds?.[0] || '(none)';
+      return 'objects: ' + treeCount + ' · selected: ' + String(selectedId) + ' · zoom: ' + Math.round(scale * 100) + '%';
+    }
+
+    function syncPreviewScale(surface, svg, summaryEl, state, nextScale, anchorEvent) {
+      if (!surface || !svg || !summaryEl) return 1;
+      const previousScale = getPreviewScale(surface);
+      const clampedScale = clampPreviewScale(nextScale);
+      const anchor = anchorEvent && Number.isFinite(anchorEvent.clientX) && Number.isFinite(anchorEvent.clientY)
+        ? {
+            clientX: anchorEvent.clientX,
+            clientY: anchorEvent.clientY,
+            surfaceRect: surface.getBoundingClientRect(),
+          }
+        : null;
+      surface.dataset.fePreviewScale = String(clampedScale);
+      svg.style.transformOrigin = '0 0';
+      svg.style.transformBox = 'fill-box';
+      svg.style.transform = 'scale(' + clampedScale + ')';
+      if (anchor && previousScale > 0) {
+        const relX = anchor.clientX - anchor.surfaceRect.left;
+        const relY = anchor.clientY - anchor.surfaceRect.top;
+        const contentX = (surface.scrollLeft + relX) / previousScale;
+        const contentY = (surface.scrollTop + relY) / previousScale;
+        window.requestAnimationFrame(() => {
+          surface.scrollLeft = Math.max(0, contentX * clampedScale - relX);
+          surface.scrollTop = Math.max(0, contentY * clampedScale - relY);
+        });
+      }
+      summaryEl.textContent = previewSummaryText(state, clampedScale);
+      return clampedScale;
     }
 
     function composeSvgTransform(baseTransform, dx, dy) {
@@ -627,6 +1116,9 @@ function htmlPage(port) {
       clearOptimisticDrag(surface);
       applySelectionOverlay(svg, state);
       applyCurveHandles(svg, state);
+      const summaryEl = previewBody.querySelector('.preview-summary');
+      const currentScale = getPreviewScale(surface);
+      syncPreviewScale(surface, svg, summaryEl, state, currentScale);
       if (surface.dataset.interactionBound === '1') {
         return;
       }
@@ -656,7 +1148,56 @@ function htmlPage(port) {
       let drag = null;
       let curveHandleDrag = null;
 
+      surface.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+      });
+
+      surface.addEventListener('keydown', async (event) => {
+        if (String(event.key || '').toLowerCase() !== 'escape') return;
+        const selectedCount = Number(currentState?.linkedStatus?.selectedCount || 0);
+        if (selectedCount <= 0) return;
+        event.preventDefault();
+        event.stopPropagation();
+        try {
+          const payload = await postJson('/api/clear-selection', {});
+          renderAll(payload.state);
+          setStatus('已清空选择');
+        } catch (error) {
+          setStatus('清空选择失败: ' + (error?.message || String(error)), true);
+        }
+      });
+
       surface.addEventListener('pointerdown', (event) => {
+        if (event.button === 2) {
+          const movableTarget = resolveMovableObjectTarget(surface, event.target);
+          const movableObjectId = movableTarget?.getAttribute?.('data-fe-object-id') || '';
+          if (!movableObjectId) return;
+          const start = toSvgPoint(event);
+          if (!start) return;
+          event.preventDefault();
+          event.stopPropagation();
+          surface.focus({ preventScroll: true });
+          surface.setPointerCapture?.(event.pointerId);
+          surface.classList.add('is-dragging');
+          const selectPromise = postJson('/api/select', { objectId: movableObjectId }).then((payload) => {
+            currentState = payload.state;
+            if (drag && drag.pointerId === event.pointerId) {
+              drag.selectedObjectId = payload?.state?.view?.properties?.id ?? payload?.state?.view?.canvas?.selectedIds?.[0] ?? movableObjectId;
+            }
+            return payload;
+          });
+          drag = {
+            pointerId: event.pointerId,
+            start,
+            current: start,
+            moved: false,
+            hitPromise: selectPromise,
+            selectedObjectId: movableObjectId,
+            appendSelection: false,
+            skipTextFallback: true,
+          };
+          return;
+        }
         if (event.button !== 0) return;
         const handleTarget = event.target?.closest?.('[data-fe-curve-handle-id]');
         if (handleTarget) {
@@ -686,7 +1227,7 @@ function htmlPage(port) {
         surface.setPointerCapture?.(event.pointerId);
         surface.classList.add('is-dragging');
 
-        const hitPromise = postJson('/api/hit', { x: start.x, y: start.y }).then((payload) => {
+        const hitPromise = postJson('/api/hit', { x: start.x, y: start.y, appendSelection: event.shiftKey === true }).then((payload) => {
           currentState = payload.state;
           if (drag && drag.pointerId === event.pointerId) {
             drag.selectedObjectId = payload?.state?.view?.properties?.id ?? payload?.state?.view?.canvas?.selectedIds?.[0] ?? null;
@@ -701,6 +1242,8 @@ function htmlPage(port) {
           moved: false,
           hitPromise,
           selectedObjectId: null,
+          appendSelection: event.shiftKey === true,
+          skipTextFallback: false,
         };
       });
 
@@ -725,7 +1268,7 @@ function htmlPage(port) {
         const dx = current.x - drag.start.x;
         const dy = current.y - drag.start.y;
         drag.moved = Math.abs(dx) + Math.abs(dy) >= 0.8;
-        if (drag.moved && drag.selectedObjectId) {
+        if (drag.moved && drag.selectedObjectId && !drag.appendSelection) {
           applyOptimisticDrag(surface, drag.selectedObjectId, Number(dx.toFixed(3)), Number(dy.toFixed(3)));
         } else {
           clearOptimisticDrag(surface);
@@ -755,7 +1298,7 @@ function htmlPage(port) {
           clearOptimisticDrag(surface);
           const selectedType = objectTypeOf(hitPayload?.state?.view?.properties);
           const isTextSelected = selectedType === 'text_node' || selectedType === 'html_block' || selectedType === 'figure_title' || selectedType === 'panel_label';
-          if (!isTextSelected) {
+          if (!isTextSelected && !session.appendSelection && !session.skipTextFallback) {
             try {
               const textPayload = await postJson('/api/select-text-at', { x: session.start.x, y: session.start.y, maxDistance: 24 });
               const textType = objectTypeOf(textPayload?.state?.view?.properties);
@@ -828,6 +1371,8 @@ function htmlPage(port) {
       });
 
       surface.addEventListener('dblclick', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         const p = toSvgPoint(event);
         if (!p) return;
         surface.focus({ preventScroll: true });
@@ -841,9 +1386,6 @@ function htmlPage(port) {
           if (!selectPayload || !selectPayload.state || !selectPayload.state.view?.properties) {
             selectPayload = await postJson('/api/hit', { x: p.x, y: p.y });
           }
-          if (selectPayload && selectPayload.state) {
-            renderAll(selectPayload.state);
-          }
           const props = selectPayload?.state?.view?.properties;
           const currentText =
             typeof props?.extra?.content === 'string'
@@ -853,7 +1395,7 @@ function htmlPage(port) {
                 : '';
           const propType = objectTypeOf(props);
           const editableType = propType === 'text_node' || propType === 'html_block';
-          if (!editableType && currentText.length === 0) {
+          if (!editableType) {
             const createText = window.prompt('当前点位没有可编辑文本。输入新文本以在此处创建文本对象', '');
             if (createText === null) {
               setStatus('已取消新增文本');
@@ -868,9 +1410,8 @@ function htmlPage(port) {
             setStatus('新增文本成功');
             return;
           }
-          if (!editableType) {
-            setStatus('当前点位没有可编辑文本。请双击空白处新增文本，或先选中文本对象后再编辑。', true);
-            return;
+          if (selectPayload && selectPayload.state) {
+            renderAll(selectPayload.state);
           }
           const next = window.prompt('编辑文本内容', currentText);
           if (next === null) return;
@@ -885,13 +1426,25 @@ function htmlPage(port) {
           setStatus('双击编辑失败: ' + (error?.message || String(error)), true);
         }
       });
+
+      surface.addEventListener('wheel', (event) => {
+        if (!(event.ctrlKey || event.metaKey)) return;
+        const svgEl = surface.querySelector('svg');
+        const summaryEl = previewBody.querySelector('.preview-summary');
+        if (!svgEl || !summaryEl) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const currentScale = getPreviewScale(surface);
+        const direction = event.deltaY > 0 ? -1 : 1;
+        const magnitude = Math.min(120, Math.abs(event.deltaY));
+        const factor = Math.exp(direction * Math.max(0.04, magnitude / 320));
+        syncPreviewScale(surface, svgEl, summaryEl, currentState || state, currentScale * factor, event);
+      }, { passive: false, capture: true });
     }
 
     function renderPreview(state) {
       const hasPreview = Boolean(state?.preview?.svgDataUrl);
       const sanitizedCount = Number(state?.preview?.sanitizedCount || 0);
-      const treeCount = state?.linkedStatus?.treeNodeCount ?? 0;
-      const selectedId = state?.view?.canvas?.selectedIds?.[0] || '(none)';
       const revision = Number(state?.window?.renderRevision || 0);
       const viewport = state?.preview?.viewport || null;
       const aspectRatio = viewport && viewport.width > 0 ? (viewport.height / viewport.width) : 0.62;
@@ -926,7 +1479,7 @@ function htmlPage(port) {
         warningEl.style.display = 'none';
         warningEl.textContent = '';
       }
-      summaryEl.textContent = 'objects: ' + treeCount + ' · selected: ' + String(selectedId);
+      summaryEl.textContent = previewSummaryText(state, getPreviewScale(surface));
 
       if (mountedPreviewRevision === revision) {
         clearOptimisticDrag(surface);
@@ -935,6 +1488,7 @@ function htmlPage(port) {
           surface._fePreviewViewport = state?.preview?.viewport ?? null;
           applySelectionOverlay(svg, state);
           applyCurveHandles(svg, state);
+          syncPreviewScale(surface, svg, summaryEl, state, getPreviewScale(surface));
         }
         return;
       }
@@ -966,6 +1520,7 @@ function htmlPage(port) {
 
     function renderAll(state, options) {
       currentState = state;
+      syncSelectionSidebar(state);
       const previewMode = options?.previewMode || 'immediate';
       const saveInput = document.getElementById('project-save-path');
       const suggestedSavePath = String(state?.defaultSavePath || '').trim();
@@ -996,10 +1551,10 @@ function htmlPage(port) {
       return payload.state;
     }
 
-    async function runAction(label, fn) {
+    async function runAction(label, fn, options) {
       try {
         const payload = await fn();
-        renderAll(payload.state);
+        renderAll(payload.state, options?.renderOptions);
         setStatus(label + ' 成功');
       } catch (error) {
         setStatus(label + ' 失败: ' + (error?.message || String(error)), true);
@@ -1052,6 +1607,112 @@ function htmlPage(port) {
       event.currentTarget.dataset.feAutoSuggested = '0';
     });
 
+    function updateStylePreviewFromDraft() {
+      const currentTextStyle = currentState?.view?.properties?.textStyle || null;
+      const nextFontFamily = String(fontFamilyInput.value || currentTextStyle?.fontFamily || ${JSON.stringify(FONT_STACK_PRESETS.sans)}).trim() || ${JSON.stringify(FONT_STACK_PRESETS.sans)};
+      ensureFontFamilyOption(nextFontFamily);
+      fontFamilyInput.style.fontFamily = nextFontFamily;
+      applyPreviewTextStyle({
+        content: currentTextStyle?.content || '',
+        fontFamily: nextFontFamily,
+        fontSize: Number(fontSizeInput.value || currentTextStyle?.fontSize || 16),
+        fontWeight: boldButton.dataset.active === '1' ? '700' : '400',
+        fontStyle: italicButton.dataset.active === '1' ? 'italic' : 'normal',
+        fill: fillColorInput.value || normalizeColorForInput(currentTextStyle?.fill),
+      });
+    }
+
+    function buildAppearancePatch(currentTextStyle, currentAppearance) {
+      const patch = {
+        fill: fillColorInput.value || normalizeColorForInput(currentTextStyle?.fill || currentAppearance?.fillColor),
+        stroke: strokeColorInput.value || normalizeColorForInput(currentAppearance?.strokeColor),
+      };
+
+      if (currentTextStyle) {
+        const nextFontFamily = fontFamilyInput.value.trim();
+        if (nextFontFamily && nextFontFamily !== String(currentTextStyle.fontFamily || '')) {
+          patch.fontFamily = nextFontFamily;
+        }
+
+        const nextFontSize = Number(fontSizeInput.value || currentTextStyle.fontSize || 16);
+        if (Number.isFinite(nextFontSize) && nextFontSize !== Number(currentTextStyle.fontSize || 16)) {
+          patch.fontSize = nextFontSize;
+        }
+
+        const currentFontWeight = String(currentTextStyle.fontWeight || '').trim().toLowerCase();
+        const currentFontStyle = String(currentTextStyle.fontStyle || '').trim().toLowerCase();
+        const nextFontWeight = boldButton.dataset.active === '1' ? '700' : '400';
+        const nextFontStyle = italicButton.dataset.active === '1' ? 'italic' : 'normal';
+        const knownWeight = currentFontWeight === 'bold' || currentFontWeight === 'normal' || /^[1-9]00$/.test(currentFontWeight);
+        const knownStyle = currentFontStyle === 'italic' || currentFontStyle === 'normal' || currentFontStyle === 'oblique';
+
+        if ((knownWeight && nextFontWeight !== currentFontWeight) || (!knownWeight && nextFontWeight === '700')) {
+          patch.fontWeight = nextFontWeight;
+        }
+
+        if ((knownStyle && nextFontStyle !== currentFontStyle) || (!knownStyle && nextFontStyle === 'italic')) {
+          patch.fontStyle = nextFontStyle;
+        }
+      }
+
+      return patch;
+    }
+
+    fontFamilyInput.addEventListener('input', updateStylePreviewFromDraft);
+    fontFamilyInput.addEventListener('change', updateStylePreviewFromDraft);
+    fontSizeInput.addEventListener('input', updateStylePreviewFromDraft);
+    fillColorInput.addEventListener('input', updateStylePreviewFromDraft);
+    strokeColorInput.addEventListener('input', updateStylePreviewFromDraft);
+    boldButton.addEventListener('click', () => {
+      if (boldButton.disabled) return;
+      setToggleButtonState(boldButton, boldButton.dataset.active !== '1');
+      updateStylePreviewFromDraft();
+    });
+    italicButton.addEventListener('click', () => {
+      if (italicButton.disabled) return;
+      setToggleButtonState(italicButton, italicButton.dataset.active !== '1');
+      updateStylePreviewFromDraft();
+    });
+    applyAppearanceButton.addEventListener('click', async () => {
+      const currentAppearance = currentState?.view?.properties?.appearance || null;
+      const currentTextStyle = currentState?.view?.properties?.textStyle || null;
+      if (!currentAppearance && !currentTextStyle) {
+        setStatus('请先选中可编辑对象。', true);
+        return;
+      }
+      const fontSize = Number(fontSizeInput.value || currentTextStyle?.fontSize || 16);
+      if (currentTextStyle && (!Number.isFinite(fontSize) || fontSize < 6 || fontSize > 256)) {
+        setStatus('字号必须在 6 到 256 之间。', true);
+        return;
+      }
+      try {
+        const payload = await postJson('/api/update-appearance', buildAppearancePatch(currentTextStyle, currentAppearance));
+        renderAll(payload.state, { previewMode: 'defer' });
+        setStatus('对象外观已应用');
+      } catch (error) {
+        setStatus('对象外观应用失败: ' + (error?.message || String(error)), true);
+      }
+    });
+
+    async function runLayoutAction(label, endpoint, body) {
+      try {
+        const payload = await postJson(endpoint, body || {});
+        renderAll(payload.state, { previewMode: 'defer' });
+        setStatus(label + '成功');
+      } catch (error) {
+        setStatus(label + '失败: ' + (error?.message || String(error)), true);
+      }
+    }
+
+    alignLeftButton.addEventListener('click', () => runLayoutAction('左对齐', '/api/align-selected', { mode: 'align_left' }));
+    alignRightButton.addEventListener('click', () => runLayoutAction('右对齐', '/api/align-selected', { mode: 'align_right' }));
+    alignTopButton.addEventListener('click', () => runLayoutAction('上对齐', '/api/align-selected', { mode: 'align_top' }));
+    alignBottomButton.addEventListener('click', () => runLayoutAction('下对齐', '/api/align-selected', { mode: 'align_bottom' }));
+    alignCenterHButton.addEventListener('click', () => runLayoutAction('水平居中', '/api/align-selected', { mode: 'center_horizontal' }));
+    alignCenterVButton.addEventListener('click', () => runLayoutAction('垂直居中', '/api/align-selected', { mode: 'center_vertical' }));
+    distributeHButton.addEventListener('click', () => runLayoutAction('水平分布', '/api/distribute-selected', { mode: 'equal_spacing_horizontal' }));
+    distributeVButton.addEventListener('click', () => runLayoutAction('垂直分布', '/api/distribute-selected', { mode: 'equal_spacing_vertical' }));
+
     document.getElementById('btn-save-project').addEventListener('click', async () => {
       const filePath = document.getElementById('project-save-path').value.trim();
       try {
@@ -1067,6 +1728,111 @@ function htmlPage(port) {
       }
     });
 
+    let pendingKeyboardMoveDx = 0;
+    let pendingKeyboardMoveDy = 0;
+    let keyboardMoveInFlight = null;
+    let keyboardMoveFrame = 0;
+    let pendingKeyboardCurveDelta = 0;
+    let keyboardCurveInFlight = null;
+    let keyboardCurveFrame = 0;
+
+    function hasPendingKeyboardMove() {
+      return Math.abs(pendingKeyboardMoveDx) > 0.0001 || Math.abs(pendingKeyboardMoveDy) > 0.0001;
+    }
+
+    function hasPendingKeyboardCurveDelta() {
+      return Math.abs(pendingKeyboardCurveDelta) > 0.0001;
+    }
+
+    function scheduleKeyboardMoveFlush() {
+      if (keyboardMoveFrame) return;
+      keyboardMoveFrame = window.requestAnimationFrame(() => {
+        keyboardMoveFrame = 0;
+        flushKeyboardMoveQueue().catch(() => {});
+      });
+    }
+
+    function scheduleKeyboardCurveFlush() {
+      if (keyboardCurveFrame) return;
+      keyboardCurveFrame = window.requestAnimationFrame(() => {
+        keyboardCurveFrame = 0;
+        flushKeyboardCurveQueue().catch(() => {});
+      });
+    }
+
+    async function flushKeyboardMoveQueue() {
+      if (keyboardMoveInFlight) return keyboardMoveInFlight;
+      if (!hasPendingKeyboardMove()) return null;
+      const dx = Number(pendingKeyboardMoveDx.toFixed(3));
+      const dy = Number(pendingKeyboardMoveDy.toFixed(3));
+      pendingKeyboardMoveDx = 0;
+      pendingKeyboardMoveDy = 0;
+      keyboardMoveInFlight = (async () => {
+        try {
+          const payload = await postJson('/api/move', { dx, dy });
+          renderAll(payload.state, { previewMode: 'defer' });
+          if (!hasPendingKeyboardMove()) {
+            setStatus('微调移动成功 (' + dx + ', ' + dy + ')');
+          }
+          return payload;
+        } catch (error) {
+          setStatus('微调移动失败: ' + (error?.message || String(error)), true);
+          throw error;
+        } finally {
+          keyboardMoveInFlight = null;
+          if (hasPendingKeyboardMove()) {
+            scheduleKeyboardMoveFlush();
+          }
+        }
+      })();
+      return keyboardMoveInFlight;
+    }
+
+    async function flushKeyboardCurveQueue() {
+      if (keyboardCurveInFlight) return keyboardCurveInFlight;
+      if (!hasPendingKeyboardCurveDelta()) return null;
+      const deltaY = Number(pendingKeyboardCurveDelta.toFixed(3));
+      pendingKeyboardCurveDelta = 0;
+      keyboardCurveInFlight = (async () => {
+        try {
+          const payload = await postJson('/api/adjust-curve', { deltaY });
+          renderAll(payload.state, { previewMode: 'defer' });
+          if (!hasPendingKeyboardCurveDelta()) {
+            setStatus('曲线调节成功 (' + deltaY + ')');
+          }
+          return payload;
+        } catch (error) {
+          setStatus('曲线调节失败: ' + (error?.message || String(error)), true);
+          throw error;
+        } finally {
+          keyboardCurveInFlight = null;
+          if (hasPendingKeyboardCurveDelta()) {
+            scheduleKeyboardCurveFlush();
+          }
+        }
+      })();
+      return keyboardCurveInFlight;
+    }
+
+    async function flushPendingKeyboardMutations() {
+      const movePromise = flushKeyboardMoveQueue();
+      if (movePromise) {
+        try {
+          await movePromise;
+        } catch {
+          // status already surfaced by the queue
+        }
+      }
+      const curvePromise = flushKeyboardCurveQueue();
+      if (curvePromise) {
+        try {
+          await curvePromise;
+        } catch {
+          // status already surfaced by the queue
+        }
+      }
+    }
+
     document.addEventListener('keydown', async (event) => {
       const active = document.activeElement;
       const tag = active && active.tagName ? String(active.tagName).toLowerCase() : '';
@@ -1079,6 +1845,7 @@ function htmlPage(port) {
 
       if ((event.ctrlKey || event.metaKey) && String(event.key).toLowerCase() === 's') {
         event.preventDefault();
+        await flushPendingKeyboardMutations();
         const filePath = document.getElementById('project-save-path').value.trim();
         try {
           const payload = await postJson('/api/save-artifact', { path: filePath });
@@ -1096,6 +1863,7 @@ function htmlPage(port) {
 
       if ((event.ctrlKey || event.metaKey) && String(event.key).toLowerCase() === 'z') {
         event.preventDefault();
+        await flushPendingKeyboardMutations();
         const endpoint = event.shiftKey ? '/api/redo' : '/api/undo';
         const actionLabel = event.shiftKey ? '重做' : '撤销';
         try {
@@ -1110,6 +1878,7 @@ function htmlPage(port) {
 
       if ((event.ctrlKey || event.metaKey) && String(event.key).toLowerCase() === 'y') {
         event.preventDefault();
+        await flushPendingKeyboardMutations();
         try {
           const payload = await postJson('/api/redo', {});
           renderAll(payload.state);
@@ -1120,10 +1889,40 @@ function htmlPage(port) {
         return;
       }
 
+      if ((event.ctrlKey || event.metaKey) && String(event.key).toLowerCase() === 'c') {
+        event.preventDefault();
+        if (!hasSelection) {
+          setStatus('请先选中对象。', true);
+          return;
+        }
+        await flushPendingKeyboardMutations();
+        try {
+          await postJson('/api/copy-selection', {});
+          setStatus('复制对象成功');
+        } catch (error) {
+          setStatus('复制对象失败: ' + (error?.message || String(error)), true);
+        }
+        return;
+      }
+
+      if ((event.ctrlKey || event.metaKey) && String(event.key).toLowerCase() === 'v') {
+        event.preventDefault();
+        await flushPendingKeyboardMutations();
+        try {
+          const payload = await postJson('/api/paste-selection', {});
+          renderAll(payload.state, { previewMode: 'defer' });
+          setStatus('粘贴对象成功');
+        } catch (error) {
+          setStatus('粘贴对象失败: ' + (error?.message || String(error)), true);
+        }
+        return;
+      }
+
       if (!hasSelection) return;
 
       if (event.key === 'Delete' || event.key === 'Backspace') {
         event.preventDefault();
+        await flushPendingKeyboardMutations();
         try {
           const payload = await postJson('/api/delete', {});
           renderAll(payload.state);
@@ -1137,13 +1936,8 @@ function htmlPage(port) {
       if (event.altKey && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
         event.preventDefault();
         const curveDelta = event.key === 'ArrowUp' ? -(event.shiftKey ? 24 : 12) : (event.shiftKey ? 24 : 12);
-        try {
-          const payload = await postJson('/api/adjust-curve', { deltaY: curveDelta });
-          renderAll(payload.state, { previewMode: 'defer' });
-          setStatus('曲线调节成功 (' + curveDelta + ')');
-        } catch (error) {
-          setStatus('曲线调节失败: ' + (error?.message || String(error)), true);
-        }
+        pendingKeyboardCurveDelta += curveDelta;
+        scheduleKeyboardCurveFlush();
         return;
       }
 
@@ -1156,13 +1950,9 @@ function htmlPage(port) {
       if (event.key === 'ArrowDown') dy = step;
       if (dx === 0 && dy === 0) return;
       event.preventDefault();
-      try {
-        const payload = await postJson('/api/move', { dx, dy });
-        renderAll(payload.state, { previewMode: 'defer' });
-        setStatus('微调移动成功 (' + dx + ', ' + dy + ')');
-      } catch (error) {
-        setStatus('微调移动失败: ' + (error?.message || String(error)), true);
-      }
+      pendingKeyboardMoveDx += dx;
+      pendingKeyboardMoveDy += dy;
+      scheduleKeyboardMoveFlush();
     });
 
     refreshState()
@@ -1201,18 +1991,111 @@ function openBrowser(url) {
   return spawnDetached('xdg-open', [url]);
 }
 
-function createRouter(shell) {
+function createRouter(shell, server) {
   const previewCache = {
     revision: -1,
     payload: null,
+    svg: '',
   };
+  let queuedMoveBatch = null;
+  let queuedMoveTimer = null;
+
+  function clearQueuedMoveTimer() {
+    if (queuedMoveTimer !== null) {
+      clearTimeout(queuedMoveTimer);
+      queuedMoveTimer = null;
+    }
+  }
+
+  async function flushQueuedMoveBatch() {
+    if (!queuedMoveBatch) {
+      clearQueuedMoveTimer();
+      return null;
+    }
+    const batch = queuedMoveBatch;
+    queuedMoveBatch = null;
+    clearQueuedMoveTimer();
+    try {
+      if (Math.abs(batch.dx) > 0.0001 || Math.abs(batch.dy) > 0.0001) {
+        shell.moveSelected(batch.dx, batch.dy);
+      }
+      const state = createSnapshot(shell, previewCache);
+      for (const waiter of batch.waiters) {
+        waiter.resolve(state);
+      }
+      return state;
+    } catch (error) {
+      for (const waiter of batch.waiters) {
+        waiter.reject(error);
+      }
+      throw error;
+    }
+  }
+
+  function queueMoveMutation(dx, dy) {
+    return new Promise((resolve, reject) => {
+      if (!queuedMoveBatch) {
+        queuedMoveBatch = { dx: 0, dy: 0, waiters: [] };
+      }
+      queuedMoveBatch.dx += dx;
+      queuedMoveBatch.dy += dy;
+      queuedMoveBatch.waiters.push({ resolve, reject });
+      if (queuedMoveTimer === null) {
+        queuedMoveTimer = setTimeout(() => {
+          flushQueuedMoveBatch().catch(() => {
+            // request-level handlers will surface the error via their own promise rejection
+          });
+        }, 12);
+      }
+    });
+  }
+
   return async function handle(req, res) {
     const method = req.method || 'GET';
     const pathname = new URL(req.url || '/', 'http://localhost').pathname;
 
     if (method === 'GET' && pathname === '/') {
-      send(res, 200, htmlPage(server.address().port), 'text/html; charset=utf-8');
+      const address = server.address();
+      const port = typeof address === 'object' && address ? address.port : 0;
+      send(res, 200, htmlPage(port), 'text/html; charset=utf-8');
       return;
+    }
+
+    if (method === 'GET' && pathname.startsWith('/fonts/')) {
+      const relPath = pathname.slice('/fonts/'.length).trim();
+      if (!relPath || relPath.includes('..') || relPath.includes('\\')) {
+        send(res, 400, { ok: false, error: 'Invalid font asset path' });
+        return;
+      }
+      const fontRoot = path.resolve(FONT_PACK_ROOT);
+      const resolvedPath = path.resolve(FONT_PACK_ROOT, relPath);
+      if (resolvedPath !== fontRoot && !resolvedPath.startsWith(`${fontRoot}${path.sep}`)) {
+        send(res, 400, { ok: false, error: 'Invalid font asset path' });
+        return;
+      }
+      if (!fs.existsSync(resolvedPath) || !fs.statSync(resolvedPath).isFile()) {
+        send(res, 404, { ok: false, error: 'Font asset not found' });
+        return;
+      }
+      const ext = path.extname(resolvedPath).toLowerCase();
+      const contentType =
+        ext === '.css'
+          ? 'text/css; charset=utf-8'
+          : ext === '.json'
+            ? 'application/json; charset=utf-8'
+            : ext === '.woff2'
+              ? 'font/woff2'
+              : ext === '.woff'
+                ? 'font/woff'
+                : ext === '.ttf'
+                  ? 'font/ttf'
+                  : 'application/octet-stream';
+      send(res, 200, fs.readFileSync(resolvedPath), contentType);
+      return;
+    }
+
+    if (pathname !== '/api/move') {
+      await flushQueuedMoveBatch();
     }
 
     if (method === 'GET' && pathname === '/api/state') {
@@ -1222,13 +2105,13 @@ function createRouter(shell) {
 
     if (method === 'GET' && pathname === '/api/preview.svg') {
       try {
-        const rawSvg = shell.getPreviewSvgContent();
-        if (typeof rawSvg !== 'string' || rawSvg.trim().length === 0) {
+        const windowState = shell.getWindowSession();
+        ensurePreviewPayload(shell, previewCache, windowState);
+        if (typeof previewCache.svg !== 'string' || previewCache.svg.trim().length === 0) {
           send(res, 404, '<svg xmlns="http://www.w3.org/2000/svg"></svg>', 'image/svg+xml; charset=utf-8');
           return;
         }
-        const sanitized = sanitizePreviewSvgForGui(rawSvg);
-        send(res, 200, sanitized.svg, 'image/svg+xml; charset=utf-8');
+        send(res, 200, previewCache.svg, 'image/svg+xml; charset=utf-8');
       } catch (error) {
         send(
           res,
@@ -1287,16 +2170,27 @@ function createRouter(shell) {
           shell.selectObject(objectId);
           break;
         }
+        case '/api/select-multi': {
+          const objectIds = Array.isArray(body.objectIds) ? body.objectIds.map((value) => String(value || '').trim()).filter(Boolean) : [];
+          if (objectIds.length === 0) throw new Error('Missing objectIds');
+          shell.multiSelectByIds(objectIds);
+          break;
+        }
         case '/api/select-first-text':
           shell.selectFirstEditableText();
           break;
+        case '/api/clear-selection': {
+          shell.clearSelection();
+          break;
+        }
         case '/api/hit': {
           const x = Number(body.x);
           const y = Number(body.y);
+          const appendSelection = body.appendSelection === true;
           if (!Number.isFinite(x) || !Number.isFinite(y)) {
             throw new Error('Invalid hit coordinate');
           }
-          shell.selectAtPoint(x, y);
+          shell.selectAtPoint(x, y, { appendSelection });
           break;
         }
         case '/api/select-text-at': {
@@ -1309,11 +2203,27 @@ function createRouter(shell) {
           shell.selectTextAtPoint(x, y, Number.isFinite(maxDistance) ? maxDistance : 32);
           break;
         }
+        case '/api/copy-selection': {
+          shell.copySelection();
+          break;
+        }
+        case '/api/paste-selection': {
+          shell.pasteSelection();
+          break;
+        }
         case '/api/move': {
           const dx = Number(body.dx || 0);
           const dy = Number(body.dy || 0);
-          shell.moveSelected(dx, dy);
-          break;
+          if (!Number.isFinite(dx) || !Number.isFinite(dy)) {
+            throw new Error('Invalid move delta');
+          }
+          if (Math.abs(dx) <= 0.0001 && Math.abs(dy) <= 0.0001) {
+            send(res, 200, { ok: true, state: createSnapshot(shell, previewCache) });
+            return;
+          }
+          const state = await queueMoveMutation(dx, dy);
+          send(res, 200, { ok: true, state });
+          return;
         }
         case '/api/adjust-curve': {
           const deltaY = Number(body.deltaY || 0);
@@ -1334,6 +2244,18 @@ function createRouter(shell) {
           shell.editSelectedText(content);
           break;
         }
+        case '/api/update-appearance':
+        case '/api/update-text-style': {
+          shell.updateSelectedAppearance({
+            fontFamily: body.fontFamily,
+            fontSize: Number(body.fontSize),
+            fontWeight: body.fontWeight,
+            fontStyle: body.fontStyle,
+            fill: body.fill,
+            stroke: body.stroke,
+          });
+          break;
+        }
         case '/api/add-text': {
           const x = Number(body.x);
           const y = Number(body.y);
@@ -1350,6 +2272,27 @@ function createRouter(shell) {
         case '/api/promote': {
           const role = String(body.role || 'panel');
           shell.promoteSelection(role, 'desktop_gui_server');
+          break;
+        }
+        case '/api/align-selected': {
+          const mode = String(body.mode || '').trim();
+          const allowed = new Set([
+            'align_left',
+            'align_right',
+            'align_top',
+            'align_bottom',
+            'center_horizontal',
+            'center_vertical',
+          ]);
+          if (!allowed.has(mode)) throw new Error('Invalid align mode');
+          shell.alignSelected(mode);
+          break;
+        }
+        case '/api/distribute-selected': {
+          const mode = String(body.mode || '').trim();
+          const allowed = new Set(['equal_spacing_horizontal', 'equal_spacing_vertical']);
+          if (!allowed.has(mode)) throw new Error('Invalid distribute mode');
+          shell.distributeSelected(mode);
           break;
         }
         case '/api/delete':
@@ -1415,8 +2358,6 @@ function createRouter(shell) {
   };
 }
 
-let server = null;
-
 function startDesktopGuiServer(options = {}) {
   const host = options.host || '127.0.0.1';
   const port = Number.isFinite(options.port) ? Number(options.port) : 3210;
@@ -1425,8 +2366,8 @@ function startDesktopGuiServer(options = {}) {
   const shell = createDesktopAppShell();
   shell.launchWindow();
 
-  server = http.createServer();
-  const handler = createRouter(shell);
+  const server = http.createServer();
+  const handler = createRouter(shell, server);
   server.on('request', (req, res) => {
     handler(req, res);
   });

@@ -4,6 +4,11 @@ export type MoveObjectOperation = {
   payload: { objectId: string; delta: { x: number; y: number } };
 };
 
+export type MoveObjectsOperation = {
+  type: 'MOVE_OBJECTS';
+  payload: { objectIds: string[]; delta: { x: number; y: number } };
+};
+
 export type ResizeObjectOperation = {
   type: 'RESIZE_OBJECT';
   payload: { objectId: string; bbox: { x: number; y: number; w: number; h: number } };
@@ -12,6 +17,11 @@ export type ResizeObjectOperation = {
 export type DeleteObjectOperation = {
   type: 'DELETE_OBJECT';
   payload: { objectId: string };
+};
+
+export type DeleteObjectsOperation = {
+  type: 'DELETE_OBJECTS';
+  payload: { objectIds: string[] };
 };
 
 export type EditTextContentOperation = {
@@ -46,8 +56,10 @@ export type UngroupObjectOperation = {
 
 export type Operation =
   | MoveObjectOperation
+  | MoveObjectsOperation
   | ResizeObjectOperation
   | DeleteObjectOperation
+  | DeleteObjectsOperation
   | EditTextContentOperation
   | SetAnchorOperation
   | PromoteSelectionOperation

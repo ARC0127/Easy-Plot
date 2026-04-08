@@ -62,6 +62,23 @@ test('marker-style use nodes keep defs/use roundtrip and remain movable', () => 
   assert.match(previewAfter, /transform="translate\(5 3\)"/);
 });
 
+test('small icon-like shapes remain selectable a few pixels off target', () => {
+  const workbench = createDesktopWorkbench();
+  workbench.importDocument({
+    path: 'tiny_icon.svg',
+    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 120 80" width="120" height="80" xmlns="http://www.w3.org/2000/svg">
+  <path d="M60 40 h3 v3 h-3 z" fill="#0f172a" />
+</svg>`,
+    kind: 'svg',
+    familyHint: 'illustration_like',
+    htmlMode: 'limited',
+  });
+
+  const selected = workbench.selectAtPoint(68, 41.5);
+  assert.equal(selected.properties?.objectType, 'shape_node');
+});
+
 test('parser and normalizer do not retain redundant raw SVG copies for large marker imports', () => {
   const svg = buildLargeMarkerSvg();
   const parsed = parseDocument({

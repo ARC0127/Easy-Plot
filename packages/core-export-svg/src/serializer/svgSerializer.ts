@@ -1,5 +1,8 @@
 
 import { AnyObject, Project } from '../../../ir-schema/dist/index';
+const {
+  buildFontFaceCss,
+} = require('../../../../scripts/font_pack.cjs');
 
 function esc(v: string): string {
   return v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -31,35 +34,53 @@ function combineTransformAttrs(...parts: Array<string | undefined | null>): stri
 }
 
 const SANS_FONT_STACK = [
+  'Inter',
+  'Source Sans 3',
+  'IBM Plex Sans',
+  'Roboto',
+  'Open Sans',
+  'Noto Sans SC',
   'Aptos',
-  'Calibri',
   'Segoe UI',
   'Helvetica Neue',
   'Arial',
-  'Noto Sans',
   'Liberation Sans',
   'DejaVu Sans',
   'PingFang SC',
   'Hiragino Sans GB',
   'Microsoft YaHei',
   'Source Han Sans SC',
+  'Calibri',
   'sans-serif',
 ];
 
 const SERIF_FONT_STACK = [
+  'Source Serif 4',
+  'IBM Plex Serif',
+  'Merriweather',
+  'Lora',
+  'PT Serif',
+  'Noto Serif SC',
   'Cambria',
   'Georgia',
   'Times New Roman',
+  'Roboto Slab',
   'Noto Serif',
   'Noto Serif CJK SC',
   'Source Han Serif SC',
-  'SimSun',
-  'Songti SC',
+  'Liberation Serif',
   'DejaVu Serif',
+  'TeX Gyre Termes',
+  'Songti SC',
+  'SimSun',
   'serif',
 ];
 
 const MONO_FONT_STACK = [
+  'Source Code Pro',
+  'IBM Plex Mono',
+  'JetBrains Mono',
+  'Fira Code',
   'Cascadia Mono',
   'Consolas',
   'SFMono-Regular',
@@ -67,6 +88,7 @@ const MONO_FONT_STACK = [
   'Monaco',
   'Liberation Mono',
   'DejaVu Sans Mono',
+  'Noto Sans Mono',
   'monospace',
 ];
 
@@ -87,8 +109,8 @@ function splitFontFamilyList(raw: string | null | undefined): string[] {
 
 function inferFontClass(primary: string | undefined): 'sans' | 'serif' | 'mono' {
   const token = String(primary ?? '').toLowerCase();
-  if (/mono|code|consolas|cascadia|courier|menlo|monaco/.test(token)) return 'mono';
-  if (/serif|times|georgia|cambria|garamond|baskerville|song|simsun/.test(token)) return 'serif';
+  if (/mono|code|consolas|cascadia|courier|menlo|monaco|source code|ibm plex mono|jetbrains mono|fira code|liberation mono|deja vu sans mono|noto sans mono/.test(token)) return 'mono';
+  if (/serif|times|georgia|cambria|garamond|baskerville|palatino|charter|merriweather|lora|slab|source serif|ibm plex serif|pt serif|noto serif|tex gyre termes|song|simsun/.test(token)) return 'serif';
   return 'sans';
 }
 
@@ -112,7 +134,10 @@ function textTransformAttr(obj: AnyObject & { position: [number, number] }): str
   return `rotate(${rotate} ${obj.position[0]} ${obj.position[1]})`;
 }
 
-function renderGlyphProxyText(obj: Extract<AnyObject, { objectType: 'text_node' }>, base: Record<string, string | number>): string | null {
+function renderGlyphProxyText(
+  obj: Extract<AnyObject, { objectType: 'text_node' }>,
+  base: Record<string, string | number | null | undefined>
+): string | null {
   const glyphVector = (obj as any).glyphVector;
   if (!glyphVector || !Array.isArray(glyphVector.uses) || glyphVector.uses.length === 0) {
     return null;
@@ -138,7 +163,11 @@ function renderGlyphProxyText(obj: Extract<AnyObject, { objectType: 'text_node' 
       return `<use ${attrs(useAttrs)} />`;
     })
     .join('');
-  return `<g ${attrs({ ...base, transform: wrapperTransform, ...wrapperStyle })}>${defsMarkup ? `<defs>${defsMarkup}</defs>` : ''}${usesMarkup}</g>`;
+  const proxyStyle = { ...wrapperStyle };
+  if (typeof obj.fill === 'string' && obj.fill.trim().length > 0) {
+    proxyStyle.fill = obj.fill;
+  }
+  return `<g ${attrs({ ...base, transform: wrapperTransform, ...proxyStyle })}>${defsMarkup ? `<defs>${defsMarkup}</defs>` : ''}${usesMarkup}</g>`;
 }
 
 function filterPassthroughShapeAttrs(
@@ -218,7 +247,13 @@ function resolveShapeStyleAttrs(obj: Extract<AnyObject, { objectType: 'shape_nod
   return styleAttrs;
 }
 
-function renderShapeUse(obj: Extract<AnyObject, { objectType: 'shape_node' }>, base: Record<string, string | number>, bboxAttrs: Record<string, string | number>, shapeAttrs: Record<string, string>, useReference: any): string {
+function renderShapeUse(
+  obj: Extract<AnyObject, { objectType: 'shape_node' }>,
+  base: Record<string, string | number | null | undefined>,
+  bboxAttrs: Record<string, string | number>,
+  shapeAttrs: Record<string, string>,
+  useReference: any
+): string {
   const href = String(useReference?.href ?? shapeAttrs.href ?? shapeAttrs['xlink:href'] ?? '').trim();
   if (!href) {
     return '';
@@ -255,12 +290,37 @@ function collectUseDefinitions(renderables: AnyObject[]): string[] {
   return [...defsById.values()];
 }
 
-function semanticMarker(obj: AnyObject): string {
+function buildParentMap(objects: Record<string, AnyObject>): Record<string, string> {
+  const parentMap: Record<string, string> = {};
+  const assignParent = (childId: unknown, parentId: string): void => {
+    const normalizedChildId = String(childId ?? '').trim();
+    if (!normalizedChildId || normalizedChildId in parentMap) return;
+    parentMap[normalizedChildId] = parentId;
+  };
+
+  for (const obj of Object.values(objects)) {
+    if (Array.isArray((obj as any).childObjectIds)) {
+      for (const childId of (obj as any).childObjectIds) assignParent(childId, obj.id);
+    }
+    if (obj.objectType === 'panel') {
+      assignParent((obj as any).contentRootId, obj.id);
+      assignParent((obj as any).titleObjectId, obj.id);
+    }
+    if (obj.objectType === 'legend' && Array.isArray((obj as any).itemObjectIds)) {
+      for (const childId of (obj as any).itemObjectIds) assignParent(childId, obj.id);
+    }
+  }
+
+  return parentMap;
+}
+
+function semanticMarker(obj: AnyObject, parentId: string | null = null): string {
   if (!['panel', 'legend', 'annotation_block', 'figure_title', 'panel_label'].includes(obj.objectType)) return '';
   return `<g ${attrs({
     id: obj.id,
     'data-fe-role': obj.objectType === 'annotation_block' ? 'annotation' : obj.objectType,
     'data-fe-object-id': obj.id,
+    'data-fe-parent-id': parentId ?? undefined,
     x: obj.bbox.x,
     y: obj.bbox.y,
     width: obj.bbox.w,
@@ -268,11 +328,12 @@ function semanticMarker(obj: AnyObject): string {
   })}></g>`;
 }
 
-function renderObject(obj: AnyObject): string {
-  const base = {
+function renderObject(obj: AnyObject, parentId: string | null = null): string {
+  const base: Record<string, string | number | null | undefined> = {
     id: obj.id,
     'data-fe-object-type': obj.objectType,
     'data-fe-object-id': obj.id,
+    'data-fe-parent-id': parentId ?? undefined,
   };
 
   switch (obj.objectType) {
@@ -282,7 +343,17 @@ function renderObject(obj: AnyObject): string {
         if (glyphProxyMarkup) return glyphProxyMarkup;
       }
       const fontFamily = buildExportFontFamily(obj.font.family);
-      return `<text ${attrs({ ...base, x: obj.position[0], y: obj.position[1], transform: textTransformAttr(obj), 'font-family': fontFamily, 'font-size': obj.font.size, fill: obj.fill })}>${esc(obj.content)}</text>`;
+      return `<text ${attrs({
+        ...base,
+        x: obj.position[0],
+        y: obj.position[1],
+        transform: textTransformAttr(obj),
+        'font-family': fontFamily,
+        'font-size': obj.font.size,
+        'font-weight': obj.font.weight,
+        'font-style': obj.font.style,
+        fill: obj.fill,
+      })}>${esc(obj.content)}</text>`;
     }
     case 'image_node':
       return `<image ${attrs({ ...base, x: obj.bbox.x, y: obj.bbox.y, width: obj.bbox.w, height: obj.bbox.h, href: obj.href, 'xlink:href': obj.href })} />`;
@@ -348,15 +419,17 @@ function renderObject(obj: AnyObject): string {
 
 export function serializeProjectToSvg(project: Project): string {
   const { figure, objects } = project.project;
+  const parentMap = buildParentMap(objects);
   const semantic = Object.values(objects).filter(o => ['panel', 'legend', 'annotation_block', 'figure_title', 'panel_label'].includes(o.objectType));
   const renderables = Object.values(objects)
     .filter(o => ['text_node', 'image_node', 'shape_node', 'group_node', 'html_block'].includes(o.objectType))
     .sort((a, b) => a.zIndex - b.zIndex);
   const defs = collectUseDefinitions(renderables);
+  const fontFaceCss = buildFontFaceCss('fonts');
 
   const body = [
-    ...semantic.map(semanticMarker),
-    ...renderables.map(renderObject),
+    ...semantic.map((obj) => semanticMarker(obj, parentMap[obj.id] ?? null)),
+    ...renderables.map((obj) => renderObject(obj, parentMap[obj.id] ?? null)),
   ].filter(Boolean).join('\n  ');
 
   const defsBlock = defs.length > 0
@@ -365,6 +438,7 @@ export function serializeProjectToSvg(project: Project): string {
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg id="${esc(figure.figureId)}" width="${figure.width}" height="${figure.height}" viewBox="${figure.viewBox.join(' ')}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <style>${fontFaceCss}</style>
 ${defsBlock}  ${body}
 </svg>`;
 }

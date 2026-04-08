@@ -23,18 +23,22 @@ export function runOperation(state: EditorSessionState, operation: Operation): E
 }
 
 export function moveSelected(state: EditorSessionState, dx: number, dy: number): EditorSessionState {
-  let next = state;
-  for (const objectId of state.selection.selectedIds) {
-    next = runOperation(next, { type: 'MOVE_OBJECT', payload: { objectId, delta: { x: dx, y: dy } } });
-  }
-  return next;
+  if (state.selection.selectedIds.length === 0) return state;
+  return runOperation(state, {
+    type: 'MOVE_OBJECTS',
+    payload: {
+      objectIds: [...state.selection.selectedIds],
+      delta: { x: dx, y: dy },
+    },
+  });
 }
 
 export function deleteSelected(state: EditorSessionState): EditorSessionState {
-  let next = state;
-  for (const objectId of state.selection.selectedIds) {
-    next = runOperation(next, { type: 'DELETE_OBJECT', payload: { objectId } });
-  }
+  if (state.selection.selectedIds.length === 0) return state;
+  const next = runOperation(state, {
+    type: 'DELETE_OBJECTS',
+    payload: { objectIds: [...state.selection.selectedIds] },
+  });
   return { ...next, selection: { ...next.selection, selectedIds: [] } };
 }
 

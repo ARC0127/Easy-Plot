@@ -2,7 +2,7 @@
 
 - Status: audit
 - Primary Source: `scripts/smoke_*.cjs`, `scripts/build_desktop_release.cjs`, `scripts/build_release_assets.cjs`, `scripts/build_store_distribution.cjs`, `scripts/publish_store_distribution.cjs`, `scripts/performance_baseline_report.cjs`, `scripts/real_sample_stability_report.cjs`, `scripts/family_acceptance_report.cjs`, `scripts/fixture_authenticity_audit.cjs`, `npm run typecheck:all`, command outputs from 2026-04-03
-- Last Verified: 2026-04-03
+- Last Verified: 2026-04-08
 - Verification Mode: smoke rerun + typecheck rerun + test rerun + acceptance rerun
 
 ## DEBUG_VIBE_CORE 运行头
@@ -32,7 +32,7 @@
 | import smoke | pass | 两类样例导入通过 |
 | editor smoke | pass | 选择/编辑/验证链路通过 |
 | constraints-fixtures smoke | pass | constraints 与 fixture registry 可执行 |
-| roundtrip smoke | pass | `rendered_svg_resvg` 主路径，`normalizedPixelDiff=0`，视觉阈值通过 |
+| roundtrip smoke | pass | `rendered_svg_resvg` 主路径，`visualPass=true`，`rasterDiffPass=true`，`normalizedPixelDiff=0.006112289152421084` |
 | fixture authenticity smoke | pass | `structuralPass=true`，`authenticityPass=true`（`nonSyntheticRatio=0.36538461538461536 >= 0.35`） |
 | desktop smoke | pass | 四区联动可操作（导入/命中选择/移动/文本编辑/多选提升） |
 | desktop pilot smoke | pass | 可执行 `desktop:pilot` 命令流（打开/编辑/保存项目/导出） |
@@ -55,7 +55,7 @@
 - 长尾 CSS 语义已增强：`var()` 自定义属性链与 fallback、`:nth-last-child`、`*-of-type`、`:lang`、`:is/:where`、`:not` 多项选择器已纳入单测回归。
 - desktop 已达到“GUI 壳可运行”状态：`DesktopAppShell` 与 `desktop:bundle` 可生成可打开的四区窗口壳文档。
 - D7 已完成收口：`DesktopAppShell` 已提供窗口生命周期、bridge 命令通道与 release bundle（`index.html + shell-manifest.json`）能力。
-- D10 导出保真度与视觉阈值主阻塞已转绿：roundtrip smoke `visualPass=true`，`normalizedPixelDiff=0`。
+- D10 导出保真度与视觉阈值主阻塞已转绿：roundtrip smoke `visualPass=true`，`rasterDiffPass=true`，`normalizedPixelDiff=0.006112289152421084`。
 - D4 已完成收口：snapshot 会话只读边界、save/load 继承、export/reimport 闭环均已通过证据验证。
 - D8 已完成并转绿：fixture/provenance/ground_truth/package-data 四账一致且真实性比例达阈值。
 - Section 16 发布资产已补齐：release notes、version manifest、versioned schema、安装包归档均可生成并校验。

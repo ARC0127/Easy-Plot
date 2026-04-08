@@ -52,7 +52,7 @@ function buildReleaseAssets(options = {}) {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
   const generatedAt = new Date().toISOString();
   const productName = 'Easy Plot';
-  const displayVersion = String(packageJson.displayVersion ?? '0.01');
+  const displayVersion = String(packageJson.displayVersion ?? '0.0.2');
 
   const artifactsDir = path.join(repoRoot, 'artifacts');
   const docsOpsDir = path.join(repoRoot, 'docs', 'operations');
