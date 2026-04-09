@@ -2,7 +2,7 @@
 
 - Status: audit
 - Primary Source: `scripts/real_sample_stability_report.cjs`, `fixtures/fixture_provenance_matrix.csv`, `packages/testing-fixtures/data/*`
-- Last Verified: 2026-04-08
+- Last Verified: 2026-04-09
 - Verification Mode: smoke rerun
 
 ## 1. 数据集范围

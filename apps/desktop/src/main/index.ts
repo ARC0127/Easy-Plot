@@ -216,6 +216,11 @@ export class DesktopAppShell {
     return this.syncView(this.workbench.updateSelectedTextStyle(patch), { bumpRenderRevision: true });
   }
 
+  updateDocumentFontFamily(fontFamily: string): DesktopViewSnapshot {
+    this.ensureRunning('updateDocumentFontFamily');
+    return this.syncView(this.workbench.updateDocumentFontFamily(fontFamily), { bumpRenderRevision: true });
+  }
+
   addTextAtPoint(x: number, y: number, content: string): DesktopViewSnapshot {
     this.ensureRunning('addTextAtPoint');
     return this.syncView(this.workbench.addTextAtPoint(x, y, content), { bumpRenderRevision: true });

@@ -11,7 +11,19 @@ export interface TreeNodeViewModel {
   children: TreeNodeViewModel[];
 }
 
-function toNode(obj: AnyObject, project: Project): TreeNodeViewModel {
+function toNode(obj: AnyObject, project: Project, visited: Set<string>): TreeNodeViewModel {
+  if (visited.has(obj.id)) {
+    return {
+      id: obj.id,
+      label: obj.name,
+      objectType: obj.objectType,
+      visible: obj.visible,
+      locked: obj.locked,
+      capabilities: [...obj.capabilities],
+      children: [],
+    };
+  }
+  visited.add(obj.id);
   const childIds = 'childObjectIds' in obj && Array.isArray((obj as any).childObjectIds) ? (obj as any).childObjectIds as string[] : [];
   return {
     id: obj.id,
@@ -20,7 +32,10 @@ function toNode(obj: AnyObject, project: Project): TreeNodeViewModel {
     visible: obj.visible,
     locked: obj.locked,
     capabilities: [...obj.capabilities],
-    children: childIds.map(id => project.project.objects[id]).filter(Boolean).map(child => toNode(child, project)),
+    children: childIds
+      .map(id => project.project.objects[id])
+      .filter(Boolean)
+      .map(child => toNode(child, project, visited)),
   };
 }
 
@@ -37,7 +52,7 @@ export function buildTreeViewModel(project: Project): TreeNodeViewModel[] {
     const obj = project.project.objects[id];
     if (!obj) continue;
     seen.add(id);
-    nodes.push(toNode(obj, project));
+    nodes.push(toNode(obj, project, new Set<string>()));
   }
   return nodes;
 }

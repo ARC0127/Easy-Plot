@@ -65,6 +65,7 @@ export declare class DesktopAppShell {
     editSelectedText(content: string): DesktopViewSnapshot;
     updateSelectedAppearance(patch: DesktopAppearancePatch): DesktopViewSnapshot;
     updateSelectedTextStyle(patch: DesktopAppearancePatch): DesktopViewSnapshot;
+    updateDocumentFontFamily(fontFamily: string): DesktopViewSnapshot;
     addTextAtPoint(x: number, y: number, content: string): DesktopViewSnapshot;
     deleteSelected(): DesktopViewSnapshot;
     promoteSelection(role: 'panel' | 'legend' | 'annotation_block' | 'group_node', reason?: string): DesktopViewSnapshot;

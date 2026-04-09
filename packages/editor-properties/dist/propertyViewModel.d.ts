@@ -28,5 +28,5 @@ export interface PropertyViewModel {
     appearance: AppearanceViewModel | null;
     extra: Record<string, unknown>;
 }
-export declare function buildPropertyViewModel(project: Project, objectId: string): PropertyViewModel | null;
+export declare function buildPropertyViewModel(project: Project, objectIds: string | string[]): PropertyViewModel | null;
 //# sourceMappingURL=propertyViewModel.d.ts.map

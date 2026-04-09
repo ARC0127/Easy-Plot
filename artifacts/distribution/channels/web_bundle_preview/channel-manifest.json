@@ -1,6 +1,6 @@
 {
   "manifestVersion": "1.0.0",
-  "generatedAt": "2026-04-08T10:18:11.576Z",
+  "generatedAt": "2026-04-09T02:18:21.338Z",
   "channelId": "web_bundle_preview",
   "label": "Web Bundle Preview",
   "releaseRing": "preview",
@@ -11,25 +11,25 @@
     {
       "originalPath": "artifacts/desktop_release_bundle/index.html",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/artifacts__desktop_release_bundle__index.html",
-      "sha256": "c8bc2a5b3c0dba49896a7ebc7a207f2e2315918f8d1c438cb9eba00f468b6ee1",
+      "sha256": "4d538b5053348b720f167c4234763c2062eee826c3b20cde7b56b4075ff3d0eb",
       "bytes": 13163
     },
     {
       "originalPath": "artifacts/desktop_release_bundle/shell-manifest.json",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/artifacts__desktop_release_bundle__shell-manifest.json",
-      "sha256": "87845fd1b182896674e4e9beb38445df9fd3e984dbade5367881648018ce5150",
+      "sha256": "0aee73d0a271af35ca92718d73b451ee6a3e8b7063d52a50453861a2077cc6fd",
       "bytes": 801
     },
     {
       "originalPath": "artifacts/release_notes.md",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/artifacts__release_notes.md",
-      "sha256": "d34652a2db5e09db70acd9bef757dc8768a5f2e44f3ebf8088e8ec2272c1c029",
+      "sha256": "595e9b7f391b2bf6936c094e6103bea6b0a7fdc5756973ca327da8809d942bea",
       "bytes": 1061
     },
     {
       "originalPath": "docs/audit/fixture_authenticity_report.json",
       "stagedPath": "artifacts/distribution/channels/web_bundle_preview/payload/docs__audit__fixture_authenticity_report.json",
-      "sha256": "6c8ea9efa4299527c481915b16e9220eab8d16ad1a7d34ecf90fe7d6b48818e9",
+      "sha256": "c48c58998abcd83d055b592974d290011f97508197d861b43a348d865ab787f0",
       "bytes": 22309
     },
     {

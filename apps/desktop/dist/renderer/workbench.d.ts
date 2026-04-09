@@ -67,7 +67,7 @@ export declare class DesktopWorkbench {
     private importReportCacheProject;
     private importReportCacheValue;
     private propertyCacheProject;
-    private propertyCacheSelectedId;
+    private propertyCacheSelectionKey;
     private propertyCacheValue;
     private previewSvgCacheProject;
     private previewSvgCacheValue;
@@ -102,6 +102,7 @@ export declare class DesktopWorkbench {
     editSelectedText(content: string): DesktopViewSnapshot;
     updateSelectedAppearance(patch: DesktopAppearancePatch): DesktopViewSnapshot;
     updateSelectedTextStyle(patch: DesktopAppearancePatch): DesktopViewSnapshot;
+    updateDocumentFontFamily(fontFamily: string): DesktopViewSnapshot;
     deleteSelected(): DesktopViewSnapshot;
     promoteSelection(role: 'panel' | 'legend' | 'annotation_block' | 'group_node', reason?: string): DesktopViewSnapshot;
     alignSelected(mode: 'align_left' | 'align_right' | 'align_top' | 'align_bottom' | 'center_horizontal' | 'center_vertical'): DesktopViewSnapshot;

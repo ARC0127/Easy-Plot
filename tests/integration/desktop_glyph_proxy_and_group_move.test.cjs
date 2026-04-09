@@ -130,3 +130,30 @@ test('rotated glyph proxies keep reasonable font sizing and do not block bar sel
   const movedPreview = workbench.previewSvgContent();
   assert.equal(movedPreview.includes('transform="translate(10 0)"'), true);
 });
+
+test('reimported semantic marker panels do not create tree recursion', () => {
+  const workbench = createDesktopWorkbench();
+  workbench.importDocument({
+    path: 'semantic_marker_panel.svg',
+    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 240 160" width="240" height="160" xmlns="http://www.w3.org/2000/svg">
+  <g id="obj_panel_n16" data-fe-role="panel" data-fe-object-id="obj_panel_n16" x="0" y="0" width="0" height="0"></g>
+  <rect x="24" y="28" width="72" height="36" fill="#dbeafe" />
+</svg>`,
+    kind: 'svg',
+    familyHint: 'matplotlib',
+    htmlMode: 'limited',
+  });
+
+  const tree = workbench.snapshot().objectTree;
+  const seen = new Set();
+  const walk = (nodes) => {
+    for (const node of nodes) {
+      assert.equal(seen.has(node.id), false);
+      seen.add(node.id);
+      walk(node.children);
+    }
+  };
+  walk(tree);
+  assert.equal(tree.length > 0, true);
+});

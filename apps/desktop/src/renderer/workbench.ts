@@ -218,33 +218,57 @@ function normalizeStrokeColorToken(value: string | null | undefined): string {
   return raw;
 }
 
-function resolveTextStyleTarget(project: EditorSessionState['project'], selectedId: string | null): TextNode | null {
-  if (!selectedId) return null;
-  const selected = project.project.objects[selectedId] as any;
-  if (!selected) return null;
-  if (selected.objectType === 'text_node') return selected as TextNode;
-  const linkedTextId = typeof selected.textObjectId === 'string' ? selected.textObjectId : null;
-  if (!linkedTextId) return null;
-  const linked = project.project.objects[linkedTextId];
-  return linked?.objectType === 'text_node' ? (linked as TextNode) : null;
+function normalizeSelectionObjectIds(project: EditorSessionState['project'], selectedIds: string[] | string | null): string[] {
+  const inputIds = Array.isArray(selectedIds) ? selectedIds : selectedIds ? [selectedIds] : [];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const rawId of inputIds) {
+    const objectId = String(rawId ?? '').trim();
+    if (!objectId || seen.has(objectId) || !project.project.objects[objectId]) continue;
+    seen.add(objectId);
+    out.push(objectId);
+  }
+  return out;
 }
 
-function resolveTextTargets(project: EditorSessionState['project'], selectedId: string | null): TextNode[] {
-  if (!selectedId) return [];
+function collectSelectionRootIds(project: EditorSessionState['project'], selectedIds: string[] | string | null): string[] {
   const objects = project.project.objects as Record<string, any>;
-  const descendantIds = collectDescendantObjectIds(objects, selectedId);
-  return descendantIds
-    .map((id) => objects[id])
-    .filter((obj): obj is TextNode => obj?.objectType === 'text_node');
+  const normalized = normalizeSelectionObjectIds(project, selectedIds);
+  if (normalized.length < 2) return normalized;
+  return collectClipboardRootIds(objects, normalized);
 }
 
-function resolveShapeTargets(project: EditorSessionState['project'], selectedId: string | null): any[] {
-  if (!selectedId) return [];
+function collectSelectedTargets<T>(
+  project: EditorSessionState['project'],
+  selectedIds: string[] | string | null,
+  predicate: (obj: any) => boolean
+): T[] {
   const objects = project.project.objects as Record<string, any>;
-  const descendantIds = collectDescendantObjectIds(objects, selectedId);
-  return descendantIds
-    .map((id) => objects[id])
-    .filter((obj) => obj?.objectType === 'shape_node');
+  const rootIds = collectSelectionRootIds(project, selectedIds);
+  const visited = new Set<string>();
+  const targets: T[] = [];
+  for (const rootId of rootIds) {
+    for (const descendantId of collectDescendantObjectIds(objects, rootId)) {
+      if (visited.has(descendantId)) continue;
+      visited.add(descendantId);
+      const candidate = objects[descendantId];
+      if (!predicate(candidate)) continue;
+      targets.push(candidate as T);
+    }
+  }
+  return targets;
+}
+
+function resolveTextStyleTarget(project: EditorSessionState['project'], selectedIds: string[] | string | null): TextNode | null {
+  return collectSelectedTargets<TextNode>(project, selectedIds, (obj) => obj?.objectType === 'text_node')[0] ?? null;
+}
+
+function resolveTextTargets(project: EditorSessionState['project'], selectedIds: string[] | string | null): TextNode[] {
+  return collectSelectedTargets<TextNode>(project, selectedIds, (obj) => obj?.objectType === 'text_node');
+}
+
+function resolveShapeTargets(project: EditorSessionState['project'], selectedIds: string[] | string | null): any[] {
+  return collectSelectedTargets<any>(project, selectedIds, (obj) => obj?.objectType === 'shape_node');
 }
 
 function upgradeProxyTextNodeForStyleEditing(obj: TextNode): void {
@@ -1265,7 +1289,7 @@ export class DesktopWorkbench {
   private importReportCacheProject: EditorSessionState['project'] | null = null;
   private importReportCacheValue: ReturnType<typeof buildLatestImportReport> = null;
   private propertyCacheProject: EditorSessionState['project'] | null = null;
-  private propertyCacheSelectedId: string | null = null;
+  private propertyCacheSelectionKey: string | null = null;
   private propertyCacheValue: ReturnType<typeof buildPropertyViewModel> = null;
   private previewSvgCacheProject: EditorSessionState['project'] | null = null;
   private previewSvgCacheValue = '';
@@ -1288,12 +1312,13 @@ export class DesktopWorkbench {
     return this.importReportCacheValue;
   }
 
-  private getCachedPropertyView(selectedId: string | null): ReturnType<typeof buildPropertyViewModel> {
-    if (!this.state || !selectedId) return null;
-    if (this.propertyCacheProject !== this.state.project || this.propertyCacheSelectedId !== selectedId) {
+  private getCachedPropertyView(selectedIds: string[]): ReturnType<typeof buildPropertyViewModel> {
+    if (!this.state || selectedIds.length === 0) return null;
+    const cacheKey = selectedIds.join('\u0001');
+    if (this.propertyCacheProject !== this.state.project || this.propertyCacheSelectionKey !== cacheKey) {
       this.propertyCacheProject = this.state.project;
-      this.propertyCacheSelectedId = selectedId;
-      this.propertyCacheValue = buildPropertyViewModel(this.state.project, selectedId);
+      this.propertyCacheSelectionKey = cacheKey;
+      this.propertyCacheValue = buildPropertyViewModel(this.state.project, selectedIds);
     }
     return this.propertyCacheValue;
   }
@@ -1772,9 +1797,10 @@ export class DesktopWorkbench {
     if (this.state.policy.readOnly) {
       throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); updateSelectedAppearance is blocked.`);
     }
-    const selectedId = this.state.selection.selectedIds[0] ?? null;
-    const currentTextTargets = resolveTextTargets(this.state.project, selectedId);
-    const currentShapeTargets = resolveShapeTargets(this.state.project, selectedId);
+    const selectedIds = [...this.state.selection.selectedIds];
+    const selectedRootIds = collectSelectionRootIds(this.state.project, selectedIds);
+    const currentTextTargets = resolveTextTargets(this.state.project, selectedRootIds);
+    const currentShapeTargets = resolveShapeTargets(this.state.project, selectedRootIds);
     if (currentTextTargets.length === 0 && currentShapeTargets.length === 0) {
       throw new Error('Selected object does not expose editable appearance.');
     }
@@ -1821,8 +1847,8 @@ export class DesktopWorkbench {
     const nextProject = pushSnapshot(this.state.project);
     const nextState = structuredClone(this.state) as EditorSessionState;
     nextState.project = nextProject;
-    const nextTextTargets = resolveTextTargets(nextProject, selectedId);
-    const nextShapeTargets = resolveShapeTargets(nextProject, selectedId);
+    const nextTextTargets = resolveTextTargets(nextProject, selectedRootIds);
+    const nextShapeTargets = resolveShapeTargets(nextProject, selectedRootIds);
 
     for (const nextTarget of nextTextTargets) {
       const before = {
@@ -1883,8 +1909,8 @@ export class DesktopWorkbench {
       );
     }
 
-    if (selectedId) {
-      recomputeCompositeBBox(nextProject.project.objects as Record<string, any>, selectedId);
+    for (const rootId of selectedRootIds) {
+      recomputeCompositeBBox(nextProject.project.objects as Record<string, any>, rootId);
     }
 
     this.state = nextState;
@@ -1894,6 +1920,58 @@ export class DesktopWorkbench {
 
   updateSelectedTextStyle(patch: DesktopAppearancePatch): DesktopViewSnapshot {
     return this.updateSelectedAppearance(patch);
+  }
+
+  updateDocumentFontFamily(fontFamily: string): DesktopViewSnapshot {
+    if (!this.state) throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+    if (this.state.policy.readOnly) {
+      throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); updateDocumentFontFamily is blocked.`);
+    }
+    const normalizedFamily = normalizeFontFamilyToken(fontFamily);
+    if (!normalizedFamily) throw new Error('Missing font family');
+
+    const objects = this.state.project.project.objects as Record<string, any>;
+    const textTargets = Object.values(objects).filter((obj): obj is TextNode => obj?.objectType === 'text_node');
+    const changedTargets = textTargets.filter(
+      (target) => target.textKind !== 'raw_text' || target.font.family !== normalizedFamily
+    );
+    if (changedTargets.length === 0) return this.snapshot();
+
+    const nextProject = pushSnapshot(this.state.project);
+    const nextState = structuredClone(this.state) as EditorSessionState;
+    nextState.project = nextProject;
+    const nextObjects = nextProject.project.objects as Record<string, any>;
+
+    for (const target of changedTargets) {
+      const nextTarget = nextObjects[target.id] as TextNode | undefined;
+      if (!nextTarget) continue;
+      const before = {
+        font: { ...nextTarget.font },
+        fill: nextTarget.fill,
+        textKind: nextTarget.textKind,
+        capabilities: [...nextTarget.capabilities],
+      };
+      if (nextTarget.textKind !== 'raw_text') {
+        upgradeProxyTextNodeForStyleEditing(nextTarget);
+      }
+      nextTarget.font.family = normalizedFamily;
+      appendManualEdit(
+        nextTarget as any,
+        'manual_role_override',
+        before,
+        {
+          font: { ...nextTarget.font },
+          fill: nextTarget.fill,
+          textKind: nextTarget.textKind,
+          capabilities: [...nextTarget.capabilities],
+        },
+        'update_document_font_family'
+      );
+    }
+
+    this.state = nextState;
+    this.hasProjectMutations = true;
+    return this.snapshot();
   }
 
   deleteSelected(): DesktopViewSnapshot {
@@ -2074,7 +2152,7 @@ export class DesktopWorkbench {
       };
     }
 
-    const selectedId = this.state.selection.selectedIds[0] ?? null;
+    const selectedIds = this.state.selection.selectedIds;
     return {
       objectTree: this.getCachedTreeView(),
       canvas: {
@@ -2083,7 +2161,7 @@ export class DesktopWorkbench {
         curveHandles: buildCurveHandles(this.state.project.project.objects as Record<string, any>, this.state.selection.selectedIds),
         lastHit: this.lastHit,
       },
-      properties: this.getCachedPropertyView(selectedId),
+      properties: this.getCachedPropertyView(selectedIds),
       importReport: this.getCachedImportReport(),
       warnings: [...this.state.warnings],
     };

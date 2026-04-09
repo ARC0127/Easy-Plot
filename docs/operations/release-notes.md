@@ -2,14 +2,14 @@
 
 - Status: implemented
 - Primary Source: `scripts/build_release_assets.cjs`, `artifacts/release_notes.md`, `artifacts/version-manifest.json`
-- Last Verified: 2026-04-08
+- Last Verified: 2026-04-09
 - Verification Mode: smoke rerun
 
 本文件由 `release:assets` 自动刷新，正式发布说明如下。
 
 # Easy Plot Release Notes v0.0.2
 
-- Generated At: 2026-04-08T10:18:11.577Z
+- Generated At: 2026-04-09T02:18:21.338Z
 - Schema Version: 1.0.0-mvp
 
 ## Highlights

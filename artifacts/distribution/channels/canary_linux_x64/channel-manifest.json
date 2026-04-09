@@ -1,6 +1,6 @@
 {
   "manifestVersion": "1.0.0",
-  "generatedAt": "2026-04-08T10:18:11.576Z",
+  "generatedAt": "2026-04-09T02:18:21.338Z",
   "channelId": "canary_linux_x64",
   "label": "Canary Linux x64",
   "releaseRing": "canary",
@@ -11,31 +11,31 @@
     {
       "originalPath": "artifacts/installers/easy-plot-desktop-linux-x64.tar.gz",
       "stagedPath": "artifacts/distribution/channels/canary_linux_x64/payload/artifacts__installers__easy-plot-desktop-linux-x64.tar.gz",
-      "sha256": "bfa1c6dffc71ecc03e117d65062b2da2ee60936b365507581efbbd19f9926104",
-      "bytes": 35061545
+      "sha256": "c84d85a1be80320caecc66b128db6f2b8262a15fa8d860c82f8bae8618dedabf",
+      "bytes": 35061569
     },
     {
       "originalPath": "artifacts/desktop_release_bundle/index.html",
       "stagedPath": "artifacts/distribution/channels/canary_linux_x64/payload/artifacts__desktop_release_bundle__index.html",
-      "sha256": "c8bc2a5b3c0dba49896a7ebc7a207f2e2315918f8d1c438cb9eba00f468b6ee1",
+      "sha256": "4d538b5053348b720f167c4234763c2062eee826c3b20cde7b56b4075ff3d0eb",
       "bytes": 13163
     },
     {
       "originalPath": "artifacts/desktop_release_bundle/shell-manifest.json",
       "stagedPath": "artifacts/distribution/channels/canary_linux_x64/payload/artifacts__desktop_release_bundle__shell-manifest.json",
-      "sha256": "87845fd1b182896674e4e9beb38445df9fd3e984dbade5367881648018ce5150",
+      "sha256": "0aee73d0a271af35ca92718d73b451ee6a3e8b7063d52a50453861a2077cc6fd",
       "bytes": 801
     },
     {
       "originalPath": "artifacts/release_notes.md",
       "stagedPath": "artifacts/distribution/channels/canary_linux_x64/payload/artifacts__release_notes.md",
-      "sha256": "d34652a2db5e09db70acd9bef757dc8768a5f2e44f3ebf8088e8ec2272c1c029",
+      "sha256": "595e9b7f391b2bf6936c094e6103bea6b0a7fdc5756973ca327da8809d942bea",
       "bytes": 1061
     },
     {
       "originalPath": "docs/audit/performance_baseline_report.json",
       "stagedPath": "artifacts/distribution/channels/canary_linux_x64/payload/docs__audit__performance_baseline_report.json",
-      "sha256": "b00978c4cef4610bc9b176305e1ede8b2862188a7bcf76ef2768a94335318187",
+      "sha256": "55b67871b5ac977a14514381685f1613950705228f74e44830e7ef12530273df",
       "bytes": 1516
     }
   ],

@@ -1,14 +1,14 @@
 {
   "productName": "Easy Plot",
-  "generatedAt": "2026-04-08T10:18:11.615Z",
+  "generatedAt": "2026-04-09T02:18:21.381Z",
   "entrypoint": "index.html",
   "supportsOffline": true,
   "supportsLocalFilesystem": true,
   "window": {
-    "windowId": "desktop_window_1775643491577",
+    "windowId": "desktop_window_1775701101339",
     "title": "Easy Plot",
     "state": "running",
-    "openedAt": "2026-04-08T10:18:11.577Z",
+    "openedAt": "2026-04-09T02:18:21.339Z",
     "closedAt": null,
     "renderRevision": 0
   },

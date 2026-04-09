@@ -2,17 +2,17 @@
   "schemaVersion": "1.0.0-mvp",
   "project": {
     "projectId": "proj_001",
-    "createdAt": "2026-04-08T10:18:08.161Z",
-    "updatedAt": "2026-04-08T10:18:08.166Z",
+    "createdAt": "2026-04-09T02:18:17.789Z",
+    "updatedAt": "2026-04-09T02:18:17.794Z",
     "sourceMode": "imported",
     "originalSources": [
       {
-        "sourceId": "desktop_1775643488160",
+        "sourceId": "desktop_1775701097788",
         "kind": "svg",
         "path": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
         "sha256": "desktop_generated",
         "familyHint": "illustration_like",
-        "importedAt": "2026-04-08T10:18:08.160Z"
+        "importedAt": "2026-04-09T02:18:17.788Z"
       }
     ],
     "figure": {
@@ -32,7 +32,7 @@
       ],
       "legends": [],
       "floatingObjects": [
-        "obj_manual_text_1775643488164"
+        "obj_manual_text_1775701097792"
       ],
       "renderTreeRootId": "obj_n1",
       "constraints": [],
@@ -45,7 +45,7 @@
     "importRecords": [
       {
         "importId": "import_001",
-        "sourceId": "desktop_1775643488160",
+        "sourceId": "desktop_1775701097788",
         "familyClassifiedAs": "llm_svg",
         "liftSuccesses": [
           {
@@ -81,17 +81,17 @@
           "schemaVersion": "1.0.0-mvp",
           "project": {
             "projectId": "proj_001",
-            "createdAt": "2026-04-08T10:18:08.161Z",
-            "updatedAt": "2026-04-08T10:18:08.161Z",
+            "createdAt": "2026-04-09T02:18:17.789Z",
+            "updatedAt": "2026-04-09T02:18:17.789Z",
             "sourceMode": "imported",
             "originalSources": [
               {
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "kind": "svg",
                 "path": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
                 "sha256": "desktop_generated",
                 "familyHint": "illustration_like",
-                "importedAt": "2026-04-08T10:18:08.160Z"
+                "importedAt": "2026-04-09T02:18:17.788Z"
               }
             ],
             "figure": {
@@ -122,7 +122,7 @@
             "importRecords": [
               {
                 "importId": "import_001",
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "familyClassifiedAs": "llm_svg",
                 "liftSuccesses": [
                   {
@@ -207,7 +207,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n1"
                   ],
@@ -270,7 +270,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n2"
                   ],
@@ -352,7 +352,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -420,7 +420,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n4"
                   ],
@@ -505,7 +505,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n5"
                   ],
@@ -581,7 +581,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n6"
                   ],
@@ -658,7 +658,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -716,7 +716,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n8"
                   ],
@@ -801,7 +801,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n9"
                   ],
@@ -879,7 +879,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n10"
                   ],
@@ -937,7 +937,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n11"
                   ],
@@ -1022,7 +1022,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n12"
                   ],
@@ -1100,7 +1100,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n13"
                   ],
@@ -1158,7 +1158,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n14"
                   ],
@@ -1243,7 +1243,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n15"
                   ],
@@ -1319,7 +1319,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n16"
                   ],
@@ -1402,7 +1402,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n17"
                   ],
@@ -1479,7 +1479,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n18"
                   ],
@@ -1562,7 +1562,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n19"
                   ],
@@ -1641,7 +1641,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n20"
                   ],
@@ -1699,7 +1699,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n21"
                   ],
@@ -1784,7 +1784,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n22"
                   ],
@@ -1859,7 +1859,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n23"
                   ],
@@ -1935,7 +1935,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -2010,7 +2010,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -2057,17 +2057,17 @@
           "schemaVersion": "1.0.0-mvp",
           "project": {
             "projectId": "proj_001",
-            "createdAt": "2026-04-08T10:18:08.161Z",
-            "updatedAt": "2026-04-08T10:18:08.162Z",
+            "createdAt": "2026-04-09T02:18:17.789Z",
+            "updatedAt": "2026-04-09T02:18:17.789Z",
             "sourceMode": "imported",
             "originalSources": [
               {
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "kind": "svg",
                 "path": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
                 "sha256": "desktop_generated",
                 "familyHint": "illustration_like",
-                "importedAt": "2026-04-08T10:18:08.160Z"
+                "importedAt": "2026-04-09T02:18:17.788Z"
               }
             ],
             "figure": {
@@ -2098,7 +2098,7 @@
             "importRecords": [
               {
                 "importId": "import_001",
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "familyClassifiedAs": "llm_svg",
                 "liftSuccesses": [
                   {
@@ -2133,7 +2133,7 @@
               "redoStack": [],
               "operationLog": [
                 {
-                  "ts": "2026-04-08T10:18:08.162Z",
+                  "ts": "2026-04-09T02:18:17.789Z",
                   "operation": {
                     "type": "MOVE_OBJECTS",
                     "payload": {
@@ -2199,7 +2199,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n1"
                   ],
@@ -2262,7 +2262,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n2"
                   ],
@@ -2344,7 +2344,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -2412,7 +2412,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n4"
                   ],
@@ -2497,7 +2497,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n5"
                   ],
@@ -2573,7 +2573,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n6"
                   ],
@@ -2650,7 +2650,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -2708,7 +2708,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n8"
                   ],
@@ -2793,7 +2793,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n9"
                   ],
@@ -2871,7 +2871,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n10"
                   ],
@@ -2929,7 +2929,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n11"
                   ],
@@ -3014,7 +3014,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n12"
                   ],
@@ -3092,7 +3092,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n13"
                   ],
@@ -3150,7 +3150,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n14"
                   ],
@@ -3235,7 +3235,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n15"
                   ],
@@ -3311,7 +3311,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n16"
                   ],
@@ -3394,7 +3394,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n17"
                   ],
@@ -3471,7 +3471,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n18"
                   ],
@@ -3554,7 +3554,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n19"
                   ],
@@ -3633,7 +3633,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n20"
                   ],
@@ -3691,7 +3691,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n21"
                   ],
@@ -3776,7 +3776,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n22"
                   ],
@@ -3851,7 +3851,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n23"
                   ],
@@ -3927,7 +3927,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -4002,7 +4002,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -4049,17 +4049,17 @@
           "schemaVersion": "1.0.0-mvp",
           "project": {
             "projectId": "proj_001",
-            "createdAt": "2026-04-08T10:18:08.161Z",
-            "updatedAt": "2026-04-08T10:18:08.162Z",
+            "createdAt": "2026-04-09T02:18:17.789Z",
+            "updatedAt": "2026-04-09T02:18:17.790Z",
             "sourceMode": "imported",
             "originalSources": [
               {
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "kind": "svg",
                 "path": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
                 "sha256": "desktop_generated",
                 "familyHint": "illustration_like",
-                "importedAt": "2026-04-08T10:18:08.160Z"
+                "importedAt": "2026-04-09T02:18:17.788Z"
               }
             ],
             "figure": {
@@ -4090,7 +4090,7 @@
             "importRecords": [
               {
                 "importId": "import_001",
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "familyClassifiedAs": "llm_svg",
                 "liftSuccesses": [
                   {
@@ -4125,7 +4125,7 @@
               "redoStack": [],
               "operationLog": [
                 {
-                  "ts": "2026-04-08T10:18:08.162Z",
+                  "ts": "2026-04-09T02:18:17.789Z",
                   "operation": {
                     "type": "MOVE_OBJECTS",
                     "payload": {
@@ -4140,7 +4140,7 @@
                   }
                 },
                 {
-                  "ts": "2026-04-08T10:18:08.162Z",
+                  "ts": "2026-04-09T02:18:17.790Z",
                   "operation": {
                     "type": "EDIT_TEXT_CONTENT",
                     "payload": {
@@ -4201,7 +4201,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n1"
                   ],
@@ -4264,7 +4264,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n2"
                   ],
@@ -4346,7 +4346,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -4414,7 +4414,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n4"
                   ],
@@ -4499,7 +4499,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n5"
                   ],
@@ -4575,7 +4575,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n6"
                   ],
@@ -4652,7 +4652,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -4710,7 +4710,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n8"
                   ],
@@ -4795,7 +4795,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n9"
                   ],
@@ -4873,7 +4873,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n10"
                   ],
@@ -4931,7 +4931,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n11"
                   ],
@@ -5016,7 +5016,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n12"
                   ],
@@ -5047,7 +5047,7 @@
                   {
                     "editId": "me_flow_verify_label_1",
                     "kind": "manual_role_override",
-                    "timestamp": "2026-04-08T10:18:08.162Z",
+                    "timestamp": "2026-04-09T02:18:17.790Z",
                     "before": {
                       "content": "Verify"
                     },
@@ -5107,7 +5107,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n13"
                   ],
@@ -5165,7 +5165,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n14"
                   ],
@@ -5250,7 +5250,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n15"
                   ],
@@ -5326,7 +5326,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n16"
                   ],
@@ -5409,7 +5409,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n17"
                   ],
@@ -5486,7 +5486,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n18"
                   ],
@@ -5569,7 +5569,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n19"
                   ],
@@ -5648,7 +5648,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n20"
                   ],
@@ -5706,7 +5706,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n21"
                   ],
@@ -5791,7 +5791,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n22"
                   ],
@@ -5866,7 +5866,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n23"
                   ],
@@ -5942,7 +5942,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -6017,7 +6017,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -6064,17 +6064,17 @@
           "schemaVersion": "1.0.0-mvp",
           "project": {
             "projectId": "proj_001",
-            "createdAt": "2026-04-08T10:18:08.161Z",
-            "updatedAt": "2026-04-08T10:18:08.162Z",
+            "createdAt": "2026-04-09T02:18:17.789Z",
+            "updatedAt": "2026-04-09T02:18:17.790Z",
             "sourceMode": "imported",
             "originalSources": [
               {
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "kind": "svg",
                 "path": "F:\\Git\\Figure-Editor\\figure-editor-draft\\artifacts\\release_suite\\cases\\originals\\flow_release_case.svg",
                 "sha256": "desktop_generated",
                 "familyHint": "illustration_like",
-                "importedAt": "2026-04-08T10:18:08.160Z"
+                "importedAt": "2026-04-09T02:18:17.788Z"
               }
             ],
             "figure": {
@@ -6094,7 +6094,7 @@
               ],
               "legends": [],
               "floatingObjects": [
-                "obj_manual_text_1775643488164"
+                "obj_manual_text_1775701097792"
               ],
               "renderTreeRootId": "obj_n1",
               "constraints": [],
@@ -6107,7 +6107,7 @@
             "importRecords": [
               {
                 "importId": "import_001",
-                "sourceId": "desktop_1775643488160",
+                "sourceId": "desktop_1775701097788",
                 "familyClassifiedAs": "llm_svg",
                 "liftSuccesses": [
                   {
@@ -6142,7 +6142,7 @@
               "redoStack": [],
               "operationLog": [
                 {
-                  "ts": "2026-04-08T10:18:08.162Z",
+                  "ts": "2026-04-09T02:18:17.789Z",
                   "operation": {
                     "type": "MOVE_OBJECTS",
                     "payload": {
@@ -6157,7 +6157,7 @@
                   }
                 },
                 {
-                  "ts": "2026-04-08T10:18:08.162Z",
+                  "ts": "2026-04-09T02:18:17.790Z",
                   "operation": {
                     "type": "EDIT_TEXT_CONTENT",
                     "payload": {
@@ -6218,7 +6218,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n1"
                   ],
@@ -6281,7 +6281,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n2"
                   ],
@@ -6363,7 +6363,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -6431,7 +6431,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n4"
                   ],
@@ -6516,7 +6516,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n5"
                   ],
@@ -6592,7 +6592,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n6"
                   ],
@@ -6669,7 +6669,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -6727,7 +6727,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n8"
                   ],
@@ -6812,7 +6812,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n9"
                   ],
@@ -6890,7 +6890,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n10"
                   ],
@@ -6948,7 +6948,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n11"
                   ],
@@ -7033,7 +7033,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n12"
                   ],
@@ -7064,7 +7064,7 @@
                   {
                     "editId": "me_flow_verify_label_1",
                     "kind": "manual_role_override",
-                    "timestamp": "2026-04-08T10:18:08.162Z",
+                    "timestamp": "2026-04-09T02:18:17.790Z",
                     "before": {
                       "content": "Verify"
                     },
@@ -7124,7 +7124,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n13"
                   ],
@@ -7182,7 +7182,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n14"
                   ],
@@ -7267,7 +7267,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n15"
                   ],
@@ -7343,7 +7343,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n16"
                   ],
@@ -7426,7 +7426,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n17"
                   ],
@@ -7503,7 +7503,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n18"
                   ],
@@ -7586,7 +7586,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n19"
                   ],
@@ -7665,7 +7665,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n20"
                   ],
@@ -7723,7 +7723,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n21"
                   ],
@@ -7808,7 +7808,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n22"
                   ],
@@ -7883,7 +7883,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n23"
                   ],
@@ -7959,7 +7959,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n3"
                   ],
@@ -8034,7 +8034,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [
                     "n7"
                   ],
@@ -8074,10 +8074,10 @@
                   "axisGroupIds": []
                 }
               },
-              "obj_manual_text_1775643488164": {
-                "id": "obj_manual_text_1775643488164",
+              "obj_manual_text_1775701097792": {
+                "id": "obj_manual_text_1775701097792",
                 "objectType": "text_node",
-                "name": "text_node_obj_manual_text_1775643488164",
+                "name": "text_node_obj_manual_text_1775701097792",
                 "visible": true,
                 "locked": false,
                 "zIndex": 35,
@@ -8109,7 +8109,7 @@
                 ],
                 "provenance": {
                   "originFileKind": "svg",
-                  "originSourceId": "desktop_1775643488160",
+                  "originSourceId": "desktop_1775701097788",
                   "originNodeIds": [],
                   "originSelectorOrPath": null,
                   "originBBox": null,
@@ -8146,7 +8146,7 @@
       "redoStack": [],
       "operationLog": [
         {
-          "ts": "2026-04-08T10:18:08.162Z",
+          "ts": "2026-04-09T02:18:17.789Z",
           "operation": {
             "type": "MOVE_OBJECTS",
             "payload": {
@@ -8161,7 +8161,7 @@
           }
         },
         {
-          "ts": "2026-04-08T10:18:08.162Z",
+          "ts": "2026-04-09T02:18:17.790Z",
           "operation": {
             "type": "EDIT_TEXT_CONTENT",
             "payload": {
@@ -8171,7 +8171,7 @@
           }
         },
         {
-          "ts": "2026-04-08T10:18:08.166Z",
+          "ts": "2026-04-09T02:18:17.794Z",
           "operation": {
             "type": "DELETE_OBJECTS",
             "payload": {
@@ -8233,7 +8233,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n1"
           ],
@@ -8296,7 +8296,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n2"
           ],
@@ -8378,7 +8378,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n3"
           ],
@@ -8445,7 +8445,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n4"
           ],
@@ -8530,7 +8530,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n5"
           ],
@@ -8606,7 +8606,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n6"
           ],
@@ -8683,7 +8683,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n7"
           ],
@@ -8741,7 +8741,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n8"
           ],
@@ -8826,7 +8826,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n9"
           ],
@@ -8904,7 +8904,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n10"
           ],
@@ -8962,7 +8962,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n11"
           ],
@@ -9047,7 +9047,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n12"
           ],
@@ -9078,7 +9078,7 @@
           {
             "editId": "me_flow_verify_label_1",
             "kind": "manual_role_override",
-            "timestamp": "2026-04-08T10:18:08.162Z",
+            "timestamp": "2026-04-09T02:18:17.790Z",
             "before": {
               "content": "Verify"
             },
@@ -9138,7 +9138,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n13"
           ],
@@ -9196,7 +9196,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n14"
           ],
@@ -9281,7 +9281,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n15"
           ],
@@ -9357,7 +9357,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n16"
           ],
@@ -9440,7 +9440,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n17"
           ],
@@ -9517,7 +9517,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n18"
           ],
@@ -9600,7 +9600,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n19"
           ],
@@ -9679,7 +9679,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n20"
           ],
@@ -9737,7 +9737,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n21"
           ],
@@ -9822,7 +9822,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n22"
           ],
@@ -9898,7 +9898,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n3"
           ],
@@ -9973,7 +9973,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [
             "n7"
           ],
@@ -10013,10 +10013,10 @@
           "axisGroupIds": []
         }
       },
-      "obj_manual_text_1775643488164": {
-        "id": "obj_manual_text_1775643488164",
+      "obj_manual_text_1775701097792": {
+        "id": "obj_manual_text_1775701097792",
         "objectType": "text_node",
-        "name": "text_node_obj_manual_text_1775643488164",
+        "name": "text_node_obj_manual_text_1775701097792",
         "visible": true,
         "locked": false,
         "zIndex": 35,
@@ -10048,7 +10048,7 @@
         ],
         "provenance": {
           "originFileKind": "svg",
-          "originSourceId": "desktop_1775643488160",
+          "originSourceId": "desktop_1775701097788",
           "originNodeIds": [],
           "originSelectorOrPath": null,
           "originBBox": null,

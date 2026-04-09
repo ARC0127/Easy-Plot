@@ -79,6 +79,36 @@ test('small icon-like shapes remain selectable a few pixels off target', () => {
   assert.equal(selected.properties?.objectType, 'shape_node');
 });
 
+test('exported glyph proxy text reimports as text_node instead of flattening into oversized shapes', () => {
+  const workbench = createDesktopWorkbench();
+  workbench.importDocument({
+    path: 'exported_glyph_proxy.svg',
+    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 220 140" width="220" height="140" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="obj_proxy_1" data-fe-object-type="text_node" data-fe-object-id="obj_proxy_1" transform="translate(32.697 24.3045) scale(0.16 -0.16)" fill="#111111">
+    <defs>
+      <path id="DejaVuSerif-53" d="M 0 0 L 10 0 L 10 20 L 0 20 Z" />
+      <path id="DejaVuSerif-65" d="M 0 0 L 8 0 L 8 20 L 0 20 Z" />
+      <path id="DejaVuSerif-78" d="M 0 0 L 9 0 L 9 20 L 0 20 Z" />
+    </defs>
+    <g transform="translate(0 0)">
+      <use xlink:href="#DejaVuSerif-53" />
+      <use xlink:href="#DejaVuSerif-65" x="12" />
+      <use xlink:href="#DejaVuSerif-78" x="24" />
+    </g>
+  </g>
+</svg>`,
+    kind: 'svg',
+    familyHint: 'matplotlib',
+    htmlMode: 'limited',
+  });
+
+  const preview = workbench.previewSvgContent();
+  assert.match(preview, /id="obj_proxy_1"[^>]*data-fe-object-type="text_node"/);
+  assert.match(preview, /transform="translate\(32\.697 24\.3045\) scale\(0\.16 -0\.16\)"/);
+  assert.match(preview, /<use\b[^>]*xlink:href="#DejaVuSerif-53"/);
+});
+
 test('parser and normalizer do not retain redundant raw SVG copies for large marker imports', () => {
   const svg = buildLargeMarkerSvg();
   const parsed = parseDocument({

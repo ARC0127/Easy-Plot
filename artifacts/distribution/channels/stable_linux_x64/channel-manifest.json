@@ -1,6 +1,6 @@
 {
   "manifestVersion": "1.0.0",
-  "generatedAt": "2026-04-08T10:18:11.576Z",
+  "generatedAt": "2026-04-09T02:18:21.338Z",
   "channelId": "stable_linux_x64",
   "label": "Stable Linux x64",
   "releaseRing": "stable",
@@ -11,13 +11,13 @@
     {
       "originalPath": "artifacts/installers/easy-plot-desktop-linux-x64.tar.gz",
       "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__installers__easy-plot-desktop-linux-x64.tar.gz",
-      "sha256": "bfa1c6dffc71ecc03e117d65062b2da2ee60936b365507581efbbd19f9926104",
-      "bytes": 35061545
+      "sha256": "c84d85a1be80320caecc66b128db6f2b8262a15fa8d860c82f8bae8618dedabf",
+      "bytes": 35061569
     },
     {
       "originalPath": "artifacts/release_notes.md",
       "stagedPath": "artifacts/distribution/channels/stable_linux_x64/payload/artifacts__release_notes.md",
-      "sha256": "d34652a2db5e09db70acd9bef757dc8768a5f2e44f3ebf8088e8ec2272c1c029",
+      "sha256": "595e9b7f391b2bf6936c094e6103bea6b0a7fdc5756973ca327da8809d942bea",
       "bytes": 1061
     },
     {

@@ -656,6 +656,7 @@ ${renderFontSelectOptions()}
           <button id="style-bold" type="button" title="粗体">B</button>
           <button id="style-italic" type="button" title="斜体"><em>I</em></button>
           <button id="btn-apply-appearance" class="primary" type="button">应用外观</button>
+          <button id="btn-unify-document-font" type="button">统一全文档字体</button>
         </div>
         <div id="appearance-hint" class="sidebar-copy">请先选中对象。</div>
         <div class="style-preview">
@@ -695,6 +696,7 @@ ${renderFontSelectOptions()}
     const boldButton = document.getElementById('style-bold');
     const italicButton = document.getElementById('style-italic');
     const applyAppearanceButton = document.getElementById('btn-apply-appearance');
+    const documentFontButton = document.getElementById('btn-unify-document-font');
     const appearanceHintEl = document.getElementById('appearance-hint');
     const stylePreviewTextEl = document.getElementById('style-preview-text');
     const alignLeftButton = document.getElementById('btn-align-left');
@@ -754,10 +756,13 @@ ${renderFontSelectOptions()}
     }
 
     function setTextStyleControlsDisabled(disabled) {
-      fontFamilyInput.disabled = disabled;
       fontSizeInput.disabled = disabled;
       boldButton.disabled = disabled;
       italicButton.disabled = disabled;
+    }
+
+    function setDocumentFontButtonDisabled(disabled) {
+      documentFontButton.disabled = disabled;
     }
 
     function setAppearanceColorControlsDisabled(disabled) {
@@ -829,33 +834,50 @@ ${renderFontSelectOptions()}
       const textStyle = props?.textStyle || null;
       const appearance = props?.appearance || null;
       const selectedIds = Array.isArray(state?.view?.canvas?.selectedIds) ? state.view.canvas.selectedIds : [];
+      const hasDocument = Boolean(state);
+      const selectedCount = selectedIds.length;
+      fontFamilyInput.disabled = !hasDocument;
+      setDocumentFontButtonDisabled(!hasDocument);
       if (!props) {
-        selectionSummaryEl.innerHTML = '<div class="sidebar-copy">当前未选中对象。拖拽画布、双击文本或点击对象后，这里会显示摘要。Esc 可清空当前选择，Ctrl+V 可粘贴已复制对象。</div>';
+        selectionSummaryEl.innerHTML = '<div class="sidebar-copy">当前未选中对象。拖拽画布、双击文本或点击对象后，这里会显示摘要。Esc 可清空当前选择，Ctrl+V 可粘贴已复制对象。若要统一全文档字体，请先在字体下拉中选好字体，再点击“统一全文档字体”。</div>';
         setTextStyleControlsDisabled(true);
         setAppearanceColorControlsDisabled(true);
         setApplyAppearanceDisabled(true);
         setLayoutControlsDisabled(true, 0);
         fillColorInput.value = '#111827';
         strokeColorInput.value = '#334155';
-        setFontFamilySelectValue(${JSON.stringify(FONT_STACK_PRESETS.sans)});
+        const nextFontFamily = String(fontFamilyInput.value || ${JSON.stringify(FONT_STACK_PRESETS.sans)}).trim() || ${JSON.stringify(FONT_STACK_PRESETS.sans)};
+        ensureFontFamilyOption(nextFontFamily);
+        fontFamilyInput.value = nextFontFamily;
+        fontFamilyInput.style.fontFamily = nextFontFamily;
         fontSizeInput.value = '';
         setToggleButtonState(boldButton, false);
         setToggleButtonState(italicButton, false);
-        appearanceHintEl.textContent = '请先选中对象。';
-        applyPreviewTextStyle(null);
+        appearanceHintEl.textContent = hasDocument
+          ? '当前没有选择对象；可直接使用“统一全文档字体”批量更新所有文本。'
+          : '请先导入文档。';
+        applyPreviewTextStyle({
+          fontFamily: fontFamilyInput.value,
+          fill: fillColorInput.value,
+        });
         return;
       }
 
       const contentPreview = typeof props?.extra?.content === 'string' ? props.extra.content : '';
+      const selectionLabel = selectedCount > 1 ? '多选' : (props.objectType || 'unknown');
+      const textTargetCount = Number(props?.extra?.textTargetCount || (textStyle ? 1 : 0));
+      const appearanceTargetCount = Number(props?.extra?.appearanceTargetCount || 0);
       selectionSummaryEl.innerHTML =
-        '<span class="selection-pill">' + esc(props.objectType || 'unknown') + '</span>' +
+        '<span class="selection-pill">' + esc(selectionLabel) + '</span>' +
         '<div><strong>ID</strong>: ' + esc(props.id || '(none)') + '</div>' +
         '<div><strong>名称</strong>: ' + esc(props.name || '(unnamed)') + '</div>' +
-        '<div><strong>当前选择数</strong>: ' + String(selectedIds.length) + '</div>' +
+        '<div><strong>当前选择数</strong>: ' + String(selectedCount) + '</div>' +
         '<div><strong>文本</strong>: ' + (contentPreview ? esc(contentPreview) : '<span class="muted">当前对象没有文本内容</span>') + '</div>' +
+        '<div><strong>可编辑文本目标</strong>: ' + String(textTargetCount) + '</div>' +
         '<div><strong>可着色对象数</strong>: ' + String(
           Number(appearance?.fillTargetCount || 0) + Number(appearance?.strokeTargetCount || 0)
         ) + '</div>' +
+        '<div><strong>批量对象数</strong>: ' + String(appearanceTargetCount || selectedCount) + '</div>' +
         '<div><strong>快捷键</strong>: Ctrl+C 复制，Ctrl+V 粘贴</div>';
 
       if (!appearance) {
@@ -872,14 +894,20 @@ ${renderFontSelectOptions()}
 
       if (!textStyle) {
         setTextStyleControlsDisabled(true);
-        setFontFamilySelectValue(${JSON.stringify(FONT_STACK_PRESETS.sans)});
+        const nextFontFamily = String(fontFamilyInput.value || ${JSON.stringify(FONT_STACK_PRESETS.sans)}).trim() || ${JSON.stringify(FONT_STACK_PRESETS.sans)};
+        ensureFontFamilyOption(nextFontFamily);
+        fontFamilyInput.value = nextFontFamily;
+        fontFamilyInput.style.fontFamily = nextFontFamily;
         fontSizeInput.value = '';
         setToggleButtonState(boldButton, false);
         setToggleButtonState(italicButton, false);
-        appearanceHintEl.textContent = appearance
-          ? '当前选择可调颜色；字体选项仅对文本对象生效。'
-          : '当前选择没有可编辑外观。';
+        appearanceHintEl.textContent = selectedCount > 1
+          ? '当前为多选；颜色修改会批量作用于所有可着色对象。若要统一全文档字体，请使用“统一全文档字体”。'
+          : (appearance
+              ? '当前选择可调颜色；字体选项仅对文本对象生效。'
+              : '当前选择没有可编辑外观。');
         applyPreviewTextStyle({
+          fontFamily: fontFamilyInput.value,
           fill: fillColorInput.value,
         });
         setLayoutControlsDisabled(false, selectedIds.length);
@@ -891,9 +919,11 @@ ${renderFontSelectOptions()}
       fontSizeInput.value = String(textStyle.fontSize || 16);
       setToggleButtonState(boldButton, Number(textStyle.fontWeight || '400') >= 600 || String(textStyle.fontWeight).toLowerCase() === 'bold');
       setToggleButtonState(italicButton, String(textStyle.fontStyle || '').toLowerCase() === 'italic');
-      appearanceHintEl.textContent = appearance
-        ? '颜色会作用到当前对象及其可着色子对象；字体设置仅作用到文本。'
-        : '格式会直接作用到当前所选文本，并可通过撤销/重做回退。';
+      appearanceHintEl.textContent = selectedCount > 1
+        ? '当前为多选；应用外观会批量作用于所有选中对象。统一全文档字体只改字体本身，不改字号或粗细。'
+        : (appearance
+            ? '颜色会作用到当前对象及其可着色子对象；字体设置仅作用到文本。'
+            : '格式会直接作用到当前所选文本，并可通过撤销/重做回退。');
       setLayoutControlsDisabled(false, selectedIds.length);
       applyPreviewTextStyle({
         content: textStyle.content,
@@ -1622,7 +1652,7 @@ ${renderFontSelectOptions()}
       });
     }
 
-    function buildAppearancePatch(currentTextStyle, currentAppearance) {
+    function buildAppearancePatch(currentTextStyle, currentAppearance, isMultiSelection) {
       const patch = {
         fill: fillColorInput.value || normalizeColorForInput(currentTextStyle?.fill || currentAppearance?.fillColor),
         stroke: strokeColorInput.value || normalizeColorForInput(currentAppearance?.strokeColor),
@@ -1630,12 +1660,14 @@ ${renderFontSelectOptions()}
 
       if (currentTextStyle) {
         const nextFontFamily = fontFamilyInput.value.trim();
-        if (nextFontFamily && nextFontFamily !== String(currentTextStyle.fontFamily || '')) {
+        if (isMultiSelection) {
+          patch.fontFamily = nextFontFamily || ${JSON.stringify(FONT_STACK_PRESETS.sans)};
+        } else if (nextFontFamily && nextFontFamily !== String(currentTextStyle.fontFamily || '')) {
           patch.fontFamily = nextFontFamily;
         }
 
         const nextFontSize = Number(fontSizeInput.value || currentTextStyle.fontSize || 16);
-        if (Number.isFinite(nextFontSize) && nextFontSize !== Number(currentTextStyle.fontSize || 16)) {
+        if (isMultiSelection || (Number.isFinite(nextFontSize) && nextFontSize !== Number(currentTextStyle.fontSize || 16))) {
           patch.fontSize = nextFontSize;
         }
 
@@ -1646,11 +1678,11 @@ ${renderFontSelectOptions()}
         const knownWeight = currentFontWeight === 'bold' || currentFontWeight === 'normal' || /^[1-9]00$/.test(currentFontWeight);
         const knownStyle = currentFontStyle === 'italic' || currentFontStyle === 'normal' || currentFontStyle === 'oblique';
 
-        if ((knownWeight && nextFontWeight !== currentFontWeight) || (!knownWeight && nextFontWeight === '700')) {
+        if (isMultiSelection || (knownWeight && nextFontWeight !== currentFontWeight) || (!knownWeight && nextFontWeight === '700')) {
           patch.fontWeight = nextFontWeight;
         }
 
-        if ((knownStyle && nextFontStyle !== currentFontStyle) || (!knownStyle && nextFontStyle === 'italic')) {
+        if (isMultiSelection || (knownStyle && nextFontStyle !== currentFontStyle) || (!knownStyle && nextFontStyle === 'italic')) {
           patch.fontStyle = nextFontStyle;
         }
       }
@@ -1676,6 +1708,7 @@ ${renderFontSelectOptions()}
     applyAppearanceButton.addEventListener('click', async () => {
       const currentAppearance = currentState?.view?.properties?.appearance || null;
       const currentTextStyle = currentState?.view?.properties?.textStyle || null;
+      const isMultiSelection = Number(currentState?.view?.canvas?.selectedIds?.length || 0) > 1;
       if (!currentAppearance && !currentTextStyle) {
         setStatus('请先选中可编辑对象。', true);
         return;
@@ -1686,11 +1719,26 @@ ${renderFontSelectOptions()}
         return;
       }
       try {
-        const payload = await postJson('/api/update-appearance', buildAppearancePatch(currentTextStyle, currentAppearance));
+        const payload = await postJson('/api/update-appearance', buildAppearancePatch(currentTextStyle, currentAppearance, isMultiSelection));
         renderAll(payload.state, { previewMode: 'defer' });
         setStatus('对象外观已应用');
       } catch (error) {
         setStatus('对象外观应用失败: ' + (error?.message || String(error)), true);
+      }
+    });
+
+    documentFontButton.addEventListener('click', async () => {
+      const fontFamily = String(fontFamilyInput.value || '').trim();
+      if (!fontFamily) {
+        setStatus('请先选择一个字体。', true);
+        return;
+      }
+      try {
+        const payload = await postJson('/api/unify-document-font', { fontFamily });
+        renderAll(payload.state, { previewMode: 'defer' });
+        setStatus('全文档字体已统一');
+      } catch (error) {
+        setStatus('统一全文档字体失败: ' + (error?.message || String(error)), true);
       }
     });
 
@@ -2254,6 +2302,12 @@ function createRouter(shell, server) {
             fill: body.fill,
             stroke: body.stroke,
           });
+          break;
+        }
+        case '/api/unify-document-font': {
+          const fontFamily = String(body.fontFamily || '').trim();
+          if (!fontFamily) throw new Error('Missing fontFamily');
+          shell.updateDocumentFontFamily(fontFamily);
           break;
         }
         case '/api/add-text': {

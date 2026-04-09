@@ -2,7 +2,7 @@
 
 - Status: audit
 - Primary Source: `scripts/publish_store_distribution.cjs`, `artifacts/distribution/*`, CI workflow
-- Last Verified: 2026-04-08
+- Last Verified: 2026-04-09
 - Verification Mode: smoke rerun
 
 ## 1. 总体结论

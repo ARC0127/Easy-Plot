@@ -218,9 +218,10 @@ function decodeGlyphContent(node, normalized, attributeIdIndex) {
         .join('');
     if (content.trim().length === 0 && !content.includes(' '))
         return null;
-    const transformCarrier = descendants.find((child) => child.localTagName.toLowerCase() === 'g' && child.transform.raw !== null) ??
+    const descendantTransformCarrier = descendants.find((child) => child.localTagName.toLowerCase() === 'g' && child.transform.raw !== null) ??
         descendants.find((child) => child.transform.raw !== null) ??
-        node;
+        null;
+    const transformCarrier = node.transform.raw !== null ? node : descendantTransformCarrier ?? node;
     const [translateXRaw, translateYRaw] = transformCarrier.transform.translate ?? [node.bbox?.x ?? 0, node.bbox?.y ?? 0];
     const [scaleXRaw, scaleYRaw] = transformCarrier.transform.scale ?? [1, 1];
     const translateX = Number.isFinite(translateXRaw) ? translateXRaw : node.bbox?.x ?? 0;
@@ -309,7 +310,9 @@ function decodeGlyphContent(node, normalized, attributeIdIndex) {
 }
 function makeGlyphTextProxy(node, normalized, source, attributeIdIndex) {
     const idAttr = String(node.attributes.id ?? '');
-    if (!/^text_\d+$/i.test(idAttr))
+    const objectTypeHint = String(node.attributes['data-fe-object-type'] ?? '').toLowerCase();
+    const looksLikeExportedProxy = objectTypeHint === 'text_node';
+    if (!looksLikeExportedProxy && !/^text_\d+$/i.test(idAttr))
         return null;
     const decoded = decodeGlyphContent(node, normalized, attributeIdIndex);
     if (!decoded)
@@ -515,6 +518,13 @@ function reserveSemanticId(preferredId, role, nodeId, reservedIds) {
     reservedIds.add(next);
     return next;
 }
+function buildSemanticChildRefs(wrappedId, explicitId) {
+    if (!wrappedId)
+        return [];
+    if (wrappedId === explicitId)
+        return [];
+    return [wrappedId];
+}
 function isSemanticMarkerNode(node) {
     const role = String(node.attributes['data-fe-role'] ?? '').toLowerCase();
     return role === 'panel' || role === 'legend' || role === 'annotation' || role === 'annotation_block' || role === 'figure_title' || role === 'panel_label';
@@ -534,6 +544,8 @@ function buildSemanticObjects(normalized, hints, source, reservedIds) {
             continue;
         if (hint.kind === 'panel_candidate') {
             const explicitId = reserveSemanticId(semanticObjectExplicitId(node, 'panel'), 'panel', node.nodeId, reservedIds);
+            const wrappedId = resolvedObjectIdForNode(node);
+            const childObjectIds = buildSemanticChildRefs(wrappedId, explicitId);
             panels.push({
                 ...defaultBase(`panel_${node.nodeId}`, explicitId, 'panel', node.bbox ?? { x: 0, y: 0, w: 0, h: 0 }, (0, buildProvenance_1.buildProvenance)({
                     sourceId: source.sourceId,
@@ -548,13 +560,14 @@ function buildSemanticObjects(normalized, hints, source, reservedIds) {
                 layoutRole: 'plot_panel',
                 anchor: { kind: 'absolute', value: null },
                 offset: [0, 0],
-                contentRootId: resolvedObjectIdForNode(node),
-                childObjectIds: [resolvedObjectIdForNode(node)],
+                contentRootId: wrappedId === explicitId ? '' : wrappedId,
+                childObjectIds,
                 axisHints: { hasXAxis: false, hasYAxis: false, hasColorbar: false, axisGroupIds: [] },
             });
         }
         if (hint.kind === 'legend_candidate') {
             const explicitId = reserveSemanticId(semanticObjectExplicitId(node, 'legend'), 'legend', node.nodeId, reservedIds);
+            const wrappedId = resolvedObjectIdForNode(node);
             legends.push({
                 ...defaultBase(`legend_${node.nodeId}`, explicitId, 'legend', node.bbox ?? { x: 0, y: 0, w: 0, h: 0 }, (0, buildProvenance_1.buildProvenance)({
                     sourceId: source.sourceId,
@@ -564,7 +577,7 @@ function buildSemanticObjects(normalized, hints, source, reservedIds) {
                     liftConfidence: hint.confidence,
                     degradationReason: 'none',
                 }), ['select', 'multi_select', 'drag', 'delete', 'reparent']),
-                itemObjectIds: [resolvedObjectIdForNode(node)],
+                itemObjectIds: wrappedId === explicitId ? [] : [wrappedId],
                 anchor: { kind: 'free', value: null, targetPanelId: null },
                 offset: [0, 0],
                 orientation: 'auto',

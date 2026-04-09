@@ -141,37 +141,52 @@ function normalizeStrokeColorToken(value) {
     }
     return raw;
 }
-function resolveTextStyleTarget(project, selectedId) {
-    if (!selectedId)
-        return null;
-    const selected = project.project.objects[selectedId];
-    if (!selected)
-        return null;
-    if (selected.objectType === 'text_node')
-        return selected;
-    const linkedTextId = typeof selected.textObjectId === 'string' ? selected.textObjectId : null;
-    if (!linkedTextId)
-        return null;
-    const linked = project.project.objects[linkedTextId];
-    return linked?.objectType === 'text_node' ? linked : null;
+function normalizeSelectionObjectIds(project, selectedIds) {
+    const inputIds = Array.isArray(selectedIds) ? selectedIds : selectedIds ? [selectedIds] : [];
+    const seen = new Set();
+    const out = [];
+    for (const rawId of inputIds) {
+        const objectId = String(rawId ?? '').trim();
+        if (!objectId || seen.has(objectId) || !project.project.objects[objectId])
+            continue;
+        seen.add(objectId);
+        out.push(objectId);
+    }
+    return out;
 }
-function resolveTextTargets(project, selectedId) {
-    if (!selectedId)
-        return [];
+function collectSelectionRootIds(project, selectedIds) {
     const objects = project.project.objects;
-    const descendantIds = collectDescendantObjectIds(objects, selectedId);
-    return descendantIds
-        .map((id) => objects[id])
-        .filter((obj) => obj?.objectType === 'text_node');
+    const normalized = normalizeSelectionObjectIds(project, selectedIds);
+    if (normalized.length < 2)
+        return normalized;
+    return collectClipboardRootIds(objects, normalized);
 }
-function resolveShapeTargets(project, selectedId) {
-    if (!selectedId)
-        return [];
+function collectSelectedTargets(project, selectedIds, predicate) {
     const objects = project.project.objects;
-    const descendantIds = collectDescendantObjectIds(objects, selectedId);
-    return descendantIds
-        .map((id) => objects[id])
-        .filter((obj) => obj?.objectType === 'shape_node');
+    const rootIds = collectSelectionRootIds(project, selectedIds);
+    const visited = new Set();
+    const targets = [];
+    for (const rootId of rootIds) {
+        for (const descendantId of collectDescendantObjectIds(objects, rootId)) {
+            if (visited.has(descendantId))
+                continue;
+            visited.add(descendantId);
+            const candidate = objects[descendantId];
+            if (!predicate(candidate))
+                continue;
+            targets.push(candidate);
+        }
+    }
+    return targets;
+}
+function resolveTextStyleTarget(project, selectedIds) {
+    return collectSelectedTargets(project, selectedIds, (obj) => obj?.objectType === 'text_node')[0] ?? null;
+}
+function resolveTextTargets(project, selectedIds) {
+    return collectSelectedTargets(project, selectedIds, (obj) => obj?.objectType === 'text_node');
+}
+function resolveShapeTargets(project, selectedIds) {
+    return collectSelectedTargets(project, selectedIds, (obj) => obj?.objectType === 'shape_node');
 }
 function upgradeProxyTextNodeForStyleEditing(obj) {
     if (obj.textKind !== 'path_text_proxy' && obj.textKind !== 'raster_text_proxy')
@@ -1202,7 +1217,7 @@ class DesktopWorkbench {
     importReportCacheProject = null;
     importReportCacheValue = null;
     propertyCacheProject = null;
-    propertyCacheSelectedId = null;
+    propertyCacheSelectionKey = null;
     propertyCacheValue = null;
     previewSvgCacheProject = null;
     previewSvgCacheValue = '';
@@ -1224,13 +1239,14 @@ class DesktopWorkbench {
         }
         return this.importReportCacheValue;
     }
-    getCachedPropertyView(selectedId) {
-        if (!this.state || !selectedId)
+    getCachedPropertyView(selectedIds) {
+        if (!this.state || selectedIds.length === 0)
             return null;
-        if (this.propertyCacheProject !== this.state.project || this.propertyCacheSelectedId !== selectedId) {
+        const cacheKey = selectedIds.join('\u0001');
+        if (this.propertyCacheProject !== this.state.project || this.propertyCacheSelectionKey !== cacheKey) {
             this.propertyCacheProject = this.state.project;
-            this.propertyCacheSelectedId = selectedId;
-            this.propertyCacheValue = (0, index_7.buildPropertyViewModel)(this.state.project, selectedId);
+            this.propertyCacheSelectionKey = cacheKey;
+            this.propertyCacheValue = (0, index_7.buildPropertyViewModel)(this.state.project, selectedIds);
         }
         return this.propertyCacheValue;
     }
@@ -1713,9 +1729,10 @@ class DesktopWorkbench {
         if (this.state.policy.readOnly) {
             throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); updateSelectedAppearance is blocked.`);
         }
-        const selectedId = this.state.selection.selectedIds[0] ?? null;
-        const currentTextTargets = resolveTextTargets(this.state.project, selectedId);
-        const currentShapeTargets = resolveShapeTargets(this.state.project, selectedId);
+        const selectedIds = [...this.state.selection.selectedIds];
+        const selectedRootIds = collectSelectionRootIds(this.state.project, selectedIds);
+        const currentTextTargets = resolveTextTargets(this.state.project, selectedRootIds);
+        const currentShapeTargets = resolveShapeTargets(this.state.project, selectedRootIds);
         if (currentTextTargets.length === 0 && currentShapeTargets.length === 0) {
             throw new Error('Selected object does not expose editable appearance.');
         }
@@ -1745,8 +1762,8 @@ class DesktopWorkbench {
         const nextProject = (0, index_4.pushSnapshot)(this.state.project);
         const nextState = structuredClone(this.state);
         nextState.project = nextProject;
-        const nextTextTargets = resolveTextTargets(nextProject, selectedId);
-        const nextShapeTargets = resolveShapeTargets(nextProject, selectedId);
+        const nextTextTargets = resolveTextTargets(nextProject, selectedRootIds);
+        const nextShapeTargets = resolveShapeTargets(nextProject, selectedRootIds);
         for (const nextTarget of nextTextTargets) {
             const before = {
                 textKind: nextTarget.textKind,
@@ -1795,8 +1812,8 @@ class DesktopWorkbench {
                 stroke: { ...nextShape.stroke },
             }, 'update_object_color');
         }
-        if (selectedId) {
-            recomputeCompositeBBox(nextProject.project.objects, selectedId);
+        for (const rootId of selectedRootIds) {
+            recomputeCompositeBBox(nextProject.project.objects, rootId);
         }
         this.state = nextState;
         this.hasProjectMutations = true;
@@ -1804,6 +1821,49 @@ class DesktopWorkbench {
     }
     updateSelectedTextStyle(patch) {
         return this.updateSelectedAppearance(patch);
+    }
+    updateDocumentFontFamily(fontFamily) {
+        if (!this.state)
+            throw new Error('DesktopWorkbench is not initialized. Call importDocument first.');
+        if (this.state.policy.readOnly) {
+            throw new Error(`Session is read-only (${this.state.policy.reason ?? 'snapshot_policy'}); updateDocumentFontFamily is blocked.`);
+        }
+        const normalizedFamily = normalizeFontFamilyToken(fontFamily);
+        if (!normalizedFamily)
+            throw new Error('Missing font family');
+        const objects = this.state.project.project.objects;
+        const textTargets = Object.values(objects).filter((obj) => obj?.objectType === 'text_node');
+        const changedTargets = textTargets.filter((target) => target.textKind !== 'raw_text' || target.font.family !== normalizedFamily);
+        if (changedTargets.length === 0)
+            return this.snapshot();
+        const nextProject = (0, index_4.pushSnapshot)(this.state.project);
+        const nextState = structuredClone(this.state);
+        nextState.project = nextProject;
+        const nextObjects = nextProject.project.objects;
+        for (const target of changedTargets) {
+            const nextTarget = nextObjects[target.id];
+            if (!nextTarget)
+                continue;
+            const before = {
+                font: { ...nextTarget.font },
+                fill: nextTarget.fill,
+                textKind: nextTarget.textKind,
+                capabilities: [...nextTarget.capabilities],
+            };
+            if (nextTarget.textKind !== 'raw_text') {
+                upgradeProxyTextNodeForStyleEditing(nextTarget);
+            }
+            nextTarget.font.family = normalizedFamily;
+            (0, index_4.appendManualEdit)(nextTarget, 'manual_role_override', before, {
+                font: { ...nextTarget.font },
+                fill: nextTarget.fill,
+                textKind: nextTarget.textKind,
+                capabilities: [...nextTarget.capabilities],
+            }, 'update_document_font_family');
+        }
+        this.state = nextState;
+        this.hasProjectMutations = true;
+        return this.snapshot();
     }
     deleteSelected() {
         if (!this.state)
@@ -1978,7 +2038,7 @@ class DesktopWorkbench {
                 warnings: [],
             };
         }
-        const selectedId = this.state.selection.selectedIds[0] ?? null;
+        const selectedIds = this.state.selection.selectedIds;
         return {
             objectTree: this.getCachedTreeView(),
             canvas: {
@@ -1987,7 +2047,7 @@ class DesktopWorkbench {
                 curveHandles: buildCurveHandles(this.state.project.project.objects, this.state.selection.selectedIds),
                 lastHit: this.lastHit,
             },
-            properties: this.getCachedPropertyView(selectedId),
+            properties: this.getCachedPropertyView(selectedIds),
             importReport: this.getCachedImportReport(),
             warnings: [...this.state.warnings],
         };

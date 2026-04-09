@@ -2,7 +2,7 @@
 
 - Status: audit
 - Primary Source: `scripts/performance_baseline_report.cjs`, `scripts/smoke_import_pipeline.cjs`, `scripts/smoke_editor_pipeline.cjs`, `scripts/smoke_roundtrip_pipeline.cjs`
-- Last Verified: 2026-04-08
+- Last Verified: 2026-04-09
 - Verification Mode: smoke rerun
 
 ## 1. 总体结论
@@ -14,9 +14,9 @@
 
 | Check | Median (ms) | Threshold (ms) | Pass |
 | --- | ---: | ---: | --- |
-| `import_pipeline_latency` | 51.86 | 2500 | true |
-| `editor_pipeline_latency` | 62.05 | 2500 | true |
-| `roundtrip_pipeline_latency` | 273.36 | 3500 | true |
+| `import_pipeline_latency` | 53.59 | 2500 | true |
+| `editor_pipeline_latency` | 66.14 | 2500 | true |
+| `roundtrip_pipeline_latency` | 272.39 | 3500 | true |
 
 ## 3. 产物
 
